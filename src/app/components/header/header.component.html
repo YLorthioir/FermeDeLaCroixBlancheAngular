@@ -1,0 +1,24 @@
+<h1>Ferme de la croix blanche</h1>
+
+<!--<button mat-button routerLink="/home" routerLinkActive="active" ><mat-icon>Home</mat-icon></button>
+
+<button mat-button [matMenuTriggerFor]="menu"><mat-icon>Bovins</mat-icon></button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item ngbDropdownToggle routerLink="/bovin/one" routerLinkActive="active">Item 1</button>
+</mat-menu>-->
+
+<ul ngbNav #nav="ngbNav" class="nav-tabs justify-content">
+  <li [ngbNavItem]="1">
+    <a ngbNavLink routerLink="/home" routerLinkActive="active"><mat-icon>home</mat-icon></a>
+  </li>
+  <li [ngbNavItem]="2" ngbDropdown class="nav-item">
+    <a class="nav-link" ngbDropdownToggle routerLink="/bovin" routerLinkActive="active">Bovins</a>
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem routerLink="/bovin/one" routerLinkActive="active">Informations d'un bovin</button>
+      <div class="dropdown-divider"></div>
+      <button ngbDropdownItem>Separated link</button>
+    </div>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
