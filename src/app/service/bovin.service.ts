@@ -15,4 +15,8 @@ export class BovinService {
   getOne(numeroInscription: string){
     return this._httpClient.get<Bovin>('http://localhost:8080/bovin/'+numeroInscription)
   }
+
+  add(bovin: Bovin){
+    return this._httpClient.post('http://localhost:8080/bovin/add',bovin)
+  }
 }

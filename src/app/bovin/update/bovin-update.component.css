@@ -1,7 +1,5 @@
 .identification{
   float: left;
-  border: solid 0.5px black;
-  border-radius: 5px;
   width: 55%
 }
 
@@ -15,8 +13,5 @@
 .aCommeMaladie{
   padding-top: 10px;
   float: left;
-  border: solid 0.5px black;
-  border-radius: 5px;
   width: 55%
 }
-

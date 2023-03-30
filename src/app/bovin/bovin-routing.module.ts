@@ -2,6 +2,9 @@ import {RouterModule, Routes} from "@angular/router";
 import {NgModule} from "@angular/core";
 import {BovinComponent} from "./bovin/bovin.component";
 import {BovinOneComponent} from "./one/bovin-one.component";
+import {BovinAddComponent} from "./add/bovin-add.component";
+import {BovinUpdateComponent} from "./update/bovin-update.component";
+import {BovinGenealogyComponent} from "./genealogy/bovin-genealogy.component";
 
 const routes: Routes = [
 
@@ -11,6 +14,9 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'one', pathMatch: 'full' },
       { path: 'one', component: BovinOneComponent},
+      { path: 'add', component: BovinAddComponent},
+      { path: 'update', component: BovinUpdateComponent},
+      { path: 'genealogy', component: BovinGenealogyComponent},
 
     ]
   }

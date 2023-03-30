@@ -1,0 +1,35 @@
+<form class="example-form">
+  Généalogie du bovin
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>n°</mat-label>
+    <input type="text"
+           placeholder="n°"
+           aria-label="Information pour le bovin n°"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async"
+                  [value]="option" (click)="OnBovinSelected(option)">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-radio-group [formControl]="selectedValue">
+    <mat-radio-button value="asc">Ascendante</mat-radio-button>
+    <mat-radio-button value="dsc">Descendante</mat-radio-button>
+  </mat-radio-group>
+</form>
+<div *ngIf="bovin">
+  <mat-card class="bovin">
+    <mat-card-header>
+      <mat-card-title>{{bovin.numeroInscription}}</mat-card-title>
+      <mat-card-subtitle>Race: {{bovin.race.nom}}</mat-card-subtitle>
+      <mat-card-subtitle>Poids a la naissance: {{bovin.poidsNaissance}}kg</mat-card-subtitle>
+      <mat-card-subtitle>Nb césariennes: {{bovin.neCesarienne}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+</div>

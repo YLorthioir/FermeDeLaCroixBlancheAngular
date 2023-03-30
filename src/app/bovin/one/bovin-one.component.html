@@ -1,6 +1,7 @@
 <form class="example-form">
+  Information du bovin
   <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Number</mat-label>
+    <mat-label>n°</mat-label>
     <input type="text"
            placeholder="n°"
            aria-label="Information pour le bovin n°"
@@ -16,13 +17,124 @@
   </mat-form-field>
 </form>
 
-<div *ngIf="bovin">
-  {{bovin.numeroInscription}}
-  {{bovin.nom}}
-  {{bovin.poidsNaissance}}
-</div>
-
 <div *ngIf="!loading">
+  <div *ngIf="bovin" class="identification">
+
+    <table class="table">
+      <h3>Identification</h3>
+      <tbody>
+      <tr>
+        <td>
+          Numéro d'identification
+        </td>
+        <td>{{bovin.numeroInscription}}</td>
+      </tr>
+      <tr>
+        <td>
+          Race
+        </td>
+        <td>{{bovin.race.nom}}</td>
+      </tr>
+      <tr>
+        <td>
+          Sexe
+        </td>
+        <td>{{bovin.sexe}}</td>
+      </tr>
+      <tr>
+        <td>
+          Père
+        </td>
+        <td>{{bovin.pereNI}}</td>
+      </tr>
+      <tr>
+        <td>
+          Mère
+        </td>
+        <td>{{bovin.mereNI}}</td>
+      </tr>
+      <tr>
+        <td>
+          Date de naissance
+        </td>
+        <td>{{bovin.dateDeNaissance}}</td>
+      </tr>
+      <tr>
+        <td>
+          Poids à la naissance
+        </td>
+        <td>{{bovin.poidsNaissance}}</td>
+      </tr>
+      <tr>
+        <td>
+          Lieu actuel
+        </td>
+        <td>{{bovin.champ}}</td>
+      </tr>
+      <tr class="lastRow">
+        <td>
+          Nom du bovin
+        </td>
+        <td>{{bovin.nom}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="bovin" class="vaccination">
+
+    <table *ngIf="carnet" >
+      <h3>Vaccination</h3>
+      <tr>
+        <th scope="col">Nom:</th>
+        <th scope="col">1ère dose</th>
+        <th scope="col">2e dose</th>
+        <th scope="col">Prochain rappel</th>
+      </tr>
+      <tbody>
+      <tr *ngFor="let vaccination of carnet">
+        <td>
+          {{vaccination.nom}}
+        </td>
+        <td>
+          <mat-checkbox disabled *ngIf="vaccination.doseAdministrees>=1" checked></mat-checkbox>
+          <mat-checkbox disabled *ngIf="vaccination.doseAdministrees < 1"></mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox disabled *ngIf="vaccination.doseAdministrees>=2 && vaccination.doseMax>=2" checked></mat-checkbox>
+          <mat-checkbox disabled *ngIf="vaccination.doseAdministrees < 2 && vaccination.doseMax>=2"></mat-checkbox>
+        </td>
+        <td>
+          {{vaccination.dateRappel}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="bovin" class="aCommeMaladie">
+
+    <table *ngIf="aCommeMaladie" class="table">
+      <h3>Santé</h3>
+      <tr>
+        <th scope="col">Maladies</th>
+        <th scope="col">Année</th>
+        <th scope="col">Traitement</th>
+      </tr>
+      <tbody>
+      <tr *ngFor="let a of aCommeMaladie">
+        <td>
+          {{a.maladieDTO.nom}}
+        </td>
+        <td>
+          {{a.anneeMaladie}}
+        </td>
+        <td>
+          {{a.traitementDTO.nomTraitement}}
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div *ngIf="loading">

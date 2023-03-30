@@ -1,0 +1,165 @@
+<form class="example-form">
+  <div>Information du bovin
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>n°</mat-label>
+      <input type="text"
+             placeholder="n°"
+             aria-label="Information pour le bovin n°"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async"
+                    [value]="option" (click)="OnBovinSelected(option)">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</form>
+
+<div *ngIf="!loading">
+  <div *ngIf="bovin" class="identification">
+    <form [formGroup]="formInformations">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Identification</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            Numéro d'identification
+          </td>
+          <td>
+              <input type="text" formControlName="numeroInscription">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Race
+          </td>
+          <td>
+            <select formControlName="raceId">
+              <option *ngFor="let race of races"
+              [value]="race.id">{{race.nom}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Sexe
+          </td>
+          <td>
+            <div>
+              <input type="radio"formControlName="sexe" value="M"><label style="width: 100px" >Male</label>
+              <input type="radio"formControlName="sexe" value="F"><label>Femelle</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Père
+          </td>
+          <td>
+            <input type="text" formControlName="pereNI">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Mère
+          </td>
+          <td>
+            <input type="text" formControlName="mereNI">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Date de naissance
+          </td>
+          <td>
+            <input type="date" formControlName="dateDeNaissance">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Poids à la naissance
+          </td>
+          <td>
+            <input type="number" formControlName="poidsNaissance">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Lieu actuel
+          </td>
+          <td>
+            <input type="text" formControlName="champ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Nom du bovin
+          </td>
+          <td>
+            <input type="text" formControlName="nom">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" formControlName="neCesarienne">
+            <label style="margin-left: 10px">Né césarienne</label>
+          </td>
+          <td>
+            <input type="checkbox" formControlName="enCharge">
+            <label style="margin-left: 10px">Sur site</label>
+            <button type="submit" style="margin-left: 320px">Modifier</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div *ngIf="bovin">
+  </div>
+
+  <div *ngIf="bovin" class="aCommeMaladie">
+
+    <table *ngIf="aCommeMaladie" class="table">
+      <h3>Santé</h3>
+      <tr>
+        <th scope="col">Maladies</th>
+        <th scope="col">Année</th>
+        <th scope="col">Traitement</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tbody>
+      <tr *ngFor="let a of aCommeMaladie">
+        <td>
+          {{a.maladieDTO.nom}}
+        </td>
+        <td>
+          {{a.anneeMaladie}}
+        </td>
+        <td>
+          {{a.traitementDTO.nomTraitement}}
+        </td>
+        <td>
+          <button>Modifier</button>
+        </td>
+        <td>
+          <button>Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  loading
+</div>

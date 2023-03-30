@@ -1,26 +1,45 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BovinComponent } from './bovin/bovin.component';
-import {RouterOutlet} from "@angular/router";
 import { BovinOneComponent } from './one/bovin-one.component';
 import {BovinRoutingModule} from "./bovin-routing.module";
 import {MatInputModule} from "@angular/material/input";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { BovinAddComponent } from './add/bovin-add.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatButtonModule} from "@angular/material/button";
+import { BovinUpdateComponent } from './update/bovin-update.component';
+import { BovinGenealogyComponent } from './genealogy/bovin-genealogy.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
 
 
 
 @NgModule({
   declarations: [
     BovinComponent,
-    BovinOneComponent
+    BovinOneComponent,
+    BovinAddComponent,
+    BovinUpdateComponent,
+    BovinGenealogyComponent
   ],
   imports: [
     CommonModule,
     BovinRoutingModule,
     MatInputModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
   ]
 })
 export class BovinModule { }

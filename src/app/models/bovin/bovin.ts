@@ -1,3 +1,6 @@
+import {Validators} from "@angular/forms";
+import {Race} from "./race";
+
 export interface Bovin{
   id: number;
   numeroInscription: string;
@@ -7,10 +10,32 @@ export interface Bovin{
   nom: string;
   enCharge: boolean;
   neCesarienne: boolean;
-  raceId: number;
-  champId: number;
+  race: Race;
+  champ: string;
   injections: any;
   a: any;
-  pereId: number;
-  mereId: number;
+  pereNI: string;
+  mereNI: string;
+}
+
+export interface BovinForm{
+  numeroInscription: string;
+  sexe: string;
+  dateDeNaissance: Date;
+  poidsNaissance: number;
+  neCesarienne: boolean;
+  raceId: number;
+  pereNI: string;
+  mereNI: string;
+}
+
+export const BovinForm={
+  numeroInscription: ['',[Validators.required]],
+  sexe: [],
+  dateDeNaissance: [],
+  poidsNaissance: [],
+  neCesarienne: [],
+  raceId: [],
+  pereNI: [],
+  mereNI: [],
 }
