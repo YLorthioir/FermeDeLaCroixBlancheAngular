@@ -1,6 +1,6 @@
-import {Bovin} from "./bovin";
 
-export interface FemelleReproduction extends Bovin{
+export interface FemelleReproduction{
   derniereInsemination: Date;
   perteGrossesse: number;
+  nbCesarienne: number;
 }

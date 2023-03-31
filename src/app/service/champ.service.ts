@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Race} from "../models/bovin/race";
+import {Champ} from "../models/champ/champ";
 
 @Injectable({
   providedIn: 'root'
 })
-export class RaceService {
+export class ChampService {
 
   constructor(private readonly _httpClient: HttpClient) { }
 
-  getAllRace(){
-    return this._httpClient.get<Race[]>('http://localhost:8080/bovin/race/all')
+  getAll(){
+    return this._httpClient.get<Champ[]>('http://localhost:8080/champ/all')
   }
 }

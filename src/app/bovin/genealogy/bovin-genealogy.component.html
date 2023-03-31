@@ -20,7 +20,8 @@
     <mat-radio-button value="dsc">Descendante</mat-radio-button>
   </mat-radio-group>
 </form>
-<div *ngIf="bovin">
+
+<div *ngIf="bovin" class="main">
   <mat-card class="bovin">
     <mat-card-header>
       <mat-card-title>{{bovin.numeroInscription}}</mat-card-title>
@@ -33,3 +34,91 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
+<div class="parent">
+  <div *ngIf="pere" class="pere">
+    <mat-card class="bovin">
+      <mat-card-header>
+        <mat-card-title>{{pere.numeroInscription}}</mat-card-title>
+        <mat-card-subtitle>Race: {{pere.race.nom}}</mat-card-subtitle>
+        <mat-card-subtitle>Poids a la naissance: {{pere.poidsNaissance}}kg</mat-card-subtitle>
+        <mat-card-subtitle>Nb césariennes: {{pere.neCesarienne}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="mere" class="mere">
+    <mat-card class="bovin">
+      <mat-card-header>
+        <mat-card-title>{{mere.numeroInscription}}</mat-card-title>
+        <mat-card-subtitle>Race: {{mere.race.nom}}</mat-card-subtitle>
+        <mat-card-subtitle>Poids a la naissance: {{mere.poidsNaissance}}kg</mat-card-subtitle>
+        <mat-card-subtitle>Nb césariennes: {{mere.neCesarienne}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+<div class="grand-parents">
+    <div *ngIf="gpp" class="gpp">
+      <mat-card class="bovin">
+        <mat-card-header>
+          <mat-card-title>{{gpp.numeroInscription}}</mat-card-title>
+          <mat-card-subtitle>Race: {{gpp.race.nom}}</mat-card-subtitle>
+          <mat-card-subtitle>Poids a la naissance: {{gpp.poidsNaissance}}kg</mat-card-subtitle>
+          <mat-card-subtitle>Nb césariennes: {{gpp.neCesarienne}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div *ngIf="gmp" class="gmp">
+      <mat-card class="bovin">
+        <mat-card-header>
+          <mat-card-title>{{gmp.numeroInscription}}</mat-card-title>
+          <mat-card-subtitle>Race: {{gmp.race.nom}}</mat-card-subtitle>
+          <mat-card-subtitle>Poids a la naissance: {{gmp.poidsNaissance}}kg</mat-card-subtitle>
+          <mat-card-subtitle>Nb césariennes: {{gmp.neCesarienne}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="gpm" class="gpm">
+    <mat-card class="bovin">
+      <mat-card-header>
+        <mat-card-title>{{gpm.numeroInscription}}</mat-card-title>
+        <mat-card-subtitle>Race: {{gpm.race.nom}}</mat-card-subtitle>
+        <mat-card-subtitle>Poids a la naissance: {{gpm.poidsNaissance}}kg</mat-card-subtitle>
+        <mat-card-subtitle>Nb césariennes: {{gpm.neCesarienne}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="gmm" class="gmm">
+    <mat-card class="bovin">
+      <mat-card-header>
+        <mat-card-title>{{gmm.numeroInscription}}</mat-card-title>
+        <mat-card-subtitle>Race: {{gmm.race.nom}}</mat-card-subtitle>
+        <mat-card-subtitle>Poids a la naissance: {{gmm.poidsNaissance}}kg</mat-card-subtitle>
+        <mat-card-subtitle>Nb césariennes: {{gmm.neCesarienne}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+

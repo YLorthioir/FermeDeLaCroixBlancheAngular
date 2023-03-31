@@ -6,6 +6,8 @@ import {Bovin} from "../../models/bovin/bovin";
 import {SanteService} from "../../service/sante.service";
 import {Vaccination} from "../../models/sante/vaccination";
 import {A} from "../../models/sante/a";
+import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
+import {BovinEngraissement} from "../../models/bovin/bovinEngraissement";
 
 @Component({
   selector: 'app-bovin-one',
@@ -20,6 +22,8 @@ export class BovinOneComponent implements OnInit{
   carnet!: Vaccination[];
   filteredOptions!: Observable<string[]>;
   aCommeMaladie!: A[];
+  femelleReproduction!: FemelleReproduction;
+  bovinEngraissement!: BovinEngraissement;
 
   myControl = new FormControl('Test');
 
@@ -50,13 +54,27 @@ export class BovinOneComponent implements OnInit{
     this.loading=true;
 
     this._bovinService.getOne(option).subscribe((bovin) => {
-        this.bovin = bovin
-        this._santeService.getCarnetVaccination(bovin.id).subscribe(
+        this.bovin = bovin;
+
+        this._santeService.getCarnetVaccination(this.bovin.id).subscribe(
           (carnet) =>
             this.carnet = carnet);
-        this._santeService.getA(bovin.id).subscribe(
+
+        this._santeService.getA(this.bovin.id).subscribe(
           (a) =>
-            this.aCommeMaladie = a)
+            this.aCommeMaladie = a);
+
+        this._bovinService.getInfosReproduction(this.bovin.id).subscribe(
+          (f) =>
+            this.femelleReproduction = f
+        );
+
+        this._bovinService.getInfosEngraissement(this.bovin.id).subscribe(
+          (b) =>
+            this.bovinEngraissement = b
+        );
+
+
         this.loading=false;
 
     })

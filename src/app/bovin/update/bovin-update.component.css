@@ -1,17 +1,28 @@
 .identification{
   float: left;
-  width: 55%
-}
-
-.vaccination{
-  float: right;
-  border: solid 0.5px black;
-  border-radius: 5px;
-  width: 40%
+  width: 50%
 }
 
 .aCommeMaladie{
   padding-top: 10px;
+  float: right;
+  width: 45%
+}
+
+.infosComplementaires{
+  padding-top: 10px;
   float: left;
-  width: 55%
+  width: 50%
+}
+
+.infosReproduction{
+  padding-top: 10px;
+  float: right;
+  width: 45%
+}
+
+.infosEngraissement{
+  padding-top: 10px;
+  float: right;
+  width: 45%
 }

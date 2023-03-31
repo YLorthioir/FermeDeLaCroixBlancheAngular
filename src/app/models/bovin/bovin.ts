@@ -1,5 +1,6 @@
 import {Validators} from "@angular/forms";
 import {Race} from "./race";
+import {Champ} from "../champ/champ";
 
 export interface Bovin{
   id: number;
@@ -11,7 +12,7 @@ export interface Bovin{
   enCharge: boolean;
   neCesarienne: boolean;
   race: Race;
-  champ: string;
+  champ: Champ;
   injections: any;
   a: any;
   pereNI: string;

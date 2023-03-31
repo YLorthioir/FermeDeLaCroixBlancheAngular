@@ -3,52 +3,49 @@
 
   <div>
     <div>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" style="padding-right: 10px">
         <mat-label>Numéro d'inscription</mat-label>
         <input type="text" matInput formControlName="numeroInscription">
       </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field appearance="fill">
+
+      <mat-form-field appearance="fill" style="padding-right: 10px">
         <mat-label>Race</mat-label>
         <mat-select formControlName="raceId">
           <mat-option  *ngFor="let race of races"
                        [value]="race.id">{{race.nom}}</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field appearance="fill" class="fields">
+        <mat-label>Date de naissance:</mat-label>
+        <input type="date" matInput formControlName="dateDeNaissance">
+      </mat-form-field>
+
     </div>
     <div>
-      <label>Float label: </label>
+      <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-label>Père</mat-label>
+        <input type="text" matInput formControlName="pereNI">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-label>Mère</mat-label>
+        <input type="text" matInput formControlName="mereNI">
+      </mat-form-field>
+
+      <label>Sexe: </label>
       <mat-radio-group formControlName="sexe">
         <mat-radio-button value="M">Mâle</mat-radio-button>
         <mat-radio-button value="F">Femelle</mat-radio-button>
       </mat-radio-group>
     </div>
+
     <div>
-      <mat-form-field appearance="fill">
-        <mat-label>Père</mat-label>
-        <input type="text" matInput formControlName="pereNI">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field appearance="fill">
-        <mat-label>Mère</mat-label>
-        <input type="text" matInput formControlName="mereNI">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field appearance="fill" class="fields">
-        <mat-label>Date de naissance:</mat-label>
-        <input type="date" matInput formControlName="dateDeNaissance">
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" style="padding-right: 10px">
         <mat-label>Poids à la naissance</mat-label>
         <input type="text" matInput formControlName="poidsNaissance">
       </mat-form-field>
-    </div>
-    <div>
+
       <mat-checkbox formControlName="neCesarienne">Né césarienne</mat-checkbox>
     </div>
     <button mat-raised-button type="submit">Ajouter</button>
