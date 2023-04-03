@@ -17,6 +17,7 @@ export interface Bovin{
   a: any;
   pereNI: string;
   mereNI: string;
+  nbCesarienne: number;
 }
 
 export interface BovinForm{
@@ -31,12 +32,12 @@ export interface BovinForm{
 }
 
 export const BovinForm={
-  numeroInscription: ['',[Validators.required]],
-  sexe: [],
-  dateDeNaissance: [],
-  poidsNaissance: [],
-  neCesarienne: [],
-  raceId: [],
-  pereNI: [],
-  mereNI: [],
+  numeroInscription: ['',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
+  sexe: ['',[Validators.required, Validators.pattern('M'||'F')]],
+  dateDeNaissance: ['',[Validators.required]],
+  poidsNaissance: ['',[Validators.min(0)]],
+  neCesarienne: [false],
+  raceId: ['',[Validators.required]],
+  pereNI: [''],
+  mereNI: ['',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
 }

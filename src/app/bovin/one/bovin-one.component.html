@@ -68,25 +68,34 @@
           <td>
             Poids à la naissance
           </td>
-          <td>{{bovin.poidsNaissance}}</td>
+          <td>
+            <div *ngIf="bovin.poidsNaissance==0">Non communiqué</div>
+            <div *ngIf="bovin.poidsNaissance!=0">{{bovin.poidsNaissance}}</div>
+          </td>
         </tr>
         <tr>
           <td>
             Lieu actuel
           </td>
-          <td>{{bovin.champ.lieu}}</td>
+          <td>
+            <div *ngIf="!bovin.champ">Non communiqué</div>
+            <div *ngIf="bovin.champ">{{bovin.champ.lieu}}</div>
+          </td>
         </tr>
         <tr class="lastRow">
           <td>
             Nom du bovin
           </td>
-          <td>{{bovin.nom}}</td>
+          <td>
+            <div *ngIf="!bovin.nom">Non communiqué</div>
+            <div *ngIf="bovin.nom">{{bovin.nom}}</div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div *ngIf="bovin" class="vaccination">
+  <div *ngIf="carnet!=null" class="vaccination">
 
     <table *ngIf="carnet" >
       <h3>Vaccination</h3>
@@ -110,14 +119,16 @@
           <mat-checkbox disabled *ngIf="vaccination.doseAdministrees < 2 && vaccination.doseMax>=2"></mat-checkbox>
         </td>
         <td>
-          {{vaccination.dateRappel|date : 'd/M/yyyy'}}
+          <div *ngIf="!vaccination.dateRappel"> --/--/----</div>
+          <div *ngIf="vaccination.dateRappel && (vaccination.doseAdministrees == vaccination.doseMax)"> Pas de rappel</div>
+          <div *ngIf="vaccination.dateRappel && (vaccination.doseAdministrees != vaccination.doseMax)">{{vaccination.dateRappel|date : 'd/M/yyyy'}}</div>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
 
-  <div *ngIf="bovin" class="aCommeMaladie">
+  <div *ngIf="aCommeMaladie!==[]" class="aCommeMaladie">
 
     <table *ngIf="aCommeMaladie" class="table">
       <thead>
@@ -171,7 +182,6 @@
             Grossesse(s) perdue(s)
           </td>
           <td>
-            <div *ngIf="!femelleReproduction.perteGrossesse">Non communiqué</div>
             <div *ngIf="femelleReproduction.perteGrossesse">{{femelleReproduction.perteGrossesse}}</div>
           </td>
         </tr>

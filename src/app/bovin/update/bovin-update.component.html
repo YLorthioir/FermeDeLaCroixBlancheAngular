@@ -20,7 +20,7 @@
 
 <div *ngIf="!loading">
   <div *ngIf="bovin" class="identification">
-    <form [formGroup]="formInformations">
+    <form [formGroup]="formInformations" (ngSubmit)="UpdateBovin()">
       <table class="table">
         <thead>
           <tr>
@@ -98,7 +98,7 @@
           <td>
             <select formControlName="champId">
               <option *ngFor="let champ of champs"
-                      [value]="champ">{{champ.lieu}}</option>
+                      [value]="champ.id">{{champ.lieu}}</option>
             </select>
           </td>
           <td></td>
@@ -119,8 +119,71 @@
           <td>
             <input type="checkbox" formControlName="enCharge">
             <label style="margin-left: 10px">Sur site</label>
-            <button type="submit" style="margin-left: 10%">Modifier</button>
           </td>
+        </tr>
+        <tr *ngIf="femelleReproduction">
+          <td>
+            Dernière insémination
+          </td>
+          <td>
+            <input type="date" formControlName="dateDerniereInsemination">
+          </td>
+        </tr>
+        <tr *ngIf="femelleReproduction">
+          <td>
+            Grossesse(s) perdue(s)
+          </td>
+          <td>
+            <input type="number" formControlName="perteGrossesse">
+          </td>
+        </tr>
+        <tr *ngIf="femelleReproduction">
+          <td>
+            Nombre de césariennes:
+          </td>
+          <td>
+            <div *ngIf="!femelleReproduction.nbCesarienne">Non communiqué</div>
+            <div *ngIf="femelleReproduction.nbCesarienne">{{femelleReproduction.nbCesarienne}}</div>
+          </td>
+        </tr>
+        <tr  *ngIf="bovinEngraissement" >
+          <td>
+            Date d'engraissement:
+          </td>
+          <td>
+            <input type="date" formControlName="dateEngraissement">
+          </td>
+        </tr>
+        <tr  *ngIf="bovinEngraissement" >
+          <td>
+            Mélange:
+          </td>
+          <td>
+            <select formControlName="melangeId">
+              <option *ngFor="let melange of melanges"
+                      [value]="melange.id">{{melange.nomMelange}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr  *ngIf="bovinEngraissement" >
+          <td>
+            Poids sur pattes:
+          </td>
+          <td>
+            <input type="number" formControlName="poidsSurPattes"> kg
+          </td>
+        </tr>
+        <tr  *ngIf="bovinEngraissement" >
+          <td>
+            Poids carcasse:
+          </td>
+          <td>
+            <input type="number" formControlName="poidsCarcasse"> kg
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button type="submit" style="margin-left: 10%">Modifier</button></td>
         </tr>
         </tbody>
       </table>
@@ -168,98 +231,6 @@
     </table>
   </div>
 
-  <div *ngIf="femelleReproduction!=null" class="infosReproduction">
-    <form [formGroup]="formReproduction">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Reproduction</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              Dernière insémination
-            </td>
-            <td>
-              <input type="date" formControlName="dateDerniereInsemination">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Grossesse(s) perdue(s)
-            </td>
-            <td>
-              <input type="number" formControlName="perteGrossesse">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Nombre de césariennes:
-            </td>
-            <td>
-              <div *ngIf="!femelleReproduction.nbCesarienne">Non communiqué <button>Modifier</button></div>
-              <div *ngIf="femelleReproduction.nbCesarienne">{{femelleReproduction.nbCesarienne}} <button>Modifier</button></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
-  </div>
-
-  <div *ngIf="bovinEngraissement!=null" class="infosEngraissement">
-    <form [formGroup]="formEngraissement">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Engraissement</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              Date d'engraissement:
-            </td>
-            <td>
-              <input type="date" formControlName="dateEngraissement">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Mélange:
-            </td>
-            <td>
-              <select formControlName="melangeId">
-                <option *ngFor="let melange of melanges"
-                        [value]="melange.id">{{melange.nomMelange}}</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Poids sur pattes:
-            </td>
-            <td>
-              <input type="number" formControlName="poidsSurPattes"> kg
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Poids carcasse:
-            </td>
-            <td>
-              <input type="number" formControlName="poidsCarcasse"> kg       <button>Modifier</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
-  </div>
-</div>
-
-
 <div *ngIf="bovin" class="infosComplementaires">
   <form [formGroup]="formFinalite">
     <table *ngIf="bovin" class="table">
@@ -289,6 +260,9 @@
       </tbody>
     </table>
   </form>
+</div>
+
+  {{bovinEngraissement|json}}
 </div>
 
 <div *ngIf="loading">

@@ -35,7 +35,6 @@ export class BovinAddComponent implements OnInit{
       this._bovinService.add(this.form.value).subscribe(
         (response)=>{
           this.form.reset();
-          console.log(response)
         }
       )
     }

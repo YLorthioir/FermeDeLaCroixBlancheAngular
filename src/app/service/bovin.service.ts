@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Bovin} from "../models/bovin/bovin";
-import {FemelleReproduction} from "../models/bovin/femelleReproduction";
 import {BovinEngraissement} from "../models/bovin/bovinEngraissement";
-import {Race} from "../models/bovin/race";
-import {Melange} from "../models/bovin/melange";
+import {FemelleReproduction} from "../models/bovin/femelleReproduction";
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +28,13 @@ export class BovinService {
 
   getInfosEngraissement(id: number){
     return this._httpClient.get<BovinEngraissement>('http://localhost:8080/bovin/engraissement/'+id)
+  }
+
+  getEnfants(numeroInscription: string){
+    return this._httpClient.get<Bovin[]>('http://localhost:8080/bovin/enfants/'+numeroInscription)
+  }
+
+  update(id:number, bovin:Bovin){
+    return this._httpClient.put('http://localhost:8080/bovin/'+id, bovin)
   }
 }

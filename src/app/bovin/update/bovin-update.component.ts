@@ -7,12 +7,12 @@ import {BovinService} from "../../service/bovin.service";
 import {SanteService} from "../../service/sante.service";
 import {Race} from "../../models/bovin/race";
 import {RaceService} from "../../service/race.service";
-import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 import {BovinEngraissement} from "../../models/bovin/bovinEngraissement";
 import {Champ} from "../../models/champ/champ";
 import {Melange} from "../../models/bovin/melange";
 import {MelangeService} from "../../service/melange.service";
 import {ChampService} from "../../service/champ.service";
+import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 
 @Component({
   selector: 'app-bovin-update',
@@ -32,12 +32,10 @@ export class BovinUpdateComponent implements OnInit{
   femelleReproduction!: FemelleReproduction;
   bovinEngraissement!: BovinEngraissement;
 
-  myControl = new FormControl('Test');
+  myControl = new FormControl('BE');
 
   formInformations!: FormGroup;
   formFinalite!: FormGroup;
-  formReproduction!: FormGroup;
-  formEngraissement!: FormGroup;
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _raceService: RaceService,
@@ -55,20 +53,18 @@ export class BovinUpdateComponent implements OnInit{
       poidsNaissance: new FormControl(''),
       neCesarienne: new FormControl(''),
       enCharge: new FormControl(''),
-      champId: new FormControl('')
-    })
-    this.formFinalite = new FormGroup({
-      finalite: new FormControl(''),
-    })
-    this.formReproduction = new FormGroup({
+      champId: new FormControl(''),
+
       dateDerniereInsemination: new FormControl(''),
       perteGrossesse: new FormControl(''),
-    })
-    this.formEngraissement = new FormGroup({
+
       dateEngraissement: new FormControl(''),
       melangeId: new FormControl(''),
       poidsSurPattes: new FormControl(''),
       poidsCarcasse: new FormControl(''),
+    })
+    this.formFinalite = new FormGroup({
+      finalite: new FormControl(''),
     })
   }
 
@@ -124,14 +120,12 @@ export class BovinUpdateComponent implements OnInit{
       this._bovinService.getInfosReproduction(this.bovin.id).subscribe(
         (f) =>{
           this.femelleReproduction = f;
-          this.setFormReproduction();
         }
       );
 
       this._bovinService.getInfosEngraissement(this.bovin.id).subscribe(
         (b) =>{
           this.bovinEngraissement = b;
-          this.setFormEngraissement();
         }
       );
 
@@ -140,25 +134,62 @@ export class BovinUpdateComponent implements OnInit{
       this.setFormInformation();
       this.setFormInformationComp();
 
-
-
     })
   }
 
   setFormInformation(){
-    this.formInformations = new FormGroup({
-      numeroInscription: new FormControl(this.bovin.numeroInscription),
-      nom: new FormControl(this.bovin.nom),
-      raceId: new FormControl(this.bovin.race.id),
-      sexe: new FormControl(this.bovin.sexe),
-      pereNI: new FormControl(this.bovin.pereNI),
-      mereNI: new FormControl(this.bovin.mereNI),
-      dateDeNaissance: new FormControl(this.bovin.dateDeNaissance),
-      poidsNaissance: new FormControl(this.bovin.poidsNaissance),
-      neCesarienne: new FormControl(this.bovin.neCesarienne),
-      champId: new FormControl(this.bovin.champ),
-      enCharge: new FormControl(this.bovin.enCharge),
-    })
+    if(this.femelleReproduction){
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id),
+        sexe: new FormControl(this.bovin.sexe),
+        pereNI: new FormControl(this.bovin.pereNI),
+        mereNI: new FormControl(this.bovin.mereNI),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ.id),
+        enCharge: new FormControl(this.bovin.enCharge),
+
+        dateDerniereInsemination: new FormControl(this.femelleReproduction.derniereInsemination),
+        perteGrossesse: new FormControl(this.femelleReproduction.perteGrossesse),
+      })
+    } else if(this.bovinEngraissement){
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id),
+        sexe: new FormControl(this.bovin.sexe),
+        pereNI: new FormControl(this.bovin.pereNI),
+        mereNI: new FormControl(this.bovin.mereNI),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ.id),
+        enCharge: new FormControl(this.bovin.enCharge),
+
+        dateEngraissement: new FormControl(this.bovinEngraissement.dateEngraissement),
+        melangeId: new FormControl(this.bovinEngraissement.melange.id),
+        poidsSurPattes: new FormControl(this.bovinEngraissement.poidsSurPattes),
+        poidsCarcasse: new FormControl(this.bovinEngraissement.poidsCarcasse),
+      })
+    } else {
+
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id),
+        sexe: new FormControl(this.bovin.sexe),
+        pereNI: new FormControl(this.bovin.pereNI),
+        mereNI: new FormControl(this.bovin.mereNI),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ.id),
+        enCharge: new FormControl(this.bovin.enCharge),
+      })
+    }
   }
 
   setFormInformationComp(){
@@ -167,19 +198,10 @@ export class BovinUpdateComponent implements OnInit{
     })
   }
 
-  setFormReproduction(){
-    this.formReproduction = new FormGroup({
-      dateDerniereInsemination: new FormControl(this.femelleReproduction.derniereInsemination),
-      perteGrossesse: new FormControl(this.femelleReproduction.perteGrossesse),
-    })
-  }
+  UpdateBovin(){
 
-  setFormEngraissement(){
-    this.formEngraissement = new FormGroup({
-      dateEngraissement: new FormControl(this.bovinEngraissement.dateEngraissement),
-      melangeId: new FormControl(this.bovinEngraissement.melange.id),
-      poidsSurPattes: new FormControl(this.bovinEngraissement.poidsSurPattes),
-      poidsCarcasse: new FormControl(this.bovinEngraissement.poidsCarcasse),
-    })
-  }
+      this._bovinService.update(this.bovin.id, this.formInformations.value).subscribe()
+    }
+
 }
+

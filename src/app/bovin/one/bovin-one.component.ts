@@ -6,8 +6,8 @@ import {Bovin} from "../../models/bovin/bovin";
 import {SanteService} from "../../service/sante.service";
 import {Vaccination} from "../../models/sante/vaccination";
 import {A} from "../../models/sante/a";
-import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 import {BovinEngraissement} from "../../models/bovin/bovinEngraissement";
+import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 
 @Component({
   selector: 'app-bovin-one',
@@ -25,7 +25,7 @@ export class BovinOneComponent implements OnInit{
   femelleReproduction!: FemelleReproduction;
   bovinEngraissement!: BovinEngraissement;
 
-  myControl = new FormControl('Test');
+  myControl = new FormControl('BE');
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _santeService: SanteService) {

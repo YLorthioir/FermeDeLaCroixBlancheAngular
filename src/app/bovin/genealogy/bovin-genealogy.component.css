@@ -3,3 +3,17 @@
   width: 30%;
   margin: auto;
 }
+
+.pere{
+  border: solid black 1px;
+  float: left;
+  width: 30%;
+  margin: auto;
+}
+
+.mere{
+  border: solid black 1px;
+  float: right;
+  width: 30%;
+  margin: auto;
+}
