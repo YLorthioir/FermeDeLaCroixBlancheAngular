@@ -17,7 +17,7 @@
   </mat-form-field>
 </form>
 
-<div *ngIf="carnet">
+<div *ngIf="carnet && !loading">
   <form [formGroup]="form" (ngSubmit)="OnSubmit()">
     <table class="table">
       <thead>
@@ -63,5 +63,9 @@
       </tbody>
     </table>
   </form>
+</div>
+
+<div *ngIf="loading">
+  loading
 </div>
 

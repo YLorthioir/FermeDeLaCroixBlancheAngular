@@ -15,37 +15,38 @@ import {Vaccin} from "../../models/sante/vaccin";
 
 export class VaccinationComponent implements OnInit{
 
-  loading: boolean = false
-  bovin!: Bovin;
-  carnet!: Vaccination[];
-  vaccination!: Vaccination;
-  vaccin!:Vaccin;
-  bovins!: string[];
-  filteredOptions!: Observable<string[]>;
-  myControl = new FormControl('BE');
-  today: Date;
+  private _loading: boolean = false
+  private _bovin!: Bovin;
+  private _carnet!: Vaccination[];
+  private _vaccination!: Vaccination;
+  private _vaccin!:Vaccin;
+  private _bovins!: string[];
+  private _filteredOptions!: Observable<string[]>;
+  private _myControl = new FormControl('BE');
+  private _today: Date;
 
-  form: FormGroup;
+  private _form: FormGroup;
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _santeService: SanteService) {
-    this.form = new FormGroup({
+    this._form = new FormGroup({
       vaccination: new FormControl(),
       })
-    this.form.get('vaccination')?.valueChanges.subscribe((nom) => {
+    this._form.get('vaccination')?.valueChanges.subscribe((nom) => {
       _santeService.getVaccin(nom.split(' (', 1)).subscribe((vaccin)=>{
-        this.vaccin=vaccin;
-        this.vaccination = this.carnet.find((vaccination) => (vaccination.nom===(this.vaccin.nom+" ("+this.vaccin.dosage+")")))!
+        this._vaccin=vaccin;
+        this._vaccination = this._carnet.find((vaccination) =>
+          (vaccination.nom===(this._vaccin.nom+" ("+this._vaccin.dosage+")")))!
       })
     })
-    this.today = new Date();
+    this._today = new Date();
   }
 
   ngOnInit(): void {
     this._bovinService.getAll().subscribe(
       (bovin) => {
-        this.bovins = bovin.map((b)=>b.numeroInscription);
-        this.filteredOptions = this.myControl.valueChanges.pipe(
+        this._bovins = bovin.map((b)=>b.numeroInscription);
+        this._filteredOptions = this._myControl.valueChanges.pipe(
           startWith(''),
           map(value => this._filter(value || '')),
         );
@@ -56,28 +57,60 @@ export class VaccinationComponent implements OnInit{
   private _filter(value: string): string[] {
     const filterValue= value.toLowerCase();
 
-    return this.bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
+    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   OnBovinSelected(option: string){
-    this.loading=true;
+    this._loading=true;
 
     this._bovinService.getOne(option).subscribe((bovin) => {
-      this.bovin = bovin;
+      this._bovin = bovin;
 
-      this._santeService.getCarnetVaccination(this.bovin.id).subscribe(
+      this._santeService.getCarnetVaccination(this._bovin.id).subscribe(
         (carnet) => {
-          this.carnet = carnet.filter(vaccination => {
+          this._carnet = carnet.filter(vaccination => {
             return (vaccination.doseAdministrees !== vaccination.doseMax) &&
-              ((vaccination.dateRappel === null) || (this.today<=vaccination.dateRappel))
+              ((vaccination.dateRappel === null) || (this._today<=vaccination.dateRappel))
           })
 
-          this.loading=false;
+          this._loading=false;
         })
     })
   }
 
   OnSubmit(){
-      this._santeService.vaccinate(this.bovin.id, this.vaccin.nom).subscribe();
+      this._santeService.vaccinate(this._bovin.id, this._vaccin.nom).subscribe();
+  }
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+  get bovin(): Bovin {
+    return this._bovin;
+  }
+
+  get carnet(): Vaccination[] {
+    return this._carnet;
+  }
+
+  get vaccination(): Vaccination {
+    return this._vaccination;
+  }
+
+  get vaccin(): Vaccin {
+    return this._vaccin;
+  }
+
+  get filteredOptions(): Observable<string[]> {
+    return this._filteredOptions;
+  }
+
+  get myControl(): FormControl<string | null> {
+    return this._myControl;
+  }
+
+  get form(): FormGroup {
+    return this._form;
   }
 }

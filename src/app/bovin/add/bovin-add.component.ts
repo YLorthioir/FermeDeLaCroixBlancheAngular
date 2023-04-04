@@ -12,33 +12,43 @@ import {RaceService} from "../../service/race.service";
 })
 export class BovinAddComponent implements OnInit{
 
-  form: FormGroup;
-  races!: Race[];
+  private _form: FormGroup;
+  private _races!: Race[];
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _raceService: RaceService,
               buider: FormBuilder) {
-    this.form = buider.group(BovinForm)
+    this._form = buider.group(BovinForm)
   }
 
   ngOnInit(): void {
 
     this._raceService.getAllRace().subscribe(
       (races)=>{
-        this.races = races
+        this._races = races
       }
     )
   }
 
   onSubmit(){
-    if(this.form.valid){
-      this._bovinService.add(this.form.value).subscribe(
+    if(this._form.valid){
+      this._bovinService.add(this._form.value).subscribe(
         (response)=>{
-          this.form.reset();
+          this._form.reset();
         }
       )
     }
   }
 
+  //Encapsulation
+
+
+  get form(): FormGroup {
+    return this._form;
+  }
+
+  get races(): Race[] {
+    return this._races;
+  }
 }
 
