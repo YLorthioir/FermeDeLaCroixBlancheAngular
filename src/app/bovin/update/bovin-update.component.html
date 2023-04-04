@@ -54,8 +54,8 @@
           </td>
           <td>
             <div>
-              <input type="radio"formControlName="sexe" value="M"><label style="width: 100px" >Male</label>
-              <input type="radio"formControlName="sexe" value="F"><label>Femelle</label>
+              <input type="radio" formControlName="sexe" value="M"><label style="width: 100px" >Male</label>
+              <input type="radio" formControlName="sexe" value="F"><label>Femelle</label>
             </div>
           </td>
         </tr>
@@ -183,7 +183,39 @@
         </tr>
         <tr>
           <td></td>
-          <td><button type="submit" style="margin-left: 10%">Modifier</button></td>
+          <td><button type="submit" style="margin-left: 10%" [disabled]="!formInformations.valid">Modifier</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+
+  <div *ngIf="bovin" class="infosType">
+    <form [formGroup]="formFinalite" (ngSubmit)="UpdateType()">
+      <table *ngIf="bovin" class="table">
+        <thead>
+        <tr>
+          <th>Infos complémentaires</th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            Finalité:
+          </td>
+          <td>
+            <input type="radio" formControlName="finalite" value="FemelleReproduction"><label>Reproduction</label>
+            <br>
+            <input type="radio" formControlName="finalite" value="BovinEngraissement"><label>Engraissement</label>
+            <br>
+            <input type="radio" formControlName="finalite" value="Bovin"><label>Autre</label>
+          </td>
+          <td>
+            <button type="submit" [disabled]="!formFinalite.dirty">Modifier</button>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -230,39 +262,6 @@
       </tbody>
     </table>
   </div>
-
-<div *ngIf="bovin" class="infosComplementaires">
-  <form [formGroup]="formFinalite">
-    <table *ngIf="bovin" class="table">
-      <thead>
-      <tr>
-        <th>Infos complémentaires</th>
-        <th></th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>
-          Finalité:
-        </td>
-        <td>
-          <input type="radio"formControlName="finalite" value="Reproduction"><label>Reproduction</label>
-          <br>
-          <input type="radio"formControlName="finalite" value="Engraissement"><label>Engraissement</label>
-          <br>
-          <input type="radio"formControlName="finalite" value="Autre"><label>Autre</label>
-        </td>
-        <td>
-          <button>Modifier</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
-</div>
-
-  {{bovinEngraissement|json}}
 </div>
 
 <div *ngIf="loading">

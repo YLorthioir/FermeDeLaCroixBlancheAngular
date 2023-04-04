@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Bovin} from "../models/bovin/bovin";
 import {BovinEngraissement} from "../models/bovin/bovinEngraissement";
 import {FemelleReproduction} from "../models/bovin/femelleReproduction";
+import {FormGroup} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class BovinService {
 
   update(id:number, bovin:Bovin){
     return this._httpClient.put('http://localhost:8080/bovin/'+id, bovin)
+  }
+
+  updateType(id: number, form: FormGroup){
+    return this._httpClient.put('http://localhost:8080/bovin/type/'+id, form)
   }
 }

@@ -20,13 +20,17 @@ import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { VaccinationComponent } from './sante/vaccination/vaccination.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +51,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     NgbDropdownModule,
     FormsModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatRadioModule,
   ],
   providers: [NgbNavConfig],
   bootstrap: [AppComponent]

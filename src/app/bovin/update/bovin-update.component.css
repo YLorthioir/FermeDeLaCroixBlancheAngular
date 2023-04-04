@@ -9,20 +9,9 @@
   width: 45%
 }
 
-.infosComplementaires{
-  padding-top: 10px;
-  float: left;
-  width: 50%
-}
-
-.infosReproduction{
+.infosType{
   padding-top: 10px;
   float: right;
   width: 45%
 }
 
-.infosEngraissement{
-  padding-top: 10px;
-  float: right;
-  width: 45%
-}

@@ -48,7 +48,7 @@
 
       <mat-checkbox formControlName="neCesarienne">Né césarienne</mat-checkbox>
     </div>
-    <button mat-raised-button type="submit">Ajouter</button>
+    <button mat-raised-button type="submit" [disabled]="!form.valid">Ajouter</button>
   </div>
 </form>
 
