@@ -17,7 +17,7 @@ import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 @Component({
   selector: 'app-bovin-update',
   templateUrl: './bovin-update.component.html',
-  styleUrls: ['./bovin-update.component.css']
+  styleUrls: ['./bovin-update.component.scss']
 })
 export class BovinUpdateComponent implements OnInit{
 

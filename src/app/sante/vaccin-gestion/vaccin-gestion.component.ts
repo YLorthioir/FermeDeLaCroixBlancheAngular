@@ -6,7 +6,7 @@ import {Vaccin} from "../../models/sante/vaccin";
 @Component({
   selector: 'app-vaccin-gestion',
   templateUrl: './vaccin-gestion.component.html',
-  styleUrls: ['./vaccin-gestion.component.css']
+  styleUrls: ['./vaccin-gestion.component.scss']
 })
 export class VaccinGestionComponent implements OnInit{
 

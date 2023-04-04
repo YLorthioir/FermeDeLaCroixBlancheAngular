@@ -7,7 +7,7 @@ import {BovinService} from "../../service/bovin.service";
 @Component({
   selector: 'app-bovin-genealogy',
   templateUrl: './bovin-genealogy.component.html',
-  styleUrls: ['./bovin-genealogy.component.css']
+  styleUrls: ['./bovin-genealogy.component.scss']
 })
 export class BovinGenealogyComponent implements OnInit{
 

@@ -12,7 +12,7 @@ import {FemelleReproduction} from "../../models/bovin/femelleReproduction";
 @Component({
   selector: 'app-bovin-one',
   templateUrl: './bovin-one.component.html',
-  styleUrls: ['./bovin-one.component.css']
+  styleUrls: ['./bovin-one.component.scss']
 })
 export class BovinOneComponent implements OnInit{
 

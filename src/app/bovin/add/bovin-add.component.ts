@@ -8,7 +8,7 @@ import {RaceService} from "../../service/race.service";
 @Component({
   selector: 'app-bovin-add',
   templateUrl: './bovin-add.component.html',
-  styleUrls: ['./bovin-add.component.css']
+  styleUrls: ['./bovin-add.component.scss']
 })
 export class BovinAddComponent implements OnInit{
 

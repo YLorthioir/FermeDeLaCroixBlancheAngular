@@ -10,7 +10,7 @@ import {Vaccin} from "../../models/sante/vaccin";
 @Component({
   selector: 'app-vaccination',
   templateUrl: './vaccination.component.html',
-  styleUrls: ['./vaccination.component.css']
+  styleUrls: ['./vaccination.component.scss']
 })
 
 export class VaccinationComponent implements OnInit{
