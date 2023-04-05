@@ -5,7 +5,7 @@ import { BovinOneComponent } from './one/bovin-one.component';
 import {BovinRoutingModule} from "./bovin-routing.module";
 import {MatInputModule} from "@angular/material/input";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { BovinAddComponent } from './add/bovin-add.component';
 import {MatSelectModule} from "@angular/material/select";
@@ -16,6 +16,7 @@ import { BovinUpdateComponent } from './update/bovin-update.component';
 import { BovinGenealogyComponent } from './genealogy/bovin-genealogy.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
+import { ExtraParamsComponent } from './extra-params/extra-params.component';
 
 
 
@@ -25,7 +26,8 @@ import {MatIconModule} from "@angular/material/icon";
     BovinOneComponent,
     BovinAddComponent,
     BovinUpdateComponent,
-    BovinGenealogyComponent
+    BovinGenealogyComponent,
+    ExtraParamsComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,7 @@ import {MatIconModule} from "@angular/material/icon";
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    FormsModule,
   ]
 })
 export class BovinModule { }

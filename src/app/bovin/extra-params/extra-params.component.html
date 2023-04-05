@@ -1,0 +1,121 @@
+<h2>Paramètres supplémentaires</h2>
+
+<div class ="race">
+  <h3>Races</h3>
+
+  <div class = "listeRace">
+    <th>Modifier une race</th>
+      <form [formGroup]="formRaceId" class="selection">
+        <select formControlName="raceId">
+          <option *ngFor="let race of races"
+                  [value]="race.id">{{race.nom}}</option>
+        </select>
+      </form>
+
+      <form [formGroup]="formRace" (submit)="enregistrerModifRace()" class="selected">
+        <td>
+          <label>Nom:</label>
+          <input type="text" formControlName="nom">
+        </td>
+        <td>
+          <button type="submit">Modifier</button>
+        </td>
+      </form>
+  </div>
+  <div class = "addRace">
+    <th>Ajouter une race:</th>
+    <div>
+      <td>
+        Nom:
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="nomRace">
+      </td>
+      <td>
+        <button (click)="enregistrerRace()"> Ajouter </button>
+      </td>
+    </div>
+  </div>
+</div>
+
+<div class="maladie">
+  <h3>Maladies</h3>
+
+  <div class = "listeMaladie">
+    <th>Modifier une maladie</th>
+    <form [formGroup]="formMaladieId" class="selection">
+      <select formControlName="maladieId">
+        <option *ngFor="let maladie of maladies"
+                [value]="maladie.id">{{maladie.nom}}</option>
+      </select>
+    </form>
+
+    <form [formGroup]="formMaladie" (submit)="enregistrerModifMaladie()" class="selected">
+      <td>
+        <label>Nom:</label>
+        <input type="text" formControlName="nom">
+      </td>
+      <td>
+        <button type="submit">Modifier</button>
+      </td>
+    </form>
+  </div>
+  <div class = "addMaladie">
+    <th>Ajouter une maladie:</th>
+    <div>
+      <td>
+        Nom:
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="nomMaladie">
+      </td>
+      <td>
+        <button (click)="enregistrerMaladie()"> Ajouter </button>
+      </td>
+    </div>
+  </div>
+</div>
+
+<div class="traitement">
+  <h3>Traitements</h3>
+
+  <div class = "listeTraitement">
+    <th>Modifier un traitement</th>
+    <form [formGroup]="formTraitementId" class="selection">
+      <select formControlName="traitementId">
+        <option *ngFor="let traitement of traitements"
+                [value]="traitement.id">{{traitement.nomTraitement}}</option>
+      </select>
+    </form>
+
+    <form [formGroup]="formTraitementUpdate" (submit)="enregistrerModifTraitement()" class="selected">
+        <td>
+          <label>Nom:</label>
+          <input type="text" formControlName="nomTraitement">
+        </td>
+        <td>
+          <label>Actif:</label>
+          <input type="checkbox" formControlName="actif">
+        </td>
+        <td>
+          <button type="submit">Modifier</button>
+        </td>
+    </form>
+  </div>
+  <div class = "addTraitement">
+    <th>Ajouter un traitement:</th>
+      <form [formGroup]="formTraitement" (submit)="enregistrerTraitement()">
+        <td>
+          <label>Nom:</label>
+          <input type="text" formControlName="nomTraitement">
+        </td>
+        <td>
+          <label>Actif:</label>
+          <input type="checkbox" formControlName="actif">
+        </td>
+        <td>
+          <button type="submit">Ajouter</button>
+        </td>
+      </form>
+  </div>
+</div>

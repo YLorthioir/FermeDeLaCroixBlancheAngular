@@ -5,6 +5,7 @@ import {BovinOneComponent} from "./one/bovin-one.component";
 import {BovinAddComponent} from "./add/bovin-add.component";
 import {BovinUpdateComponent} from "./update/bovin-update.component";
 import {BovinGenealogyComponent} from "./genealogy/bovin-genealogy.component";
+import {ExtraParamsComponent} from "./extra-params/extra-params.component";
 
 const routes: Routes = [
 
@@ -17,7 +18,7 @@ const routes: Routes = [
       { path: 'add', component: BovinAddComponent},
       { path: 'update', component: BovinUpdateComponent},
       { path: 'genealogy', component: BovinGenealogyComponent},
-
+      { path: 'parametresSupp', component: ExtraParamsComponent},
     ]
   }
 
