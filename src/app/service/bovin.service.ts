@@ -12,8 +12,8 @@ export class BovinService {
 
   constructor(private readonly _httpClient: HttpClient) { }
 
-  getAll(){
-    return this._httpClient.get<Bovin[]>('http://localhost:8080/bovin/all')
+  getAllNI(){
+    return this._httpClient.get<string[]>('http://localhost:8080/bovin/all')
   }
   getOne(numeroInscription: string){
     return this._httpClient.get<Bovin>('http://localhost:8080/bovin/'+numeroInscription)

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Bovin} from "../../models/bovin/bovin";
-import {map, Observable, startWith} from "rxjs";
+import {debounceTime, map, Observable, startWith} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {BovinService} from "../../service/bovin.service";
 
@@ -25,18 +25,19 @@ export class BovinGenealogyComponent implements OnInit{
   private _gpm?: Bovin;
   private _gmp?: Bovin;
   private _gmm?: Bovin;
-  private _enfants!: Bovin[];
-  private _petitsEnfants!: Bovin[];
+  private _enfants?: Bovin[];
+  private _petitsEnfants?: Bovin[];
 
   constructor(private readonly _bovinService: BovinService) {
   }
 
   ngOnInit(): void {
 
-    this._bovinService.getAll().subscribe(
+    this._bovinService.getAllNI().subscribe(
       (bovin) => {
-        this._bovins = bovin.map((b)=>b.numeroInscription);
+        this._bovins = bovin;
         this._filteredOptions = this._myControl.valueChanges.pipe(
+          debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
         );
@@ -90,7 +91,7 @@ export class BovinGenealogyComponent implements OnInit{
         this._enfants=listeEnfant;
         this._enfants.forEach(enfants =>{
           this._bovinService.getEnfants(enfants.numeroInscription).subscribe((listePetitsEnfants)=>{
-            listePetitsEnfants.forEach(b=>this._petitsEnfants.push(b))
+            listePetitsEnfants.forEach(b=>this._petitsEnfants?.push(b))
           })
         })
       })
@@ -154,11 +155,11 @@ export class BovinGenealogyComponent implements OnInit{
     return this._gmm;
   }
 
-  get enfants(): Bovin[] {
-    return this._enfants;
+  get enfants(): Bovin[] |undefined {
+        return this._enfants;
   }
 
-  get petitsEnfants(): Bovin[] {
+  get petitsEnfants(): Bovin[]|undefined  {
     return this._petitsEnfants;
   }
 }

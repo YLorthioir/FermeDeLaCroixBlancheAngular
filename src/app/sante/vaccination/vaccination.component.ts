@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {map, Observable, startWith} from "rxjs";
+import {debounceTime, map, Observable, startWith} from "rxjs";
 import {Bovin} from "../../models/bovin/bovin";
 import {BovinService} from "../../service/bovin.service";
 import {SanteService} from "../../service/sante.service";
@@ -43,10 +43,11 @@ export class VaccinationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._bovinService.getAll().subscribe(
-      (bovin) => {
-        this._bovins = bovin.map((b)=>b.numeroInscription);
+    this._bovinService.getAllNI().subscribe(
+      (bovins) => {
+        this._bovins = bovins;
         this._filteredOptions = this._myControl.valueChanges.pipe(
+          debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
         );
