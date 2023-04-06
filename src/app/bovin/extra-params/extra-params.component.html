@@ -18,7 +18,7 @@
           <input type="text" formControlName="nom">
         </td>
         <td>
-          <button type="submit">Modifier</button>
+          <button type="submit" [disabled]="!formRace.valid || formRace.untouched">Modifier</button>
         </td>
       </form>
   </div>
@@ -56,7 +56,7 @@
         <input type="text" formControlName="nom">
       </td>
       <td>
-        <button type="submit">Modifier</button>
+        <button type="submit" [disabled]="!formMaladie.valid || formMaladie.untouched">Modifier</button>
       </td>
     </form>
   </div>
@@ -98,7 +98,7 @@
           <input type="checkbox" formControlName="actif">
         </td>
         <td>
-          <button type="submit">Modifier</button>
+          <button type="submit" [disabled]="!formTraitementUpdate.valid || formTraitementUpdate.untouched">Modifier</button>
         </td>
     </form>
   </div>
@@ -114,8 +114,62 @@
           <input type="checkbox" formControlName="actif">
         </td>
         <td>
-          <button type="submit">Ajouter</button>
+          <button type="submit" [disabled]="!formTraitement.valid || formTraitement.untouched">Ajouter</button>
         </td>
       </form>
+  </div>
+</div>
+
+<div class="melange">
+  <h3>Mélanges</h3>
+
+  <div class = "listeMelange">
+    <th>Modifier un mélange</th>
+    <form [formGroup]="formMelangeId" class="selection">
+      <select formControlName="melangeId">
+        <option *ngFor="let melange of melanges"
+                [value]="melange.id">{{melange.nomMelange}}</option>
+      </select>
+    </form>
+
+    <form [formGroup]="formMelangeUpdate" (submit)="enregistrerModifMelange()" class="selected">
+      <tr>
+        <td>
+          <label>Nom:</label>
+          <input type="text" formControlName="nomMelange">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <label>Description:</label>
+          <textarea formControlName="description" rows="4" cols="30"></textarea>
+        </td>
+        <td>
+          <button type="submit" [disabled]="!formMelangeUpdate.valid || formMelangeUpdate.untouched">Ajouter</button>
+        </td>
+      </tr>
+    </form>
+  </div>
+  <div class = "addMelange">
+    <th>Ajouter un Melange:</th>
+    <form [formGroup]="formMelange" (submit)="enregistrerMelange()">
+      <tr>
+        <td>
+          <label>Nom:</label>
+          <input type="text" formControlName="nomMelange">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <label>Description:</label>
+          <textarea formControlName="description" rows="4" cols="30"></textarea>
+        </td>
+        <td>
+          <button type="submit" [disabled]="!formMelange.valid || formMelange.untouched">Ajouter</button>
+        </td>
+      </tr>
+    </form>
   </div>
 </div>

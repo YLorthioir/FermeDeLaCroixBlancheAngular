@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Race} from "../../models/bovin/race";
 import {RaceService} from "../../service/race.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SanteService} from "../../service/sante.service";
 import {Maladie} from "../../models/sante/maladie";
 import {Traitement} from "../../models/sante/traitement";
+import {MelangeService} from "../../service/melange.service";
+import {Melange} from "../../models/bovin/melange";
 
 @Component({
   selector: 'app-extra-params',
@@ -34,8 +36,16 @@ export class ExtraParamsComponent implements OnInit{
   private _formTraitementUpdate: FormGroup;
   private readonly _formTraitement: FormGroup;
 
+  private _melanges!: Melange[];
+  private _melange!: Melange;
+
+  private _formMelangeId: FormGroup;
+  private _formMelangeUpdate: FormGroup;
+  private readonly _formMelange: FormGroup;
+
   constructor(private readonly _raceService: RaceService,
-              private readonly _santeService: SanteService) {
+              private readonly _santeService: SanteService,
+              private readonly _melangeService: MelangeService) {
     this._formRaceId= new FormGroup({
       raceId: new FormControl('')
     })
@@ -44,12 +54,12 @@ export class ExtraParamsComponent implements OnInit{
         next: (race) => {
           this._race = race;
           this._formRace = new FormGroup({
-            nom: new FormControl(this._race.nom)
+            nom: new FormControl(this._race.nom, Validators.required)
           })
         }})
     })
     this._formRace = new FormGroup({
-      nom: new FormControl()
+      nom: new FormControl('',Validators.required)
     })
 
     this._formMaladieId= new FormGroup({
@@ -60,12 +70,12 @@ export class ExtraParamsComponent implements OnInit{
         next: (maladie) => {
           this._maladie = maladie;
           this._formMaladie = new FormGroup({
-            nom: new FormControl(this._maladie.nom)
+            nom: new FormControl(this._maladie.nom,Validators.required)
           })
         }})
     })
     this._formMaladie = new FormGroup({
-      nom: new FormControl()
+      nom: new FormControl('',Validators.required)
     })
 
 
@@ -83,12 +93,34 @@ export class ExtraParamsComponent implements OnInit{
         }})
     })
     this._formTraitementUpdate = new FormGroup({
-      nomTraitement: new FormControl(''),
-      actif: new FormControl(''),
+      nomTraitement: new FormControl('',Validators.required),
+      actif: new FormControl('',Validators.required),
     })
     this._formTraitement = new FormGroup({
-      nomTraitement: new FormControl(''),
-      actif: new FormControl(''),
+      nomTraitement: new FormControl('',Validators.required),
+      actif: new FormControl('',Validators.required),
+    })
+
+    this._formMelangeId= new FormGroup({
+      melangeId: new FormControl('')
+    })
+    this._formMelangeId.get('melangeId')?.valueChanges.subscribe((v) => {
+      this._melangeService.getMelange(v).subscribe({
+        next: (melange) => {
+          this._melange = melange
+          this._formMelangeUpdate = new FormGroup({
+            nomMelange: new FormControl(this._melange.nomMelange,Validators.required),
+            description: new FormControl(this._melange.description,Validators.required),
+          });
+        }})
+    })
+    this._formMelangeUpdate = new FormGroup({
+      nomMelange: new FormControl('',Validators.required),
+      description: new FormControl('',Validators.required),
+    })
+    this._formMelange = new FormGroup({
+      nomMelange: new FormControl('',Validators.required),
+      description: new FormControl('',Validators.required),
     })
   }
   ngOnInit(): void {
@@ -100,6 +132,9 @@ export class ExtraParamsComponent implements OnInit{
     })
     this._santeService.getAllTraitement().subscribe(value => {
       this._traitements = value;
+    })
+    this._melangeService.getAllMelange().subscribe(value => {
+      this._melanges = value;
     })
   }
 
@@ -163,6 +198,26 @@ export class ExtraParamsComponent implements OnInit{
     });
   }
 
+  //Mélanges
+
+  refreshMelange(){
+    this._melangeService.getAllMelange().subscribe(value => {
+      this._melanges = value;
+    })
+  }
+
+  enregistrerModifMelange(){
+    this._melangeService.updateMelange(this._melange.id, this._formMelangeUpdate.value).subscribe((response: any) => {
+      this.refreshMelange();
+    });
+  }
+
+  enregistrerMelange(){
+    this._melangeService.insertMelange(this._formMelange.value).subscribe((response: any) => {
+      this.refreshMelange();
+    });
+  }
+
 
   //Getters et setters
 
@@ -211,7 +266,6 @@ export class ExtraParamsComponent implements OnInit{
     return this._formMaladie;
   }
 
-
   get traitements(): Traitement[] {
     return this._traitements;
   }
@@ -226,5 +280,21 @@ export class ExtraParamsComponent implements OnInit{
 
   get formTraitement(): FormGroup {
     return this._formTraitement;
+  }
+
+  get formMelange(): FormGroup {
+    return this._formMelange;
+  }
+
+  get melanges(): Melange[] {
+    return this._melanges;
+  }
+
+  get formMelangeId(): FormGroup {
+    return this._formMelangeId;
+  }
+
+  get formMelangeUpdate(): FormGroup {
+    return this._formMelangeUpdate;
   }
 }
