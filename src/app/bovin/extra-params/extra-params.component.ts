@@ -124,6 +124,7 @@ export class ExtraParamsComponent implements OnInit{
     })
   }
   ngOnInit(): void {
+
     this._raceService.getAllRace().subscribe(value => {
       this._races = value;
     })
@@ -138,7 +139,9 @@ export class ExtraParamsComponent implements OnInit{
     })
   }
 
-  //Race
+  //Getters et setters
+
+//Race
 
   refreshRace(){
     this._raceService.getAllRace().subscribe(value => {

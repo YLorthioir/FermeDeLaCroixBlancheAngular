@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Bovin, BovinForm} from "../../models/bovin/bovin";
+import {BovinForm} from "../../models/bovin/bovin";
 import {Race} from "../../models/bovin/race";
 import {BovinService} from "../../service/bovin.service";
 import {RaceService} from "../../service/race.service";
@@ -22,7 +22,6 @@ export class BovinAddComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
     this._raceService.getAllRace().subscribe(
       (races)=>{
         this._races = races

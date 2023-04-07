@@ -12,73 +12,75 @@ import {Traitement} from "../models/sante/traitement";
 })
 export class SanteService {
 
+  private readonly  _BASE_URL = "http://localhost:8080/sante";
+
   constructor(private readonly _httpClient: HttpClient) { }
 
   //Vaccination
 
   getCarnetVaccination(id: number){
-    return this._httpClient.get<Vaccination[]>('http://localhost:8080/sante/vaccination/'+id)
+    return this._httpClient.get<Vaccination[]>(`${this._BASE_URL}/vaccination/`+id)
   }
 
   getVaccin(nom: string){
-    return this._httpClient.get<Vaccin>('http://localhost:8080/sante/vaccin/'+nom)
+    return this._httpClient.get<Vaccin>(`${this._BASE_URL}/vaccin/`+nom)
   }
 
   getAllVaccin(){
-    return this._httpClient.get<Vaccin[]>('http://localhost:8080/sante/vaccin/all')
+    return this._httpClient.get<Vaccin[]>(`${this._BASE_URL}/vaccin/all`)
   }
 
   vaccinate(id: number, nom: string){
-    return this._httpClient.post('http://localhost:8080/sante/vaccination/'+id, nom)
+    return this._httpClient.post(`${this._BASE_URL}/vaccination/`+id, nom)
   }
 
   insertVaccin(form: FormGroup){
-    return this._httpClient.post('http://localhost:8080/sante/vaccin/add', form)
+    return this._httpClient.post(`${this._BASE_URL}/vaccin/add`, form)
   }
 
   updateVaccin(id: number, form: FormGroup){
-    return this._httpClient.patch('http://localhost:8080/sante/vaccin/'+id, form)
+    return this._httpClient.patch(`${this._BASE_URL}/vaccin/`+id, form)
   }
 
   //Maladies
 
 
   getA(id: number){
-    return this._httpClient.get<A[]>('http://localhost:8080/sante/maladie/a/'+id)
+    return this._httpClient.get<A[]>(`${this._BASE_URL}/maladie/a/`+id)
   }
 
   getAllMaladie(){
-    return this._httpClient.get<Maladie[]>('http://localhost:8080/sante/maladie/all')
+    return this._httpClient.get<Maladie[]>(`${this._BASE_URL}/maladie/all`)
   }
 
   getMaladie(id: number){
-    return this._httpClient.get<Maladie>('http://localhost:8080/sante/maladie/'+id)
+    return this._httpClient.get<Maladie>(`${this._BASE_URL}/maladie/`+id)
   }
 
   updateMaladie(id: number, form: FormGroup){
-    return this._httpClient.patch('http://localhost:8080/sante/maladie/'+id, form)
+    return this._httpClient.patch(`${this._BASE_URL}/maladie/`+id, form)
   }
 
   insertMaladie(nom: String){
-    return this._httpClient.post('http://localhost:8080/sante/maladie/add', nom)
+    return this._httpClient.post(`${this._BASE_URL}/maladie/add`, nom)
   }
 
   //Traitement
 
   getAllTraitement(){
-    return this._httpClient.get<Traitement[]>('http://localhost:8080/sante/traitement/all')
+    return this._httpClient.get<Traitement[]>(`${this._BASE_URL}/traitement/all`)
   }
 
   getTraitement(id: number){
-    return this._httpClient.get<Traitement>('http://localhost:8080/sante/traitement/'+id)
+    return this._httpClient.get<Traitement>(`${this._BASE_URL}/traitement/`+id)
   }
 
   updateTraitement(id: number, form: FormGroup){
-    return this._httpClient.patch('http://localhost:8080/sante/traitement/'+id, form)
+    return this._httpClient.patch(`${this._BASE_URL}/traitement/`+id, form)
   }
 
   insertTraitement(form: FormGroup){
-    return this._httpClient.post('http://localhost:8080/sante/traitement/add', form)
+    return this._httpClient.post(`${this._BASE_URL}/traitement/add`, form)
   }
 
 

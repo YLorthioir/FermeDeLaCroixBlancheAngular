@@ -8,22 +8,24 @@ import {FormGroup} from "@angular/forms";
 })
 export class MelangeService {
 
+  private readonly  _BASE_URL = "http://localhost:8080/bovin/melange";
+
   constructor(private readonly _httpClient: HttpClient) { }
 
 
   getAllMelange(){
-    return this._httpClient.get<Melange[]>('http://localhost:8080/bovin/melange/all')
+    return this._httpClient.get<Melange[]>(`${this._BASE_URL}/all`)
   }
 
   getMelange(id: number){
-    return this._httpClient.get<Melange>('http://localhost:8080/bovin/melange/'+id)
+    return this._httpClient.get<Melange>(`${this._BASE_URL}/`+id)
   }
 
   updateMelange(id: number, form: FormGroup){
-    return this._httpClient.patch('http://localhost:8080/bovin/melange/'+id, form)
+    return this._httpClient.patch(`${this._BASE_URL}/`+id, form)
   }
 
   insertMelange(form: FormGroup){
-    return this._httpClient.post('http://localhost:8080/bovin/melange/add', form)
+    return this._httpClient.post(`${this._BASE_URL}/add`, form)
   }
 }

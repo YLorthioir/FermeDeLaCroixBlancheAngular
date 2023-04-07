@@ -1,1 +1,45 @@
-<p>home works!</p>
+<div>
+  <mat-grid-list cols="3" rowHeight="2:1">
+    <mat-grid-tile *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/bovin/add">
+            <img src="assets/pictures/148764.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Ajouter un bovin</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/sante/vaccination">
+            <img src="assets/pictures/148764.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Ajouter une vaccination</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="roleConnected">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/bovin/genealogy">
+            <img src="assets/pictures/5828450.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Généalogie d'un bovin</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="roleConnected">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/bovin/one">
+            <img src="assets/pictures/5828450.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Informations d'un bovin</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

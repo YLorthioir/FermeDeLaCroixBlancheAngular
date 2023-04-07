@@ -1,28 +1,34 @@
 <h1>Ferme de la croix blanche</h1>
 
 <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content">
-  <li [ngbNavItem]="1">
-    <a ngbNavLink routerLink="/home"><mat-icon>home</mat-icon></a>
+  <li [ngbNavItem]="1" *ngIf="roleConnected">
+    <a ngbNavLink routerLink="/home" routerLinkActive="active"><mat-icon>home</mat-icon></a>
   </li>
-  <li [ngbNavItem]="2" ngbDropdown class="nav-item">
-    <a class="nav-link" ngbDropdownToggle>Bovins</a>
+  <li [ngbNavItem]="2" ngbDropdown class="nav-item" *ngIf="roleConnected">
+    <a class="nav-link" ngbDropdownToggle routerLinkActive="active">Bovins</a>
     <div ngbDropdownMenu>
-      <button ngbDropdownItem routerLink="/bovin/add" routerLinkActive="active">Ajouter un bovin</button>
-      <button ngbDropdownItem routerLink="/bovin/one" routerLinkActive="active">Informations d'un bovin</button>
-      <button ngbDropdownItem routerLink="/bovin/genealogy" routerLinkActive="active">Généalogie d'un bovin</button>
-      <button ngbDropdownItem routerLink="/bovin/update" routerLinkActive="active">Modification d'un bovin</button>
-      <div class="dropdown-divider"></div>
-      <button ngbDropdownItem routerLink="/sante/vaccination" routerLinkActive="active">Ajouter une vaccination</button>
-      <button ngbDropdownItem routerLink="/sante/gestion" routerLinkActive="active">Gestion des vaccins</button>
-      <div class="dropdown-divider"></div>
-      <button ngbDropdownItem routerLink="/bovin/parametresSupp" routerLinkActive="active">Paramètres supplémentaires</button>
+      <button ngbDropdownItem routerLink="/bovin/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter un bovin</button>
+      <button ngbDropdownItem routerLink="/bovin/one" routerLinkActive="active" *ngIf="roleConnected">Informations d'un bovin</button>
+      <button ngbDropdownItem routerLink="/bovin/genealogy" routerLinkActive="active" *ngIf="roleConnected">Généalogie d'un bovin</button>
+      <button ngbDropdownItem routerLink="/bovin/update" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Modification d'un bovin</button>
+      <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
+      <button ngbDropdownItem routerLink="/sante/vaccination" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter une vaccination</button>
+      <button ngbDropdownItem routerLink="/sante/gestion" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Gestion des vaccins</button>
+      <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
+      <button ngbDropdownItem routerLink="/bovin/parametresSupp" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Paramètres supplémentaires</button>
     </div>
   </li>
-  <li [ngbNavItem]="6" class="login">
+  <li [ngbNavItem]="5" ngbDropdown class="nav-item" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">
+    <a class="nav-link" ngbDropdownToggle routerLinkActive="active">Gestion du site</a>
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem routerLink="/auth/register" routerLinkActive="active">Ajouter un utilisateur</button>
+    </div>
+  </li>
+  <li [ngbNavItem]="6" class="login" *ngIf="!roleConnected">
     <a ngbNavLink routerLink="/auth/login" routerLinkActive="active"><mat-icon>login</mat-icon></a>
   </li>
-  <li [ngbNavItem]="7" class="login">
-    <a ngbNavLink routerLink="/auth/logout" routerLinkActive="active" style="color: red"><mat-icon>logout</mat-icon></a>
+  <li [ngbNavItem]="7" class="login" *ngIf="roleConnected">
+    <a ngbNavLink routerLink="/auth/logout" style="color: red"><mat-icon>logout</mat-icon></a>
   </li>
 </ul>
 

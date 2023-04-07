@@ -9,6 +9,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {AuthRoutingModule} from "./auth-routing.module";
 import { LogoutComponent } from './logout/logout.component';
+import { RegisterComponent } from './register/register.component';
+import {MatSelectModule} from "@angular/material/select";
 
 
 
@@ -16,7 +18,8 @@ import { LogoutComponent } from './logout/logout.component';
   declarations: [
     AuthComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +28,8 @@ import { LogoutComponent } from './logout/logout.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    MatSelectModule
   ]
 })
 export class AuthModule { }

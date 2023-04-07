@@ -1,0 +1,48 @@
+<div *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">
+
+  <h1 color="primary">Nouvel utilisateur</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="example-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Login:</mat-label>
+        <input type="text" matInput formControlName="login">
+      </mat-form-field>
+    </div>
+
+    <div class="example-container">
+      <mat-form-field  appearance="fill">
+        <mat-label>Password:</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div class="example-container">
+      <mat-form-field  appearance="fill">
+        <mat-label>Confirm Password:</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmPassword">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Role:</mat-label>
+        <mat-select formControlName="role" >
+          <mat-option value="ADMIN"> Admin</mat-option>
+          <mat-option value="GERANT"> Gérant</mat-option>
+          <mat-option value="EMPLOYE"> Employé</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <br>
+
+    <button type="submit" mat-stroked-button color="primary" [disabled]="!form.valid">envoyer</button>
+
+  </form>
+</div>

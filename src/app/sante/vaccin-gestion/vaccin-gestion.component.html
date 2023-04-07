@@ -1,70 +1,73 @@
-<form [formGroup]="formInsert" (ngSubmit)="insertVaccin()">
-  <h3>Ajout d'un vaccin</h3>
+<div>
+  <form [formGroup]="formInsert" (ngSubmit)="insertVaccin()">
+    <h3>Ajout d'un vaccin</h3>
 
-  <div>
     <div>
-      <mat-form-field appearance="fill" style="padding-right: 10px">
-        <mat-label>Nom du vaccin</mat-label>
-        <input type="text" matInput formControlName="nom">
-      </mat-form-field>
+      <div>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Nom du vaccin</mat-label>
+          <input type="text" matInput formControlName="nom">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" style="padding-right: 10px">
-        <mat-label>Dosage</mat-label>
-        <input type="text" matInput formControlName="dosage">
-      </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Dosage</mat-label>
+          <input type="text" matInput formControlName="dosage">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="fields">
-        <mat-label>Nombre de doses:</mat-label>
-        <input type="number" matInput formControlName="nbDose">
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="fields">
+          <mat-label>Nombre de doses:</mat-label>
+          <input type="number" matInput formControlName="nbDose">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="fields">
-        <mat-label>Délai du rappel:</mat-label>
-        <input type="number" matInput formControlName="delai">
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="fields">
+          <mat-label>Délai du rappel:</mat-label>
+          <input type="number" matInput formControlName="delai">
+        </mat-form-field>
 
+      </div>
+      <button mat-raised-button type="submit" [disabled]="!formInsert.valid">Ajouter</button>
     </div>
-    <button mat-raised-button type="submit" [disabled]="!formInsert.valid">Ajouter</button>
-  </div>
-</form>
+  </form>
 
-<h3>Modifier un vaccin</h3>
-<form [formGroup]="formNom">
-  <mat-form-field appearance="fill" style="padding-right: 10px">
-    <mat-label>Nom du vaccin</mat-label>
-    <mat-select formControlName="nom">
-      <mat-option  *ngFor="let vaccin of vaccins"
-                   [value]="vaccin.nom">{{vaccin.nom}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+  <h3>Modifier un vaccin</h3>
+  <form [formGroup]="formNom">
+    <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-label>Nom du vaccin</mat-label>
+      <mat-select formControlName="nom">
+        <mat-option  *ngFor="let vaccin of vaccins"
+                     [value]="vaccin.nom">{{vaccin.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
 
-<form [formGroup]="formUpdate" (ngSubmit)="updateVaccin()">
-  <div>
+  <form [formGroup]="formUpdate" (ngSubmit)="updateVaccin()">
     <div>
-      <mat-form-field appearance="fill" style="padding-right: 10px">
-        <mat-label>Nom</mat-label>
-        <input type="text" matInput formControlName="nom">
-      </mat-form-field>
+      <div>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Nom</mat-label>
+          <input type="text" matInput formControlName="nom">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" style="padding-right: 10px">
-        <mat-label>Dosage</mat-label>
-        <input type="text" matInput formControlName="dosage">
-      </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Dosage</mat-label>
+          <input type="text" matInput formControlName="dosage">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="fields">
-        <mat-label>Nombre de doses:</mat-label>
-        <input type="number" matInput formControlName="nbDose">
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="fields">
+          <mat-label>Nombre de doses:</mat-label>
+          <input type="number" matInput formControlName="nbDose">
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="fields">
-        <mat-label>Délai du rappel:</mat-label>
-        <input type="number" matInput formControlName="delai">
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="fields">
+          <mat-label>Délai du rappel:</mat-label>
+          <input type="number" matInput formControlName="delai">
+        </mat-form-field>
 
-      <mat-checkbox formControlName="actif">Actif</mat-checkbox>
+        <mat-checkbox formControlName="actif">Actif</mat-checkbox>
 
+      </div>
+      <button mat-raised-button type="submit" [disabled]="!formUpdate.valid">Ajouter</button>
     </div>
-    <button mat-raised-button type="submit" [disabled]="!formUpdate.valid">Ajouter</button>
-  </div>
-</form>
+  </form>
+</div>
+

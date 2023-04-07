@@ -7,9 +7,11 @@ import {Champ} from "../models/champ/champ";
 })
 export class ChampService {
 
+  private readonly _BASE_URL = "http://localhost:8080/champ";
+
   constructor(private readonly _httpClient: HttpClient) { }
 
   getAll(){
-    return this._httpClient.get<Champ[]>('http://localhost:8080/champ/all')
+    return this._httpClient.get<Champ[]>(`${this._BASE_URL}/all`)
   }
 }

@@ -9,28 +9,31 @@ import {AuthService} from "../../service/auth.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  form: FormGroup;
-  hide = true;
-  constructor(private readonly authService: AuthService, private _router: Router){
-    this.form = new FormGroup({
+
+  private _form: FormGroup;
+  private _hide = true;
+  constructor(private readonly _authService: AuthService, private _router: Router){
+    this._form = new FormGroup({
       login: new FormControl('',[Validators.required]),
       password: new FormControl(''),
     })
   }
 
-  connexion(){
-    if( this.form.valid){
-      localStorage.clear();
-      this.authService.login(this.form.value).subscribe({next: (response: any) => {
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("login", response.login);
-          localStorage.setItem("role", response.role.toString());
-          this.authService.connected();
-          this._router.navigate(['home']);
-        },
-        error:() =>{
-          alert("Login ou mot de passe invalides!");
-        }});
-    }
+  connect(){
+    this._authService.login( this.form.value ).subscribe();
+  }
+
+  //Getters et setter
+
+  get form(): FormGroup {
+    return this._form;
+  }
+
+  get hide(): boolean {
+    return this._hide;
+  }
+
+  set hide(value: boolean) {
+    this._hide = value;
   }
 }

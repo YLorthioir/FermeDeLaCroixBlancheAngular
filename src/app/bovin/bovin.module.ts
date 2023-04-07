@@ -17,6 +17,9 @@ import { BovinGenealogyComponent } from './genealogy/bovin-genealogy.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import { ExtraParamsComponent } from './extra-params/extra-params.component';
+import { BovinOneSelectedComponent } from './one/one-selected/bovin-one-selected.component';
+import { BovinGenealogySelectedComponent } from './genealogy/bovin-genealogy-selected/bovin-genealogy-selected.component';
+import { BovinUpdateSelectedComponent } from './update/bovin-update-selected/bovin-update-selected.component';
 
 
 
@@ -24,10 +27,15 @@ import { ExtraParamsComponent } from './extra-params/extra-params.component';
   declarations: [
     BovinComponent,
     BovinOneComponent,
+    BovinOneSelectedComponent,
     BovinAddComponent,
     BovinUpdateComponent,
     BovinGenealogyComponent,
-    ExtraParamsComponent
+    BovinGenealogySelectedComponent,
+    ExtraParamsComponent,
+    BovinOneSelectedComponent,
+    BovinGenealogySelectedComponent,
+    BovinUpdateSelectedComponent
   ],
   imports: [
     CommonModule,

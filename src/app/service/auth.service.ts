@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {FormGroup} from "@angular/forms";
-import {BehaviorSubject} from "rxjs";
+import {Observable, tap} from "rxjs";
+import {Router} from "@angular/router";
+
+
+export interface Auth {
+  token: string,
+  login: string;
+  role: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,53 +17,32 @@ import {BehaviorSubject} from "rxjs";
 export class AuthService {
 
 
-  source= new BehaviorSubject<boolean>(this.isConnected());
-  connectedSource = this.source.asObservable();
-  roleConnected = new BehaviorSubject<string>(localStorage.getItem("role")!);
+  private readonly  _BASE_URL: string = "http://localhost:8080/auth";
 
-  constructor(private readonly _httpClient: HttpClient) {
-    this.roleConnected.next(localStorage.getItem("role")!);
+  constructor(private readonly _httpClient: HttpClient, private _router: Router) {}
+
+  logout(){
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role")
   }
 
-  connected(){
-    if(!this.source.value){
-      this.source.next(true);
-      this.roleConnected.next(localStorage.getItem("role")!);
-    }
+  login(login: FormGroup): Observable<Auth> {
+    return this._httpClient.post<Auth>(`${this._BASE_URL}/login`, login).pipe(
+      tap( data => {
+        localStorage.setItem("token",data.token);
+        localStorage.setItem("username",data.login);
+        localStorage.setItem("role",data.role);
+        this._router.navigateByUrl("home");
+
+      } )
+    )
   }
 
-  disconnect() {
-    if(this.source.value){
-      this.source.next(false)
-      localStorage.clear()
-      this.roleConnected.next(localStorage.getItem("role")!);
-    }
-
-  }
-
-  isConnected() :boolean{
-    if(localStorage.length===0)
-      return false
+  roleConnected() {
+    if(localStorage.getItem("role"))
+      return localStorage.getItem("role")
     else
-      return true
-  }
-
-  login(login: FormGroup) {
-    return this._httpClient.post('http://localhost:8080/auth/login', login)
-  }
-  register(registerForm: FormGroup){
-    return this._httpClient.post('http://localhost:8080/auth/register',registerForm)
-  }
-
-  getCredentials():HttpHeaders{
-    if(this.isConnected()){
-      return new HttpHeaders()
-        .append('Authorization', localStorage.getItem('token')!);
-
-    } else return new HttpHeaders();
-  }
-
-  isAuthorized(login: string):boolean{
-    return localStorage.getItem('login')===login
+      return null
   }
 }
