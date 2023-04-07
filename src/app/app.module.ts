@@ -8,7 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import {RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
-import {NgbDropdownModule, NgbModule, NgbNavConfig, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdownModule, NgbNavConfig, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
@@ -20,10 +20,10 @@ import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import { VaccinationComponent } from './sante/vaccination/vaccination.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
+import {httpInterceptorProviders} from "./interceptor";
 
 @NgModule({
   declarations: [
@@ -55,7 +55,8 @@ import {MatRadioModule} from "@angular/material/radio";
     MatCheckboxModule,
     MatRadioModule,
   ],
-  providers: [NgbNavConfig],
+  providers: [NgbNavConfig,
+              httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

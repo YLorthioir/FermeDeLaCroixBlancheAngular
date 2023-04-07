@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'bovin', loadChildren: () => import('./bovin/bovin.module').then(m => m.BovinModule) },
   { path: 'sante', loadChildren: () => import('./sante/sante.module').then(m => m.SanteModule) },
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
 ];
 
 @NgModule({

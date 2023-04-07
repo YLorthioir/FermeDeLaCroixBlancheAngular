@@ -33,11 +33,11 @@ export class SanteService {
   }
 
   insertVaccin(form: FormGroup){
-    return this._httpClient.post('http://localhost:8080/sante/vaccin/', form)
+    return this._httpClient.post('http://localhost:8080/sante/vaccin/add', form)
   }
 
   updateVaccin(id: number, form: FormGroup){
-    return this._httpClient.post('http://localhost:8080/sante/vaccin/'+id, form)
+    return this._httpClient.patch('http://localhost:8080/sante/vaccin/'+id, form)
   }
 
   //Maladies

@@ -18,6 +18,12 @@
       <button ngbDropdownItem routerLink="/bovin/parametresSupp" routerLinkActive="active">Paramètres supplémentaires</button>
     </div>
   </li>
+  <li [ngbNavItem]="6" class="login">
+    <a ngbNavLink routerLink="/auth/login" routerLinkActive="active"><mat-icon>login</mat-icon></a>
+  </li>
+  <li [ngbNavItem]="7" class="login">
+    <a ngbNavLink routerLink="/auth/logout" routerLinkActive="active" style="color: red"><mat-icon>logout</mat-icon></a>
+  </li>
 </ul>
 
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
