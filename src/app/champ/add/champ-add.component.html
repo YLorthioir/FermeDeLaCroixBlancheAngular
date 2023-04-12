@@ -1,0 +1,19 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h3>Ajout d'un champ</h3>
+
+    <div class="form">
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Nom du champ</mat-label>
+          <input type="text" matInput formControlName="lieu">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Superficie (ha)</mat-label>
+          <input type="number" matInput formControlName="superficie">
+        </mat-form-field>
+
+      <button mat-raised-button type="submit" [disabled]="!form.valid">Créer</button>
+    </div>
+  </form>
+</div>

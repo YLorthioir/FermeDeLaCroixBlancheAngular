@@ -20,6 +20,7 @@ import { ExtraParamsComponent } from './extra-params/extra-params.component';
 import { BovinOneSelectedComponent } from './one/one-selected/bovin-one-selected.component';
 import { BovinGenealogySelectedComponent } from './genealogy/bovin-genealogy-selected/bovin-genealogy-selected.component';
 import { BovinUpdateSelectedComponent } from './update/bovin-update-selected/bovin-update-selected.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 
 
@@ -37,20 +38,21 @@ import { BovinUpdateSelectedComponent } from './update/bovin-update-selected/bov
     BovinGenealogySelectedComponent,
     BovinUpdateSelectedComponent
   ],
-  imports: [
-    CommonModule,
-    BovinRoutingModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    FormsModule,
-  ]
+    imports: [
+        CommonModule,
+        BovinRoutingModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        FormsModule,
+        MatGridListModule,
+    ]
 })
 export class BovinModule { }

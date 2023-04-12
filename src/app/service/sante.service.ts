@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Vaccination} from "../models/sante/vaccination";
 import {A} from "../models/sante/a";
 import {Vaccin} from "../models/sante/vaccin";
-import {FormGroup} from "@angular/forms";
+import {Form, FormGroup} from "@angular/forms";
 import {Maladie} from "../models/sante/maladie";
 import {Traitement} from "../models/sante/traitement";
 
@@ -47,6 +47,22 @@ export class SanteService {
 
   getA(id: number){
     return this._httpClient.get<A[]>(`${this._BASE_URL}/maladie/a/`+id)
+  }
+
+  getOneA(id: number){
+    return this._httpClient.get<A>(`${this._BASE_URL}/maladie/a/one/`+id)
+  }
+
+  updateA(form: FormGroup, id: number){
+    return this._httpClient.patch(`${this._BASE_URL}/maladie/a/`+id, form)
+  }
+
+  insertA(form: FormGroup, id:number){
+    return this._httpClient.post(`${this._BASE_URL}/maladie/a/`+id, form)
+  }
+
+  deleteA(id:number){
+    return this._httpClient.delete(`${this._BASE_URL}/maladie/a/`+id)
   }
 
   getAllMaladie(){

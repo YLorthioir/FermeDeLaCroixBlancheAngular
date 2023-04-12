@@ -1,0 +1,52 @@
+<div *ngIf="!loading">
+  <form [formGroup]="formCulture" (ngSubmit)="onSubmit()">
+    <h3>Modifier culture</h3>
+    <div class="form">
+      <div>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Champ</mat-label>
+          <mat-select formControlName="idChamp">
+            <mat-option  *ngFor="let champ of champs"
+                         [value]="champ.id">{{champ.lieu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Grain</mat-label>
+          <mat-select formControlName="grainId">
+            <mat-option  *ngFor="let grain of grains"
+                         [value]="grain.id">{{grain.nomGrain}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox formControlName="temporaire">Temporaire</mat-checkbox>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de mise en culture</mat-label>
+          <input type="date" matInput formControlName="dateMiseEnCulture">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de fin</mat-label>
+          <input type="date" matInput formControlName="dateDeFin">
+        </mat-form-field>    <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-label>Date du dernier épandange</mat-label>
+        <input type="date" matInput formControlName="dateDernierEpandage">
+      </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Quantité de fumier</mat-label>
+          <input type="number" matInput formControlName="qttFumier">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Référence analyse</mat-label>
+          <input type="text" matInput formControlName="referenceAnalyse">
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" [disabled]="!formCulture.valid">Ajouter</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="loading">... Loading</div>

@@ -26,6 +26,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatCardModule} from "@angular/material/card";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
+import { Page404Component } from './components/page404/page404.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {AuthInterceptor} from "./interceptor/auth.interceptor";
     HeaderComponent,
     FooterComponent,
     HomeComponent,
+    Page404Component,
   ],
   imports: [
     BrowserModule,

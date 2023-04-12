@@ -65,7 +65,10 @@
               Père
             </td>
             <td>
-              <input type="text" formControlName="pereNI">
+              <select formControlName="pereNI">
+                <option *ngFor="let taureau of taureaux"
+                        [value]="taureau.numeroInscription">{{taureau.nom}}</option>
+              </select>
             </td>
           </tr>
           <tr>

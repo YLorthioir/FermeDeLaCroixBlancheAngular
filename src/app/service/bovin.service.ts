@@ -44,4 +44,8 @@ export class BovinService {
   updateType(id: number, form: FormGroup){
     return this._httpClient.put(`${this._BASE_URL}/type/`+id, form)
   }
+
+  getAllTaureaux(){
+    return this._httpClient.get<Bovin[]>(`${this._BASE_URL}/taureaux`)
+  }
 }

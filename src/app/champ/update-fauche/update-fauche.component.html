@@ -1,0 +1,71 @@
+<div *ngIf="!loading">
+  <form [formGroup]="formUpdate" (ngSubmit)="onSubmit()">
+    <h3>Modifier une fauche</h3>
+    <div class="form">
+      <div>
+        <h3>Infos</h3>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Culture - Année</mat-label>
+          <mat-select formControlName="cultureId">
+            <mat-option  *ngFor="let culture of cultures"
+                         [value]="culture.id">{{culture.champ.lieu}} - {{culture.dateMiseEnCulture|date : 'yyyy'}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Année</mat-label>
+          <input type="number" matInput formControlName="annee">
+        </mat-form-field>
+      </div>
+      <div>
+        <h3>1ère fauche</h3>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de fauche</mat-label>
+          <input type="date" matInput formControlName="fauche1">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Rendement</mat-label>
+          <input type="number" matInput formControlName="fauche1Rendement">
+        </mat-form-field>
+      </div>
+      <div>
+        <h3>2e fauche</h3>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de fauche</mat-label>
+          <input type="date" matInput formControlName="fauche2">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Rendement</mat-label>
+          <input type="number" matInput formControlName="fauche2Rendement">
+        </mat-form-field>
+      </div>
+      <div>
+        <h3>3e fauche</h3>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de fauche</mat-label>
+          <input type="date" matInput formControlName="fauche3">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Rendement</mat-label>
+          <input type="number" matInput formControlName="fauche3Rendement">
+        </mat-form-field>
+      </div>
+      <div>
+        <h3>4e fauche</h3>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Date de fauche</mat-label>
+          <input type="date" matInput formControlName="fauche4">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="padding-right: 10px">
+          <mat-label>Rendement</mat-label>
+          <input type="number" matInput formControlName="fauche4Rendement">
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button type="submit" [disabled]="!formUpdate.valid">Modifier</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="loading">... Loading</div>

@@ -14,8 +14,24 @@
       <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
       <button ngbDropdownItem routerLink="/sante/vaccination" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter une vaccination</button>
       <button ngbDropdownItem routerLink="/sante/gestion" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Gestion des vaccins</button>
+      <button ngbDropdownItem routerLink="/sante/maladie" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter maladie/traitement à un bovin</button>
       <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
       <button ngbDropdownItem routerLink="/bovin/parametresSupp" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Paramètres supplémentaires</button>
+    </div>
+  </li>
+  <li [ngbNavItem]="2" ngbDropdown class="nav-item" *ngIf="roleConnected">
+    <a class="nav-link" ngbDropdownToggle routerLinkActive="active">Champs</a>
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem routerLink="/champ/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter un champ</button>
+      <button ngbDropdownItem routerLink="/champ/update" routerLinkActive="active" *ngIf="roleConnected">Modifier un champ</button>
+      <div class="dropdown-divider" *ngIf="roleConnected"></div>
+      <button ngbDropdownItem routerLink="/champ/culture/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter une mise en culture</button>
+      <button ngbDropdownItem routerLink="/champ/culture/all" routerLinkActive="active" *ngIf="roleConnected">Historique d'un champ</button>
+      <div class="dropdown-divider" *ngIf="roleConnected"></div>
+      <button ngbDropdownItem routerLink="/champ/fauche/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter une fauche</button>
+      <button ngbDropdownItem routerLink="/champ/fauche/all" routerLinkActive="active" *ngIf="roleConnected">Historique des fauches</button>
+      <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
+      <button ngbDropdownItem routerLink="/champ/parametresSupp" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Paramètres supplémentaires</button>
     </div>
   </li>
   <li [ngbNavItem]="5" ngbDropdown class="nav-item" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">

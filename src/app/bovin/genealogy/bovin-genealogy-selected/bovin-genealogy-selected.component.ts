@@ -26,8 +26,8 @@ export class BovinGenealogySelectedComponent implements OnInit{
   private _gpm?: Bovin;
   private _gmp?: Bovin;
   private _gmm?: Bovin;
-  private _enfants?: Bovin[];
-  private _petitsEnfants?: Bovin[];
+  private _enfants: Bovin[] = [];
+  private _petitsEnfants: Bovin[] =[];
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _route: ActivatedRoute,
@@ -59,6 +59,9 @@ export class BovinGenealogySelectedComponent implements OnInit{
 
     this._loading=true;
 
+    this._enfants=[];
+    this._petitsEnfants=[];
+
     this._pere=undefined;
     this._mere=undefined;
     this._gpp=undefined;
@@ -84,7 +87,7 @@ export class BovinGenealogySelectedComponent implements OnInit{
         this._bovinService.getOne(this._bovin.mereNI).subscribe((bovin)=>{
           this._mere=bovin
           if(this._mere.pereNI!=null){
-            this._bovinService.getOne(this._mere.pereNI).subscribe((bovin)=>this._gmp=bovin);
+            this._bovinService.getOne(this._mere.pereNI).subscribe((bovin)=>this._gpm=bovin);
           }
           if(this._mere.mereNI!=null){
             this._bovinService.getOne(this._mere.mereNI).subscribe((bovin)=>this._gmm=bovin);
@@ -96,7 +99,10 @@ export class BovinGenealogySelectedComponent implements OnInit{
         this._enfants=listeEnfant;
         this._enfants.forEach(enfants =>{
           this._bovinService.getEnfants(enfants.numeroInscription).subscribe((listePetitsEnfants)=>{
-            listePetitsEnfants.forEach(b=>this._petitsEnfants?.push(b))
+              listePetitsEnfants.forEach(b=> {
+                this._petitsEnfants.push(b)
+              }
+            )
           })
         })
       })
@@ -106,6 +112,8 @@ export class BovinGenealogySelectedComponent implements OnInit{
   }
 
   OnBovinSelected(option: string){
+    this._enfants=[];
+    this._petitsEnfants=[];
     this._router.navigateByUrl('bovin/genealogy/'+option);
     this.getBovin(option);
   }
@@ -160,11 +168,11 @@ export class BovinGenealogySelectedComponent implements OnInit{
     return this._gmm;
   }
 
-  get enfants(): Bovin[] |undefined {
+  get enfants(): Bovin[] {
     return this._enfants;
   }
 
-  get petitsEnfants(): Bovin[]|undefined  {
+  get petitsEnfants(): Bovin[] {
     return this._petitsEnfants;
   }
 

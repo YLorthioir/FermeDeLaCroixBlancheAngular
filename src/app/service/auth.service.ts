@@ -34,10 +34,15 @@ export class AuthService {
         localStorage.setItem("username",data.login);
         localStorage.setItem("role",data.role);
         this._router.navigateByUrl("home");
-
       } )
     )
   }
+
+  removeConnection(){
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+  localStorage.removeItem("role");
+}
 
   roleConnected() {
     if(localStorage.getItem("role"))

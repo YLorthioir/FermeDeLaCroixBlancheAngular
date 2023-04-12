@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {BovinForm} from "../../models/bovin/bovin";
+import {Bovin, BovinForm} from "../../models/bovin/bovin";
 import {Race} from "../../models/bovin/race";
 import {BovinService} from "../../service/bovin.service";
 import {RaceService} from "../../service/race.service";
@@ -14,6 +14,7 @@ export class BovinAddComponent implements OnInit{
 
   private _form: FormGroup;
   private _races!: Race[];
+  private _taureaux!: Bovin[];
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _raceService: RaceService,
@@ -25,6 +26,11 @@ export class BovinAddComponent implements OnInit{
     this._raceService.getAllRace().subscribe(
       (races)=>{
         this._races = races
+        this._bovinService.getAllTaureaux().subscribe(
+          (taureaux)=>{
+            this._taureaux=taureaux;
+          }
+        )
       }
     )
   }
@@ -48,6 +54,10 @@ export class BovinAddComponent implements OnInit{
 
   get races(): Race[] {
     return this._races;
+  }
+
+  get taureaux(): Bovin[] {
+    return this._taureaux;
   }
 }
 

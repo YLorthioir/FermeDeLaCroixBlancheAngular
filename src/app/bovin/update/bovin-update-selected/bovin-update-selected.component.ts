@@ -32,6 +32,7 @@ export class BovinUpdateSelectedComponent implements OnInit{
   private _races!: Race[];
   private _femelleReproduction?: FemelleReproduction;
   private _bovinEngraissement?: BovinEngraissement;
+  private _taureaux!: Bovin[];
 
   private _myControl = new FormControl('BE');
 
@@ -78,6 +79,12 @@ export class BovinUpdateSelectedComponent implements OnInit{
     this._raceService.getAllRace().subscribe(
       (races)=> {
         this._races = races;
+      }
+    )
+
+    this._bovinService.getAllTaureaux().subscribe(
+      (t)=>{
+        this._taureaux=t;
       }
     )
 
@@ -285,6 +292,10 @@ export class BovinUpdateSelectedComponent implements OnInit{
 
   get formFinalite(): FormGroup {
     return this._formFinalite;
+  }
+
+  get taureaux(): Bovin[] {
+    return this._taureaux;
   }
 }
 

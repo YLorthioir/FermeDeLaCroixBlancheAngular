@@ -1,0 +1,173 @@
+<div *ngIf="!loading">
+  <div>
+    <h1>Historique des fauches</h1>
+    <mat-radio-group [formControl]="selectedValue">
+      <mat-radio-button value="champs" color="primary">Par champs</mat-radio-button>
+      <mat-radio-button value="année" color="primary">Par année</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div *ngIf="selectedValue.value==='champs'">
+    <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-label>Champ</mat-label>
+      <mat-select [formControl]="champ">
+        <mat-option  *ngFor="let champ of champs"
+                     [value]="champ.lieu">{{champ.lieu}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="selectedValue.value==='année'">
+    <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-label>Années</mat-label>
+      <mat-select [formControl]="annee">
+        <mat-option  *ngFor="let annee of annees"
+                     [value]="annee">{{annee}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="selectedValue.value==='champs'">
+
+    <table mat-table *ngIf="!loading" [dataSource]="fauchesChamp">
+
+      <ng-container matColumnDef="annee">
+        <th mat-header-cell *matHeaderCellDef> Année </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.annee}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.cultureDTO.typeDeGrainDTO.nomGrain}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche1">
+        <th mat-header-cell *matHeaderCellDef> 1ère fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche1|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche1rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche1rendement}} kg </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche2">
+        <th mat-header-cell *matHeaderCellDef> 2e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche2|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche2rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche2rendement!==0"> {{fauche.fauche2rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche3">
+        <th mat-header-cell *matHeaderCellDef> 3e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche3|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche3rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche3rendement!==0"> {{fauche.fauche3rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche4">
+        <th mat-header-cell *matHeaderCellDef> 4e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche4|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche4rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche4rendement!==0"> {{fauche.fauche4rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="modifier">
+        <th mat-header-cell *matHeaderCellDef > Modifier </th>
+        <td mat-cell *matCellDef="let fauche"> <button (click)="onUpdate(fauche.id)">Modifier</button></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+
+  </div>
+
+  <div *ngIf="selectedValue.value==='année'">
+
+    <table mat-table *ngIf="!loading" [dataSource]="fauchesAnnee">
+
+      <ng-container matColumnDef="annee">
+        <th mat-header-cell *matHeaderCellDef> Année </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.cultureDTO.champ.lieu}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.cultureDTO.typeDeGrainDTO.nomGrain}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche1">
+        <th mat-header-cell *matHeaderCellDef> 1ère fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche1|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche1rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche1rendement}} kg </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche2">
+        <th mat-header-cell *matHeaderCellDef> 2e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche2|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche2rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche2rendement!==0"> {{fauche.fauche2rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche3">
+        <th mat-header-cell *matHeaderCellDef> 3e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche3|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche3rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche3rendement!==0"> {{fauche.fauche3rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche4">
+        <th mat-header-cell *matHeaderCellDef> 4e fauche </th>
+        <td mat-cell *matCellDef="let fauche"> {{fauche.fauche4|date : 'd/M/yyyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fauche4rendement">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let fauche"><div *ngIf="fauche.fauche4rendement!==0"> {{fauche.fauche4rendement}} kg </div></td>
+      </ng-container>
+
+      <ng-container matColumnDef="modifier">
+        <th mat-header-cell *matHeaderCellDef > Modifier </th>
+        <td mat-cell *matCellDef="let fauche"> <button (click)="onUpdate(fauche.id)">Modifier</button></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+
+  </div>
+
+</div>
+
+<div *ngIf="loading">
+  ... Loading
+</div>

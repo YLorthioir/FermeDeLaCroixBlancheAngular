@@ -13,6 +13,7 @@ export class LoginComponent {
   private _form: FormGroup;
   private _hide = true;
   constructor(private readonly _authService: AuthService, private _router: Router){
+    _authService.removeConnection();
     this._form = new FormGroup({
       login: new FormControl('',[Validators.required]),
       password: new FormControl(''),
