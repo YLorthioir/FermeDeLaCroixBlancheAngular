@@ -69,13 +69,13 @@ export class UpdateFaucheComponent implements OnInit{
       annee: new FormControl(this._fauche.annee,Validators.required),
       cultureId: new FormControl(this._fauche.cultureDTO.champ.id),
       fauche1: new FormControl(this._fauche.fauche1,Validators.required),
-      fauche1Rendement: new FormControl(this._fauche.fauche1rendement, [Validators.required, Validators.min(0)]),
+      fauche1Rendement: new FormControl(this._fauche.fauche1rendement, [Validators.required, Validators.min(0),Validators.pattern(/[0-9]+$/)]),
       fauche2: new FormControl(this._fauche.fauche2),
-      fauche2Rendement: new FormControl(this._fauche.fauche2rendement,Validators.min(0)),
+      fauche2Rendement: new FormControl(this._fauche.fauche2rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
       fauche3: new FormControl(this._fauche.fauche3),
-      fauche3Rendement: new FormControl(this._fauche.fauche3rendement,Validators.min(0)),
+      fauche3Rendement: new FormControl(this._fauche.fauche3rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
       fauche4: new FormControl(this._fauche.fauche4),
-      fauche4Rendement: new FormControl(this._fauche.fauche4rendement,Validators.min(0)),
+      fauche4Rendement: new FormControl(this._fauche.fauche4rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
     })
   }
 

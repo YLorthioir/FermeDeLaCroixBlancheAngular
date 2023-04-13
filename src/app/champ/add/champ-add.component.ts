@@ -6,7 +6,7 @@ import {ChampForm} from "../../models/champ/champ";
 @Component({
   selector: 'app-champ-add',
   templateUrl: './champ-add.component.html',
-  styleUrls: ['./champ-add.component.css']
+  styleUrls: ['./champ-add.component.scss']
 })
 export class ChampAddComponent{
 

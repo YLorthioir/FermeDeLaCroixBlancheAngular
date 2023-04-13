@@ -28,7 +28,7 @@ export class AddCultureComponent implements OnInit{
       dateMiseEnCulture: new FormControl('', Validators.required),
       dateDeFin: new FormControl(''),
       dateDernierEpandage: new FormControl(''),
-      qttFumier: new FormControl(''),
+      qttFumier: new FormControl('',Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(''),
       grainId: new FormControl('', Validators.required),
     })

@@ -48,4 +48,8 @@ export class BovinService {
   getAllTaureaux(){
     return this._httpClient.get<Bovin[]>(`${this._BASE_URL}/taureaux`)
   }
+
+  exists(numeroInscription: string){
+    return this._httpClient.get<boolean>(`${this._BASE_URL}/exists/`+numeroInscription)
+  }
 }

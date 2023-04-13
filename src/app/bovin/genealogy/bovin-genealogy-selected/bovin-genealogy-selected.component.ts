@@ -72,24 +72,24 @@ export class BovinGenealogySelectedComponent implements OnInit{
     this._bovinService.getOne(numeroIdentification).subscribe((bovin) => {
       this._bovin = bovin
 
-      if(this._bovin.pereNI!=null){
+      if(this._bovin.pereNI!= null && this._bovins.includes(this._bovin.pereNI)){
         this._bovinService.getOne(this._bovin.pereNI).subscribe((bovin)=>{
           this._pere=bovin
-          if(this._pere.pereNI!=null){
+          if(this._pere.pereNI!= null){
             this._bovinService.getOne(this._pere.pereNI).subscribe((bovin)=>this._gpp=bovin);
           }
-          if(this._pere.mereNI!=null){
+          if(this._bovin.mereNI!= null){
             this._bovinService.getOne(this._pere.mereNI).subscribe((bovin)=>this._gmp=bovin);
           }
         });
       }
-      if(this._bovin.mereNI!=null){
+      if(this._bovin.mereNI!= null && this._bovins.includes(this._bovin.mereNI)){
         this._bovinService.getOne(this._bovin.mereNI).subscribe((bovin)=>{
-          this._mere=bovin
-          if(this._mere.pereNI!=null){
+            this._mere=bovin
+          if(this._mere.pereNI!= null){
             this._bovinService.getOne(this._mere.pereNI).subscribe((bovin)=>this._gpm=bovin);
           }
-          if(this._mere.mereNI!=null){
+          if(this._mere.mereNI!= null){
             this._bovinService.getOne(this._mere.mereNI).subscribe((bovin)=>this._gmm=bovin);
           }
         })
@@ -97,10 +97,36 @@ export class BovinGenealogySelectedComponent implements OnInit{
 
       this._bovinService.getEnfants(this._bovin.numeroInscription).subscribe((listeEnfant)=>{
         this._enfants=listeEnfant;
+        this._enfants.sort((a, b) => {
+            const aNI = a.numeroInscription.toUpperCase(); // ignore upper and lowercase
+            const bNI = b.numeroInscription.toUpperCase(); // ignore upper and lowercase
+            if (aNI < bNI) {
+              return -1;
+            }
+            if (aNI > bNI) {
+              return 1;
+            }
+
+            // names must be equal
+            return 0;
+          });
         this._enfants.forEach(enfants =>{
           this._bovinService.getEnfants(enfants.numeroInscription).subscribe((listePetitsEnfants)=>{
               listePetitsEnfants.forEach(b=> {
-                this._petitsEnfants.push(b)
+                this._petitsEnfants.push(b);
+                this._petitsEnfants.sort((a, b) => {
+                  const aNI = a.numeroInscription.toUpperCase(); // ignore upper and lowercase
+                  const bNI = b.numeroInscription.toUpperCase(); // ignore upper and lowercase
+                  if (aNI < bNI) {
+                    return -1;
+                  }
+                  if (aNI > bNI) {
+                    return 1;
+                  }
+
+                  // names must be equal
+                  return 0;
+                });
               }
             )
           })
@@ -175,5 +201,4 @@ export class BovinGenealogySelectedComponent implements OnInit{
   get petitsEnfants(): Bovin[] {
     return this._petitsEnfants;
   }
-
 }

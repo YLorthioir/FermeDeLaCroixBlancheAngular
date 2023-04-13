@@ -32,7 +32,7 @@ export class UpdateCultureComponent implements OnInit{
       dateMiseEnCulture: new FormControl('', Validators.required),
       dateDeFin: new FormControl(''),
       dateDernierEpandage: new FormControl(''),
-      qttFumier: new FormControl(''),
+      qttFumier: new FormControl('',Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(''),
       grainId: new FormControl('', Validators.required),
     })
@@ -76,7 +76,7 @@ export class UpdateCultureComponent implements OnInit{
       dateMiseEnCulture: new FormControl(this._culture.dateMiseEnCulture, Validators.required),
       dateDeFin: new FormControl(this._culture.dateDeFin),
       dateDernierEpandage: new FormControl(this._culture.dateEpandage),
-      qttFumier: new FormControl(this._culture.qttFumier),
+      qttFumier: new FormControl(this._culture.qttFumier,Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(this._culture.analysePDF),
       grainId: new FormControl(this._culture.typeDeGrainDTO.id, Validators.required),
     })

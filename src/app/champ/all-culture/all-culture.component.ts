@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Culture} from "../../models/champ/culture";
 import {Router} from "@angular/router";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
@@ -6,20 +6,22 @@ import {ChampService} from "../../service/champ.service";
 import {MatSort, Sort} from "@angular/material/sort";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Champ} from "../../models/champ/champ";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-all-culture',
   templateUrl: './all-culture.component.html',
-  styleUrls: ['./all-culture.component.css']
+  styleUrls: ['./all-culture.component.scss']
 })
 export class AllCultureComponent implements OnInit{
 
-  displayedColumns: string[] = ['dateDebut', 'dateFin', 'type', 'dateEpandage', 'qttFumier', 'analysePDF','modifier'];
-  private _cultures?: any;
+  displayedColumns: string[] = ['dateMiseEnCulture', 'dateDeFin', 'estTemporaire', 'dateDernierEpandage', 'qttFumier', 'analysePDF','modifier'];
+  private _cultures!: Culture[];
   private _loading: boolean = false
   private _culture?: Culture;
   private _formNom: FormGroup;
   private _champs!: Champ[];
+  dataSource = new MatTableDataSource(this._cultures);
 
   constructor(private readonly _champService: ChampService,
               private _router: Router,
@@ -49,14 +51,17 @@ export class AllCultureComponent implements OnInit{
     }
   }
 
-  @ViewChild(MatSort) sort?: MatSort;
+  @ViewChild(MatSort) set matSort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+
   load(id: number){
     this._loading = true;
 
     this._champService.getAllCulture(id).subscribe({
       next: (cultures) => {
         this._cultures = cultures;
-        this._cultures.sort = this.sort;
+        this.dataSource = new MatTableDataSource(this._cultures);
         this._loading = false;
       }
     })
@@ -67,10 +72,6 @@ export class AllCultureComponent implements OnInit{
   }
 
   // Encapsulation
-
-  get cultures(): Culture[] {
-    return this._cultures;
-  }
 
   get loading(): boolean {
     return this._loading;

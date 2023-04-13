@@ -26,10 +26,11 @@
   </div>
   <div *ngIf="selectedValue.value==='champs'">
 
-    <table mat-table *ngIf="!loading" [dataSource]="fauchesChamp">
+    <table mat-table *ngIf="!loading" [dataSource]="dataSourceChamp"
+           matSort (matSortChange)="announceSortChange($event)">
 
       <ng-container matColumnDef="annee">
-        <th mat-header-cell *matHeaderCellDef> Année </th>
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header sortActionDescription="Sort by annee"> Année </th>
         <td mat-cell *matCellDef="let fauche"> {{fauche.annee}} </td>
       </ng-container>
 
@@ -83,8 +84,8 @@
         <td mat-cell *matCellDef="let fauche"> <button (click)="onUpdate(fauche.id)">Modifier</button></td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsChamps"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsChamps;"></tr>
 
     </table>
 
@@ -97,10 +98,10 @@
 
   <div *ngIf="selectedValue.value==='année'">
 
-    <table mat-table *ngIf="!loading" [dataSource]="fauchesAnnee">
+    <table mat-table *ngIf="!loading" [dataSource]="dataSourceAnnee">
 
-      <ng-container matColumnDef="annee">
-        <th mat-header-cell *matHeaderCellDef> Année </th>
+      <ng-container matColumnDef="champ">
+        <th mat-header-cell *matHeaderCellDef> Champ </th>
         <td mat-cell *matCellDef="let fauche"> {{fauche.cultureDTO.champ.lieu}} </td>
       </ng-container>
 
@@ -154,8 +155,8 @@
         <td mat-cell *matCellDef="let fauche"> <button (click)="onUpdate(fauche.id)">Modifier</button></td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsAnnees"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsAnnees;"></tr>
 
     </table>
 

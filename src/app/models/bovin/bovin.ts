@@ -35,9 +35,9 @@ export const BovinForm={
   numeroInscription: ['BE',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
   sexe: ['',[Validators.required, Validators.pattern('M'||'F')]],
   dateDeNaissance: ['',[Validators.required]],
-  poidsNaissance: ['',[Validators.min(0)]],
+  poidsNaissance: ['',[Validators.min(0),Validators.pattern(/[0-9]+$/)]],
   neCesarienne: [false],
   raceId: ['',[Validators.required]],
-  pereNI: [''],
+  pereNI: ['',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
   mereNI: ['',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
 }

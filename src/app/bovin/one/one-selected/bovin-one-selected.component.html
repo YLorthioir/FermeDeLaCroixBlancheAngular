@@ -16,6 +16,8 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+
+    <button mat-raised-button routerLink="/bovin/genealogy/{{bovin.numeroInscription}}" style="margin-left: 10px">Généalogie</button>
   </form>
 
   <div *ngIf="!loading">
@@ -248,10 +250,6 @@
         </tbody>
       </table>
     </div>
-  </div>
-
-  <div class="toGenealogy">
-    <button routerLink="/bovin/genealogy/{{bovin.numeroInscription}}">Généalogie</button>
   </div>
 </div>
 

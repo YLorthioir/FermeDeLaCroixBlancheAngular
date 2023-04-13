@@ -40,6 +40,26 @@
         </mat-card>
       </div>
     </mat-grid-tile>
+    <mat-grid-tile *ngIf="roleConnected">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/champ/culture/all">
+            <img src="assets/pictures/5828450.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Historique d'un champ</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">
+      <div class="icons">
+        <mat-card>
+          <mat-card-content routerLink="/champ/fauche/add">
+            <img src="assets/pictures/148764.png" class="img">
+          </mat-card-content>
+          <mat-card-title>Ajouter une fauche</mat-card-title>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
   </mat-grid-list>
 
 </div>

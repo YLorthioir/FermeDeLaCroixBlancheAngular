@@ -19,9 +19,9 @@ export class AddFaucheComponent implements OnInit{
   constructor(private readonly _champService: ChampService,
               private readonly _faucheService: FaucheService) {
     this._formInsert = new FormGroup({
-      annee: new FormControl('',Validators.required),
+      annee: new FormControl('',[Validators.required,Validators.pattern(/[0-9]+$/)]),
       fauche: new FormControl('',Validators.required),
-      faucheRendement: new FormControl('', Validators.required),
+      faucheRendement: new FormControl('', [Validators.required,Validators.pattern(/[0-9]+$/)]),
       champId: new FormControl('')
     })
   }

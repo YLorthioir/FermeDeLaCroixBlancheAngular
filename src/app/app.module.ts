@@ -27,6 +27,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
 import { Page404Component } from './components/page404/page404.component';
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { Page404Component } from './components/page404/page404.component';
     MatRadioModule,
     MatCardModule,
     MatGridListModule,
+    MatSortModule
   ],
   providers: [NgbNavConfig,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

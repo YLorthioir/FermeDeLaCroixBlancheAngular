@@ -9,6 +9,6 @@ export interface Champ{
 
 export const ChampForm={
   lieu: ['',Validators.required],
-  superficie: ['',[Validators.min(0),Validators.required]],
+  superficie: ['',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]],
   dateDerniereChaux: [''],
 }

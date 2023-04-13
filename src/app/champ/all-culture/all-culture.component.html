@@ -9,20 +9,20 @@
   </mat-form-field>
 </form>
 
-<table mat-table *ngIf="!loading && cultures!=undefined" [dataSource]="cultures"
+<table mat-table [dataSource]="dataSource"
        matSort (matSortChange)="announceSortChange($event)">
 
-  <ng-container matColumnDef="dateDebut">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dateDebut"> Date de début </th>
+  <ng-container matColumnDef="dateMiseEnCulture">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dateMiseEnCulture"> Date de début </th>
     <td mat-cell *matCellDef="let culture"> {{culture.dateMiseEnCulture|date : 'd/M/yyyy'}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="dateFin">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dateFin"> Date de fin </th>
+  <ng-container matColumnDef="dateDeFin">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dateDeFin"> Date de fin </th>
     <td mat-cell *matCellDef="let culture"> {{culture.dateDeFin|date : 'd/M/yyyy'}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="type">
+  <ng-container matColumnDef="estTemporaire">
     <th mat-header-cell *matHeaderCellDef> Temporaire </th>
     <td mat-cell *matCellDef="let culture">
       <mat-checkbox class="example-margin" [disabled]="true" *ngIf="culture.estTemporaire" checked></mat-checkbox>
@@ -30,18 +30,18 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="dateEpandage">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date du dernier épandage </th>
+  <ng-container matColumnDef="dateDernierEpandage">
+    <th mat-header-cell *matHeaderCellDef> Date du dernier épandage </th>
     <td mat-cell *matCellDef="let culture"> {{culture.dateDernierEpandage|date : 'd/M/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="qttFumier">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantité de fumier </th>
+    <th mat-header-cell *matHeaderCellDef> Quantité de fumier </th>
     <td mat-cell *matCellDef="let culture"> {{culture.qttFumier}} kg </td>
   </ng-container>
 
   <ng-container matColumnDef="analysePDF">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Référence de l'analyse </th>
+    <th mat-header-cell *matHeaderCellDef> Référence de l'analyse </th>
     <td mat-cell *matCellDef="let culture"> {{culture.analysePDF}}</td>
   </ng-container>
 
