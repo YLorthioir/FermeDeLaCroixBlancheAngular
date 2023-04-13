@@ -19,7 +19,7 @@
       <button ngbDropdownItem routerLink="/bovin/parametresSupp" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Paramètres supplémentaires</button>
     </div>
   </li>
-  <li [ngbNavItem]="2" ngbDropdown class="nav-item" *ngIf="roleConnected">
+  <li [ngbNavItem]="3" ngbDropdown class="nav-item" *ngIf="roleConnected">
     <a class="nav-link" ngbDropdownToggle routerLinkActive="active">Champs</a>
     <div ngbDropdownMenu>
       <button ngbDropdownItem routerLink="/champ/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter un champ</button>
@@ -32,6 +32,13 @@
       <button ngbDropdownItem routerLink="/champ/fauche/all" routerLinkActive="active" *ngIf="roleConnected">Historique des fauches</button>
       <div class="dropdown-divider" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'"></div>
       <button ngbDropdownItem routerLink="/champ/parametresSupp" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Paramètres supplémentaires</button>
+    </div>
+  </li>
+  <li [ngbNavItem]="4" ngbDropdown class="nav-item" *ngIf="roleConnected">
+    <a class="nav-link" ngbDropdownToggle routerLinkActive="active">Vente</a>
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem routerLink="/vente/add" routerLinkActive="active" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">Ajouter une vente</button>
+      <button ngbDropdownItem routerLink="/vente/all" routerLinkActive="active">Historique des ventes</button>
     </div>
   </li>
   <li [ngbNavItem]="5" ngbDropdown class="nav-item" *ngIf="roleConnected==='ADMIN' || roleConnected==='GERANT'">

@@ -10,7 +10,6 @@ import {AllCultureComponent} from "./all-culture/all-culture.component";
 import {AddFaucheComponent} from "./add-fauche/add-fauche.component";
 import {UpdateFaucheComponent} from "./update-fauche/update-fauche.component";
 import {AllFaucheComponent} from "./all-fauche/all-fauche.component";
-import {ExtraParamsComponent} from "../bovin/extra-params/extra-params.component";
 import {ExtraParamsChampComponent} from "./extra-params-champ/extra-params-champ.component";
 
 

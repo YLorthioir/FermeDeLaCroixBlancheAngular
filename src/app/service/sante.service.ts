@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Vaccination} from "../models/sante/vaccination";
 import {A} from "../models/sante/a";
 import {Vaccin} from "../models/sante/vaccin";
-import {Form, FormGroup} from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {Maladie} from "../models/sante/maladie";
 import {Traitement} from "../models/sante/traitement";
 
