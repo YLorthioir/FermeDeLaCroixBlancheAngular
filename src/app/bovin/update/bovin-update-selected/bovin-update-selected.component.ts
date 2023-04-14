@@ -59,6 +59,8 @@ export class BovinUpdateSelectedComponent implements OnInit{
       neCesarienne: new FormControl(''),
       enCharge: new FormControl(''),
       champId: new FormControl(''),
+      dateAbattage: new FormControl(''),
+      raisonAbattage: new FormControl(''),
 
       dateDerniereInsemination: new FormControl(''),
       perteGrossesse: new FormControl('',Validators.pattern(/[0-9]+$/)),
@@ -165,6 +167,8 @@ export class BovinUpdateSelectedComponent implements OnInit{
         neCesarienne: new FormControl(this._bovin.neCesarienne),
         champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
         enCharge: new FormControl(this._bovin.enCharge),
+        dateAbattage: new FormControl(this._bovin.dateAbattage),
+        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
 
         dateDerniereInsemination: new FormControl(this._femelleReproduction.derniereInsemination),
         perteGrossesse: new FormControl(this._femelleReproduction.perteGrossesse),
@@ -182,6 +186,8 @@ export class BovinUpdateSelectedComponent implements OnInit{
         neCesarienne: new FormControl(this._bovin.neCesarienne),
         champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
         enCharge: new FormControl(this._bovin.enCharge),
+        dateAbattage: new FormControl(this._bovin.dateAbattage),
+        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
 
         dateEngraissement: new FormControl(this._bovinEngraissement.dateEngraissement),
         melangeId: new FormControl(this._bovinEngraissement.melange.id),
@@ -205,6 +211,8 @@ export class BovinUpdateSelectedComponent implements OnInit{
         neCesarienne: new FormControl(this._bovin.neCesarienne),
         champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
         enCharge: new FormControl(this._bovin.enCharge),
+        dateAbattage: new FormControl(this._bovin.dateAbattage),
+        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
       })
       this._formFinalite = new FormGroup({
         finalite: new FormControl('Bovin'),

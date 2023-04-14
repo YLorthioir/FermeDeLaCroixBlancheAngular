@@ -18,6 +18,8 @@ export interface Bovin{
   pereNI: string;
   mereNI: string;
   nbCesarienne: number;
+  dateAbattage: Date;
+  raisonAbattage: string;
 }
 
 export interface BovinForm{
@@ -29,6 +31,8 @@ export interface BovinForm{
   raceId: number;
   pereNI: string;
   mereNI: string;
+  dateAbattage: Date;
+  raisonAbattage: string;
 }
 
 export const BovinForm={
@@ -40,4 +44,6 @@ export const BovinForm={
   raceId: ['',[Validators.required]],
   pereNI: ['',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
   mereNI: ['',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
+  dateAbattage: [''],
+  raisonAbattage: [''],
 }

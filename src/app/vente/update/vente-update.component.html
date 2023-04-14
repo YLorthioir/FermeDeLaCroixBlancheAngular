@@ -36,17 +36,9 @@
 
   <div *ngIf="venteFauche != undefined">
     <form [formGroup]="formFauche" (ngSubmit)="onSubmit('fauche')">
-      <h3>Ajout d'une vente</h3>
+      <h3>Modification d'une vente</h3>
 
       <div class="form">
-
-        <mat-form-field appearance="fill" style="padding-right: 10px">
-          <mat-label>Champ</mat-label>
-          <mat-select formControlName="faucheId">
-            <mat-option  *ngFor="let fauche of fauchesAnnee"
-                         [value]="fauche.id">{{fauche.cultureDTO.typeDeGrainDTO.nomGrain}} - {{fauche.cultureDTO.champ.lieu}}</mat-option>
-          </mat-select>
-        </mat-form-field>
 
         <mat-form-field appearance="fill" style="padding-right: 10px">
           <mat-label>Quantité</mat-label>

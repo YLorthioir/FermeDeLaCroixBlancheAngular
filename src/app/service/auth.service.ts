@@ -25,6 +25,7 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("role")
+    this._router.navigateByUrl("auth/login")
   }
 
   login(login: FormGroup): Observable<Auth> {

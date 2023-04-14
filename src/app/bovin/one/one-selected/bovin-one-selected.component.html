@@ -85,7 +85,7 @@
             <div *ngIf="bovin.champ">{{bovin.champ.lieu}}</div>
           </td>
         </tr>
-        <tr class="lastRow">
+        <tr>
           <td>
             Nom du bovin
           </td>
@@ -93,6 +93,18 @@
             <div *ngIf="!bovin.nom">Non communiqué</div>
             <div *ngIf="bovin.nom">{{bovin.nom}}</div>
           </td>
+        </tr>
+        <tr>
+          <td>
+            Date abattage
+          </td>
+          <td>{{bovin.dateAbattage|date : 'd/M/yyyy'}}</td>
+        </tr>
+        <tr class="lastRow">
+          <td>
+            Raison abattage
+          </td>
+          <td>{{bovin.raisonAbattage}}</td>
         </tr>
         </tbody>
       </table>
