@@ -16,6 +16,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTableModule} from "@angular/material/table";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 
@@ -26,20 +27,21 @@ import {MatTableModule} from "@angular/material/table";
     VenteUpdateComponent,
     VenteAddComponent
   ],
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    VenteRoutingModule,
-    MatRadioModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule
-  ]
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        VenteRoutingModule,
+        MatRadioModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        MatAutocompleteModule
+    ]
 })
 export class VenteModule { }

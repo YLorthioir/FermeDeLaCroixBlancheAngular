@@ -4,6 +4,7 @@ import {VenteService} from "../../service/vente.service";
 import {BovinService} from "../../service/bovin.service";
 import {FaucheService} from "../../service/fauche.service";
 import {Fauche} from "../../models/champ/fauche";
+import {debounceTime, map, Observable, startWith} from "rxjs";
 
 @Component({
   selector: 'app-add',
@@ -24,12 +25,17 @@ export class VenteAddComponent implements OnInit{
 
   private _fauchesAnnee!: Fauche[];
 
+  private _filteredOptions!: Observable<string[]>;
+
+  private _myControl = new FormControl('BE',Validators.required);
+  private _bovins!: string[];
+
   constructor(private readonly _venteService: VenteService,
               private readonly _bovinService: BovinService,
               private readonly _faucheService: FaucheService) {
 
     this._formBovin = new FormGroup({
-      numeroIdentification: new FormControl('',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+      numeroIdentification: new FormControl(''),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       date: new FormControl('',Validators.required),
       prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
@@ -54,9 +60,25 @@ export class VenteAddComponent implements OnInit{
     this._faucheService.getAllAnnee().subscribe(
       value => {
         this._anneeFauche = value;
-        this._loading=false;
+        this._bovinService.getAllBovinsEngraissement().subscribe(
+          (bovin) => {
+            this._bovins = bovin;
+            this._filteredOptions = this._myControl.valueChanges.pipe(
+              debounceTime(500),
+              startWith(''),
+              map(value => this._filter(value || '')),
+            );
+            this._loading=false;
+          }
+        )
       }
     )
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue= value.toLowerCase();
+
+    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   onSubmit(){
@@ -64,6 +86,17 @@ export class VenteAddComponent implements OnInit{
       this._venteService.addVenteBovin(this._formBovin.value).subscribe()
     else if (this._selectedValue.value==="fauche" && this._formFauche.valid)
       this._venteService.addVenteFauche(this._formFauche.value).subscribe()
+  }
+
+  OnBovinSelected(option: string){
+
+    this._formBovin = new FormGroup({
+      numeroIdentification: new FormControl(option),
+      qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+      date: new FormControl('',Validators.required),
+      prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+      prixRevente: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+    })
   }
 
   // Encapsulation
@@ -94,5 +127,13 @@ export class VenteAddComponent implements OnInit{
 
   get annee(): FormControl<number | null> {
     return this._annee;
+  }
+
+  get filteredOptions(): Observable<string[]> {
+    return this._filteredOptions;
+  }
+
+  get myControl(): FormControl<string | null> {
+    return this._myControl;
   }
 }

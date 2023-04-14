@@ -11,9 +11,20 @@
       <h3>Ajout d'une vente</h3>
 
       <div class="form">
-        <mat-form-field appearance="fill" style="padding-right: 10px">
-          <mat-label>Numéro d'indentification</mat-label>
-          <input type="text" matInput formControlName="numeroIdentification">
+        <mat-form-field class="example-full-width" appearance="fill" style="padding-right: 10px">
+          <mat-label>n°</mat-label>
+          <input type="text"
+                 placeholder="n°"
+                 aria-label="Information pour le bovin n°"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async"
+                        [value]="option" (click)="OnBovinSelected(option)">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field appearance="fill" style="padding-right: 10px">
