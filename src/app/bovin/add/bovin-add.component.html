@@ -4,12 +4,12 @@
 
     <div class="form">
       <div>
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Numéro d'inscription</mat-label>
           <input type="text" matInput formControlName="numeroInscription">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Race</mat-label>
           <mat-select formControlName="raceId">
             <mat-option  *ngFor="let race of races"
@@ -25,7 +25,7 @@
       </div>
       <div>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Père</mat-label>
           <mat-select formControlName="pereNI">
             <mat-option  *ngFor="let taureau of taureaux"
@@ -33,7 +33,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Mère</mat-label>
           <input type="text" matInput formControlName="mereNI">
         </mat-form-field>
@@ -43,12 +43,12 @@
 
       <div>
 
-        <mat-form-field appearance="fill" class="fields" style="padding-right: 10px">
+        <mat-form-field appearance="outline" class="fields" style="padding-right: 10px">
           <mat-label>Date de naissance:</mat-label>
           <input type="date" matInput formControlName="dateDeNaissance">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Poids à la naissance</mat-label>
           <input type="text" matInput formControlName="poidsNaissance">
         </mat-form-field>

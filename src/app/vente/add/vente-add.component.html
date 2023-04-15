@@ -11,7 +11,7 @@
       <h3>Ajout d'une vente</h3>
 
       <div class="form">
-        <mat-form-field class="example-full-width" appearance="fill" style="padding-right: 10px">
+        <mat-form-field class="example-full-width" appearance="outline" style="padding-right: 10px">
           <mat-label>n°</mat-label>
           <input type="text"
                  placeholder="n°"
@@ -27,22 +27,22 @@
           </mat-autocomplete>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Quantité (kg)</mat-label>
           <input type="number" matInput formControlName="qtt">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Date</mat-label>
           <input type="date" matInput formControlName="date">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Prix coutant</mat-label>
           <input type="number" matInput formControlName="prixCoutant">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Prix de revente</mat-label>
           <input type="number" matInput formControlName="prixRevente">
         </mat-form-field>
@@ -58,7 +58,7 @@
 
       <div class="form">
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Années</mat-label>
           <mat-select [formControl]="annee">
             <mat-option  *ngFor="let annee of anneeFauche"
@@ -66,7 +66,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Champ</mat-label>
           <mat-select formControlName="faucheId">
             <mat-option  *ngFor="let fauche of fauchesAnnee"
@@ -74,22 +74,22 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Quantité</mat-label>
           <input type="number" matInput formControlName="qtt">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Date</mat-label>
           <input type="date" matInput formControlName="date">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Prix coutant</mat-label>
           <input type="number" matInput formControlName="prixCoutant">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Prix de revente</mat-label>
           <input type="number" matInput formControlName="prixRevente">
         </mat-form-field>

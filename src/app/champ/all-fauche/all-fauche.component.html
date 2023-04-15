@@ -7,7 +7,7 @@
     </mat-radio-group>
   </div>
   <div *ngIf="selectedValue.value==='champs'">
-    <mat-form-field appearance="fill" style="padding-right: 10px">
+    <mat-form-field appearance="outline" style="padding-right: 10px">
       <mat-label>Champ</mat-label>
       <mat-select [formControl]="champ">
         <mat-option  *ngFor="let champ of champs"
@@ -16,7 +16,7 @@
     </mat-form-field>
   </div>
   <div *ngIf="selectedValue.value==='année'">
-    <mat-form-field appearance="fill" style="padding-right: 10px">
+    <mat-form-field appearance="outline" style="padding-right: 10px">
       <mat-label>Années</mat-label>
       <mat-select [formControl]="annee">
         <mat-option  *ngFor="let annee of annees"

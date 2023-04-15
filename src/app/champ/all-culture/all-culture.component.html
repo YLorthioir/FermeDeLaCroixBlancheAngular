@@ -1,6 +1,6 @@
 <form [formGroup]="formNom" >
   <h3>Historique du champ</h3>
-  <mat-form-field appearance="fill" style="padding-right: 10px">
+  <mat-form-field appearance="outline" style="padding-right: 10px">
     <mat-label>Champ</mat-label>
     <mat-select formControlName="id">
       <mat-option  *ngFor="let champ of champs"

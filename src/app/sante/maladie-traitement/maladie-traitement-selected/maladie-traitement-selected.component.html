@@ -1,7 +1,7 @@
 <div class="form">
   <form class="example-form" style="padding-left: 20px">
     Selection du bovin
-    <mat-form-field class="example-full-width" appearance="fill">
+    <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>n°</mat-label>
       <input type="text"
              placeholder="n°"
@@ -23,14 +23,14 @@
 
     <div class="form">
       <div>
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Nom de la maladie</mat-label>
           <mat-select formControlName="maladie">
             <mat-option  *ngFor="let maladie of maladies"
                          [value]="maladie.id">{{maladie.nom}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Nom du traitement</mat-label>
           <mat-select formControlName="traitement">
             <mat-option [value]="null"></mat-option>
@@ -38,7 +38,7 @@
                          [value]="traitement.id">{{traitement.nomTraitement}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
 
             <mat-label>Année</mat-label>
             <input type="date" matInput formControlName="annee">
@@ -54,7 +54,7 @@
 <div class="form">
 
   <form [formGroup]="formNom" >
-    <mat-form-field appearance="fill" style="padding-right: 10px">
+    <mat-form-field appearance="outline" style="padding-right: 10px">
       <mat-label>Nom du vaccin</mat-label>
       <mat-select formControlName="id">
         <mat-option  *ngFor="let a of aCommeMaladie"
@@ -65,14 +65,14 @@
 
   <form [formGroup]="formUpdate" (ngSubmit)="updateMaladie()">
     <div>
-      <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-form-field appearance="outline" style="padding-right: 10px">
         <mat-label>Nom de la maladie</mat-label>
         <mat-select formControlName="maladie">
           <mat-option  *ngFor="let maladie of maladies"
                        [value]="maladie.id">{{maladie.nom}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-form-field appearance="outline" style="padding-right: 10px">
         <mat-label>Nom du traitement</mat-label>
         <mat-select formControlName="traitement">
           <mat-option [value]="null"></mat-option>
@@ -80,7 +80,7 @@
                        [value]="traitement.id">{{traitement.nomTraitement}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill" style="padding-right: 10px">
+      <mat-form-field appearance="outline" style="padding-right: 10px">
 
         <mat-label>Année</mat-label>
         <input type="date" matInput formControlName="annee">

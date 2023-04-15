@@ -3,6 +3,7 @@ import {FormControl} from "@angular/forms";
 import {VenteService} from "../../service/vente.service";
 import {VenteBovin} from "../../models/vente/venteBovin";
 import {VenteFauche} from "../../models/vente/venteFauche";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-vente-all',
@@ -21,7 +22,7 @@ export class VenteAllComponent implements OnInit{
   displayedColumnsBovin: string[] = ['annee', 'date', 'numeroIdentification', 'quantite', 'prixRevente', 'prixCoutant', 'modifier', 'supprimer'];
   displayedColumnsFauche: string[] = ['annee', 'date', 'culture', 'quantite', 'prixRevente', 'prixCoutant', 'modifier', 'supprimer'];
 
-  constructor(private readonly _venteService: VenteService) {}
+  constructor(private readonly _venteService: VenteService, private readonly _router: Router) {}
 
   ngOnInit(): void {
     this._loading=true;
@@ -39,7 +40,7 @@ export class VenteAllComponent implements OnInit{
   }
 
   onUpdateFauche(id:number){
-
+    this._router.navigateByUrl("vente/update/fauche/"+id)
 }
 
   onDeleteFauche(id:number){
@@ -48,7 +49,7 @@ export class VenteAllComponent implements OnInit{
   }
 
   onUpdateBovin(id:number){
-
+    this._router.navigateByUrl("vente/update/bovin/"+id)
   }
 
   onDeleteBovin(id:number){

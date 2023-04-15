@@ -1,7 +1,7 @@
 <div *ngIf="!loading">
   <form [formGroup]="formNom" >
     <h3>Champ à modifier</h3>
-    <mat-form-field appearance="fill" style="padding-right: 10px">
+    <mat-form-field appearance="outline" style="padding-right: 10px">
       <mat-label>Champ</mat-label>
       <mat-select formControlName="id">
         <mat-option  *ngFor="let champ of champs"
@@ -15,17 +15,17 @@
       <h3>Modifications</h3>
 
       <div class="form">
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Nom du champ</mat-label>
           <input type="text" matInput formControlName="lieu">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Superficie (ha)</mat-label>
           <input type="number" matInput formControlName="superficie">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" style="padding-right: 10px">
+        <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Date de dernière chaux</mat-label>
           <input type="date" matInput formControlName="annee">
         </mat-form-field>

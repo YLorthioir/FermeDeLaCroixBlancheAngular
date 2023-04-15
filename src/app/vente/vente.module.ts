@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { VenteComponent } from './vente/vente.component';
 import {RouterOutlet} from "@angular/router";
 import { VenteAllComponent } from './all/vente-all.component';
-import { VenteUpdateComponent } from './update/vente-update.component';
+import { VenteFaucheUpdateComponent } from './fauche-update/vente-fauche-update.component';
 import { VenteAddComponent } from './add/vente-add.component';
 import {VenteRoutingModule} from "./vente-routing.module";
 import {MatRadioModule} from "@angular/material/radio";
@@ -17,6 +17,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTableModule} from "@angular/material/table";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { VenteBovinUpdateComponent } from './bovin-update/vente-bovin-update.component';
 
 
 
@@ -24,8 +25,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
   declarations: [
     VenteComponent,
     VenteAllComponent,
-    VenteUpdateComponent,
-    VenteAddComponent
+    VenteFaucheUpdateComponent,
+    VenteAddComponent,
+    VenteBovinUpdateComponent
   ],
     imports: [
         CommonModule,
