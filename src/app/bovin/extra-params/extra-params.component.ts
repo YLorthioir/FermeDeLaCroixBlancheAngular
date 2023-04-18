@@ -101,7 +101,7 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
     })
     this.formTraitement = new FormGroup({
       nomTraitement: new FormControl('',Validators.required),
-      actif: new FormControl('',Validators.required),
+      actif: new FormControl(false,Validators.required),
     })
 
     this.formMelangeId= new FormGroup({

@@ -36,7 +36,7 @@
           <mat-label>Nom</mat-label>
           <input type="text" matInput [(ngModel)]="nomRace">
         </mat-form-field>
-        <button mat-raised-button (click)="enregistrerRace()"> Ajouter </button>
+        <button mat-raised-button (click)="enregistrerRace()" [disabled]="nomRace.length===0"> Ajouter </button>
       </div>
     </div>
   </div>
@@ -76,7 +76,7 @@
           <mat-label>Nom</mat-label>
           <input type="text" matInput [(ngModel)]="nomMaladie">
         </mat-form-field>
-        <button mat-raised-button (click)="enregistrerMaladie()"> Ajouter </button>
+        <button mat-raised-button (click)="enregistrerMaladie()" [disabled]="nomMaladie.length===0"> Ajouter </button>
       </div>
     </div>
   </div>
@@ -118,7 +118,7 @@
           <input type="text" matInput formControlName="nomTraitement">
         </mat-form-field>
         <mat-checkbox formControlName="actif" color="primary">Actif</mat-checkbox>
-        <button type="submit" mat-raised-button [disabled]="!formTraitement.valid || formTraitement.untouched" style="margin-left: 10px">Ajouter</button>
+        <button type="submit" mat-raised-button [disabled]="!formTraitement.valid || formTraitement.pristine" style="margin-left: 10px">Ajouter</button>
       </form>
     </div>
   </div>

@@ -37,7 +37,7 @@
             <mat-label>Nom</mat-label>
             <input type="text" matInput [(ngModel)]="nomGrain">
           </mat-form-field>
-            <button mat-raised-button (click)="enregistrerGrain()"> Ajouter </button>
+            <button mat-raised-button (click)="enregistrerGrain()" [disabled]="nomGrain.length===0"> Ajouter </button>
         </div>
       </div>
     </div>
