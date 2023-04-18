@@ -29,7 +29,7 @@ export class ExtraParamsChampComponent implements OnInit, OnDestroy{
         next: (grain) => {
           this.grain = grain;
           this.formGrain = new FormGroup({
-            nomGrain: new FormControl(this.grain.nomGrain, Validators.required)
+            nomGrain: new FormControl(this.grain.nomGrain, [Validators.required])
           })
         }})
     })
@@ -56,7 +56,13 @@ export class ExtraParamsChampComponent implements OnInit, OnDestroy{
       tap(()=>{
         this.refreshGrain()
       })
-    ).subscribe();
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Grain déjà existant")
+      }
+    });
   }
 
   enregistrerGrain(){
@@ -65,6 +71,12 @@ export class ExtraParamsChampComponent implements OnInit, OnDestroy{
       tap(()=>{
         this.refreshGrain()
       })
-    ).subscribe();
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Grain déjà existant")
+      }
+    });
   }
 }

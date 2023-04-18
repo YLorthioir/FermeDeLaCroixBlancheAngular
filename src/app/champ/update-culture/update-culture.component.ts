@@ -7,6 +7,7 @@ import {GrainService} from "../../service/grain.service";
 import {ActivatedRoute} from "@angular/router";
 import {Culture} from "../../models/champ/culture";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-update-culture',
@@ -27,14 +28,13 @@ export class UpdateCultureComponent implements OnInit, OnDestroy{
 
   constructor(private readonly champService: ChampService,
               private readonly grainService: GrainService,
-              private readonly route: ActivatedRoute,
   ) {
     this.formCulture = new FormGroup({
       idChamp: new FormControl('',Validators.required),
       temporaire: new FormControl(false,Validators.required),
-      dateMiseEnCulture: new FormControl('', Validators.required),
-      dateDeFin: new FormControl(''),
-      dateDernierEpandage: new FormControl(''),
+      dateMiseEnCulture: new FormControl('',[ Validators.required, inThePast()]),
+      dateDeFin: new FormControl('', inThePast()),
+      dateDernierEpandage: new FormControl('', inThePast()),
       qttFumier: new FormControl('',Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(''),
       grainId: new FormControl('', Validators.required),
@@ -74,9 +74,9 @@ export class UpdateCultureComponent implements OnInit, OnDestroy{
     this.formCulture = new FormGroup({
       idChamp: new FormControl(this.culture.champ.id,Validators.required),
       temporaire: new FormControl(this.culture.estTemporaire,Validators.required),
-      dateMiseEnCulture: new FormControl(this.culture.dateMiseEnCulture, Validators.required),
-      dateDeFin: new FormControl(this.culture.dateDeFin),
-      dateDernierEpandage: new FormControl(this.culture.dateEpandage),
+      dateMiseEnCulture: new FormControl(this.culture.dateMiseEnCulture, [Validators.required, inThePast()]),
+      dateDeFin: new FormControl(this.culture.dateDeFin, inThePast()),
+      dateDernierEpandage: new FormControl(this.culture.dateEpandage, inThePast()),
       qttFumier: new FormControl(this.culture.qttFumier,Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(this.culture.analysePDF),
       grainId: new FormControl(this.culture.typeDeGrainDTO.id, Validators.required),

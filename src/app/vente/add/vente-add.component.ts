@@ -6,6 +6,7 @@ import {FaucheService} from "../../service/fauche.service";
 import {Fauche} from "../../models/champ/fauche";
 import {debounceTime, map, Observable, startWith, Subject, takeUntil, tap} from "rxjs";
 import {Router} from "@angular/router";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-add',
@@ -41,14 +42,14 @@ export class VenteAddComponent implements OnInit, OnDestroy{
     this.formBovin = new FormGroup({
       numeroIdentification: new FormControl(''),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl('',Validators.required),
+      date: new FormControl('',[Validators.required, inThePast()]),
       prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })
     this.formFauche = new FormGroup({
       faucheId: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl('',Validators.required),
+      date: new FormControl('',[Validators.required, inThePast()]),
       prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })
@@ -113,7 +114,7 @@ export class VenteAddComponent implements OnInit, OnDestroy{
     this.formBovin = new FormGroup({
       numeroIdentification: new FormControl(option),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl('',Validators.required),
+      date: new FormControl('',[Validators.required, inThePast()]),
       prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })

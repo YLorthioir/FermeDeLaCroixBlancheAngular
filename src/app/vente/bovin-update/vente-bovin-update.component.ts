@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FaucheService} from "../../service/fauche.service";
 import {VenteBovin} from "../../models/vente/venteBovin";
 import {Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-vente-bovin-update',
@@ -29,7 +30,7 @@ export class VenteBovinUpdateComponent implements OnInit, OnDestroy {
     this.formBovin = new FormGroup({
       numeroIdentification: new FormControl('',Validators.required),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl('',Validators.required),
+      date: new FormControl('',[Validators.required, inThePast()]),
       prixCoutant: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })
@@ -66,7 +67,7 @@ export class VenteBovinUpdateComponent implements OnInit, OnDestroy {
     this.formBovin = new FormGroup({
       numeroIdentification: new FormControl(this.venteBovin.bovin,Validators.required),
       qtt: new FormControl(this.venteBovin.quantite,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl(this.venteBovin.dateDeVente,Validators.required),
+      date: new FormControl(this.venteBovin.dateDeVente,[Validators.required, inThePast()]),
       prixCoutant: new FormControl(this.venteBovin.prixCoutant,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl(this.venteBovin.prixRevente,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })

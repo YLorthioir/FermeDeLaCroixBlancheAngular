@@ -152,7 +152,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(()=>{
         this.loadRace()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Race déjà existante")
+      }
+    })
   }
 
   enregistrerRace(){
@@ -161,7 +167,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(()=>{
         this.loadRace()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Race déjà existante")
+      }
+    })
   }
 
   //Maladie
@@ -176,7 +188,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadMaladie()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Maladie déjà existante")
+      }
+    })
   }
 
   enregistrerMaladie(){
@@ -185,7 +203,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadMaladie()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Maladie déjà existante")
+      }
+    })
   }
 
   //Traitement
@@ -200,7 +224,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadTraitement()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Traitement déjà existant")
+      }
+    })
   }
 
   enregistrerTraitement(){
@@ -209,7 +239,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadTraitement()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Traitement déjà existant")
+      }
+    })
   }
 
   //Mélanges
@@ -224,7 +260,13 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadMelange()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Melange déjà existant")
+      }
+    })
   }
 
   enregistrerMelange(){
@@ -233,6 +275,12 @@ export class ExtraParamsComponent implements OnInit, OnDestroy{
       tap(() => {
         this.loadMelange()
       })
-    ).subscribe()
+    ).subscribe({
+      next: ()=>{},
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Melange déjà existant")
+      }
+    })
   }
 }

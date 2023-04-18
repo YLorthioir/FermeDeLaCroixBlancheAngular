@@ -1,6 +1,7 @@
 import {Validators} from "@angular/forms";
 import {Race} from "./race";
 import {Champ} from "../champ/champ";
+import {inThePast} from "../../validators/TimeValidators";
 
 export interface Bovin{
   id: number;
@@ -38,7 +39,7 @@ export interface BovinForm{
 export const BovinForm={
   numeroInscription: ['BE',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
   sexe: ['',[Validators.required]],
-  dateDeNaissance: ['',[Validators.required]],
+  dateDeNaissance: ['',[Validators.required, inThePast()]],
   poidsNaissance: ['',[Validators.min(0),Validators.pattern(/[0-9]+$/)]],
   neCesarienne: [false],
   raceId: ['',[Validators.required]],

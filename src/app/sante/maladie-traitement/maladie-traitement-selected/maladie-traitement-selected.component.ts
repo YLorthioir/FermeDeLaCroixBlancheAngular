@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SanteService} from "../../../service/sante.service";
 import {Maladie} from "../../../models/sante/maladie";
 import {Traitement} from "../../../models/sante/traitement";
+import {inThePast} from "../../../validators/TimeValidators";
 
 @Component({
   selector: 'app-maladie-traitement-selected',
@@ -42,7 +43,7 @@ export class MaladieTraitementSelectedComponent implements OnInit{
     this.formInsert = new FormGroup({
       maladie: new FormControl('',Validators.required),
       traitement: new FormControl(''),
-      annee: new FormControl('',[Validators.required]),
+      annee: new FormControl('',[Validators.required, inThePast()]),
     })
     this.formNom = new FormGroup({
       id: new FormControl,
@@ -50,7 +51,7 @@ export class MaladieTraitementSelectedComponent implements OnInit{
     this.formUpdate = new FormGroup({
       maladie: new FormControl('',Validators.required),
       traitement: new FormControl(''),
-      annee: new FormControl('',[Validators.required]),
+      annee: new FormControl('',[Validators.required, inThePast()]),
     })
     this.formNom.get('id')?.valueChanges.subscribe((id) => {
       _santeService.getOneA(id).subscribe( (a)=>{
@@ -129,7 +130,13 @@ export class MaladieTraitementSelectedComponent implements OnInit{
           alert("Maladie ajoutée")
           this.refresh();
         })
-      ).subscribe()
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Maladie déjà existante")
+        }
+      })
   }
 
   updateMaladie(){
@@ -160,7 +167,7 @@ export class MaladieTraitementSelectedComponent implements OnInit{
     this.formUpdate = new FormGroup({
       maladie: new FormControl(this.a.maladieDTO.id,[Validators.required]),
       traitement: new FormControl(this.a.traitementDTO===null?null:this.a.traitementDTO.id),
-      annee: new FormControl(this.a.anneeMaladie,[Validators.required]),
+      annee: new FormControl(this.a.anneeMaladie,[Validators.required, inThePast()]),
     })
   }
 }

@@ -4,38 +4,43 @@
   <div class ="grain">
     <h3>Grains</h3>
 
-    <div class = "listeGrain">
-      <th>Modifier une race</th>
-      <form [formGroup]="formGrainId" class="selection">
-        <select formControlName="grainId">
-          <option *ngFor="let grain of grains$ | async"
-                  [value]="grain.id">{{grain.nomGrain}}</option>
-        </select>
-      </form>
+    <div class="form">
 
-      <form [formGroup]="formGrain" (submit)="enregistrerModifGrain()" class="selected">
-        <td>
-          <label>Nom:</label>
-          <input type="text" formControlName="nomGrain">
-        </td>
-        <td>
-          <button type="submit" [disabled]="!formGrain.valid || formGrain.untouched">Modifier</button>
-        </td>
-      </form>
-    </div>
-    <div class = "addGrain">
-      <th>Ajouter une grain:</th>
-      <div>
-        <td>
-          Nom:
-        </td>
-        <td>
-          <input type="text" [(ngModel)]="nomGrain">
-        </td>
-        <td>
-          <button (click)="enregistrerGrain()"> Ajouter </button>
-        </td>
+      <div class = "listeGrain">
+        <th>Modifier un grain:</th>
+        <br>
+
+        <form [formGroup]="formGrainId" class="selection">
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+            <mat-label>Grain</mat-label>
+            <mat-select formControlName="grainId">
+              <mat-option *ngFor="let grain of grains$ | async"
+                          [value]="grain.id">{{grain.nomGrain}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+
+        <form [formGroup]="formGrain" (submit)="enregistrerModifGrain()" class="selected">
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+            <mat-label>Nom</mat-label>
+            <input type="text" matInput formControlName="nomGrain">
+          </mat-form-field>
+          <button mat-raised-button type="submit" [disabled]="!formGrain.valid || formGrain.untouched">Modifier</button>
+        </form>
+      </div>
+
+      <div class = "addGrain">
+        <th>Ajouter un grain:</th>
+        <br>
+        <div>
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+            <mat-label>Nom</mat-label>
+            <input type="text" matInput [(ngModel)]="nomGrain">
+          </mat-form-field>
+            <button mat-raised-button (click)="enregistrerGrain()"> Ajouter </button>
+        </div>
       </div>
     </div>
+
   </div>
 </div>

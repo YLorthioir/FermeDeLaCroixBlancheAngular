@@ -52,7 +52,13 @@ export class VaccinGestionComponent implements OnInit, OnDestroy{
           alert("Vaccin ajouté")
           this.formInsert.reset();
         })
-      ).subscribe()
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Vaccin déjà existant")
+        }
+      })
   }
 
   updateVaccin(){

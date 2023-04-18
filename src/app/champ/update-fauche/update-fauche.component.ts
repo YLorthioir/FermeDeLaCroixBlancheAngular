@@ -6,7 +6,8 @@ import {FaucheService} from "../../service/fauche.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Fauche} from "../../models/champ/fauche";
 import {Culture} from "../../models/champ/culture";
-import {Observable, Subject, takeUntil, tap} from "rxjs";
+import {Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-update-fauche',
@@ -31,13 +32,13 @@ export class UpdateFaucheComponent implements OnInit, OnDestroy{
     this.formUpdate = new FormGroup({
       annee: new FormControl('',[Validators.required, Validators.min(1950)]),
       cultureId: new FormControl(''),
-      fauche1: new FormControl('',Validators.required),
+      fauche1: new FormControl('',[Validators.required, inThePast()]),
       fauche1Rendement: new FormControl('', [Validators.required, Validators.min(0)]),
-      fauche2: new FormControl(''),
+      fauche2: new FormControl('', inThePast()),
       fauche2Rendement: new FormControl('',Validators.min(0)),
-      fauche3: new FormControl(''),
+      fauche3: new FormControl('', inThePast()),
       fauche3Rendement: new FormControl('',Validators.min(0)),
-      fauche4: new FormControl(''),
+      fauche4: new FormControl('', inThePast()),
       fauche4Rendement: new FormControl('',Validators.min(0)),
     })
   }
@@ -91,13 +92,13 @@ export class UpdateFaucheComponent implements OnInit, OnDestroy{
     this.formUpdate = new FormGroup({
       annee: new FormControl(this.fauche.annee,[Validators.required, Validators.min(1950)]),
       cultureId: new FormControl(this.fauche.cultureDTO.champ.id),
-      fauche1: new FormControl(this.fauche.fauche1,Validators.required),
+      fauche1: new FormControl(this.fauche.fauche1,[Validators.required, inThePast()]),
       fauche1Rendement: new FormControl(this.fauche.fauche1rendement, [Validators.required, Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-      fauche2: new FormControl(this.fauche.fauche2),
+      fauche2: new FormControl(this.fauche.fauche2, inThePast()),
       fauche2Rendement: new FormControl(this.fauche.fauche2rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-      fauche3: new FormControl(this.fauche.fauche3),
+      fauche3: new FormControl(this.fauche.fauche3, inThePast()),
       fauche3Rendement: new FormControl(this.fauche.fauche3rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-      fauche4: new FormControl(this.fauche.fauche4),
+      fauche4: new FormControl(this.fauche.fauche4, inThePast()),
       fauche4Rendement: new FormControl(this.fauche.fauche4rendement,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
     })
   }

@@ -4,6 +4,7 @@ import {Champ} from "../../models/champ/champ";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FaucheService} from "../../service/fauche.service";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-add-fauche',
@@ -23,7 +24,7 @@ export class AddFaucheComponent implements OnInit{
               private readonly faucheService: FaucheService) {
     this.formInsert = new FormGroup({
       annee: new FormControl('',[Validators.required,Validators.pattern(/[0-9]+$/)]),
-      fauche: new FormControl('',Validators.required),
+      fauche: new FormControl('',[Validators.required, inThePast()]),
       faucheRendement: new FormControl('', [Validators.required,Validators.pattern(/[0-9]+$/)]),
       champId: new FormControl('')
     })

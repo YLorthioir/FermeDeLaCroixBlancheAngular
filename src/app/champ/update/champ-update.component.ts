@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ChampService} from "../../service/champ.service";
 import {Champ} from "../../models/champ/champ";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-champ-update',
@@ -28,7 +29,7 @@ export class ChampUpdateComponent implements OnInit, OnDestroy{
     this.formUpdate = new FormGroup({
       lieu: new FormControl('',Validators.required),
       superficie: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      annee: new FormControl('',Validators.pattern(/[0-9]+$/)),
+      dateDerniereChaux: new FormControl('', inThePast()),
     })
     this.formNom.get('id')?.valueChanges.subscribe((id) => {
       champService.getOne(id).subscribe( (champ)=>{
@@ -51,7 +52,7 @@ export class ChampUpdateComponent implements OnInit, OnDestroy{
     this.formUpdate = new FormGroup({
       lieu: new FormControl(this.champ.lieu,Validators.required),
       superficie: new FormControl(this.champ.superficie,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      annee: new FormControl(this.champ.dateDerniereChaux),
+      dateDerniereChaux: new FormControl(this.champ.dateDerniereChaux, inThePast()),
     })
   }
 

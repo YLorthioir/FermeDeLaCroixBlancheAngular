@@ -6,6 +6,7 @@ import {GrainService} from "../../service/grain.service";
 import {Grain} from "../../models/champ/grain";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
 import {Race} from "../../models/bovin/race";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-nouvelle-culture',
@@ -29,9 +30,9 @@ export class AddCultureComponent implements OnInit, OnDestroy{
     this. formCulture = new FormGroup({
       idChamp: new FormControl('',Validators.required),
       temporaire: new FormControl(false,Validators.required),
-      dateMiseEnCulture: new FormControl('', Validators.required),
-      dateDeFin: new FormControl(''),
-      dateDernierEpandage: new FormControl(''),
+      dateMiseEnCulture: new FormControl('', [Validators.required, inThePast()]),
+      dateDeFin: new FormControl('', inThePast()),
+      dateDernierEpandage: new FormControl('', inThePast()),
       qttFumier: new FormControl('',Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(''),
       grainId: new FormControl('', Validators.required),

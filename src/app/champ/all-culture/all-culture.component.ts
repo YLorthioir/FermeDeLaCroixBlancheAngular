@@ -16,12 +16,13 @@ import {Observable, Subject, takeUntil} from "rxjs";
 })
 export class AllCultureComponent implements OnInit, OnDestroy{
 
-  displayedColumns: string[] = ['dateMiseEnCulture', 'dateDeFin', 'estTemporaire', 'dateDernierEpandage', 'qttFumier', 'analysePDF','modifier'];
+  displayedColumns: string[] = ['dateDerniereChaux','dateMiseEnCulture', 'dateDeFin', 'estTemporaire', 'dateDernierEpandage', 'qttFumier', 'analysePDF','modifier'];
   public cultures!: Culture[];
   public loading: boolean = false
   public culture?: Culture;
   public formNom: FormGroup;
   public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+
   dataSource = new MatTableDataSource(this.cultures);
 
   private destroyed$ = new Subject();
@@ -64,6 +65,7 @@ export class AllCultureComponent implements OnInit, OnDestroy{
         takeUntil(this.destroyed$),
         this.cultures = cultures;
         this.dataSource = new MatTableDataSource(this.cultures);
+        this.champService.getOne(id).subscribe()
         this.loading = false;
       }
     })

@@ -12,6 +12,11 @@
 <table mat-table [dataSource]="dataSource"
        matSort (matSortChange)="announceSortChange($event)">
 
+  <ng-container matColumnDef="dateDerniereChaux">
+    <th mat-header-cell *matHeaderCellDef> Date de dernière chaux </th>
+    <td mat-cell *matCellDef="let culture">{{culture.champ.dateDerniereChaux|date : 'd/M/yyyy'}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="dateMiseEnCulture">
     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dateMiseEnCulture"> Date de début </th>
     <td mat-cell *matCellDef="let culture"> {{culture.dateMiseEnCulture|date : 'd/M/yyyy'}} </td>

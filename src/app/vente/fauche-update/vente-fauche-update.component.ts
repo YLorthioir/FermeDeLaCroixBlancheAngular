@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {VenteFauche} from "../../models/vente/venteFauche";
 import {Fauche} from "../../models/champ/fauche";
 import {Subject, takeUntil, tap} from "rxjs";
+import {inThePast} from "../../validators/TimeValidators";
 
 @Component({
   selector: 'app-vente-update',
@@ -30,7 +31,7 @@ export class VenteFaucheUpdateComponent implements OnInit, OnDestroy {
     this.formFauche = new FormGroup({
       faucheId: new FormControl('', [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       qtt: new FormControl('', [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl('', Validators.required),
+      date: new FormControl('', [Validators.required, inThePast()]),
       prixCoutant: new FormControl('', [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl('', [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
     })
@@ -68,7 +69,7 @@ export class VenteFaucheUpdateComponent implements OnInit, OnDestroy {
     this.formFauche = new FormGroup({
       faucheId: new FormControl(this.venteFauche.faucheDTO.id, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       qtt: new FormControl(this.venteFauche.quantite, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl(this.venteFauche.dateDeVente, Validators.required),
+      date: new FormControl(this.venteFauche.dateDeVente, [Validators.required, inThePast()]),
       prixCoutant: new FormControl(this.venteFauche.prixCoutant, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       prixRevente: new FormControl(this.venteFauche.prixRevente, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
     })

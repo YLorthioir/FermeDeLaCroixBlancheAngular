@@ -1,4 +1,5 @@
 import {Validators} from "@angular/forms";
+import {inThePast} from "../../validators/TimeValidators";
 
 export interface Champ{
   id: number;
@@ -10,5 +11,5 @@ export interface Champ{
 export const ChampForm={
   lieu: ['',Validators.required],
   superficie: ['',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]],
-  dateDerniereChaux: [''],
+  dateDerniereChaux: ['', inThePast()],
 }

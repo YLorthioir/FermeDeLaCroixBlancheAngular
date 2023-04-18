@@ -14,6 +14,7 @@ import {MelangeService} from "../../../service/melange.service";
 import {ChampService} from "../../../service/champ.service";
 import {SanteService} from "../../../service/sante.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {inThePast} from "../../../validators/TimeValidators";
 
 @Component({
   selector: 'app-bovin-update-selected',
@@ -53,21 +54,21 @@ export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
       numeroInscription: new FormControl('',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
       nom: new FormControl(''),
       raceId: new FormControl('',[Validators.required]),
-      sexe: new FormControl('',[Validators.required, Validators.pattern('M'||'F')]),
+      sexe: new FormControl('',[Validators.required]),
       pereNI: new FormControl('',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
       mereNI: new FormControl('',[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-      dateDeNaissance: new FormControl('',[Validators.required]),
+      dateDeNaissance: new FormControl('',[Validators.required, inThePast()]),
       poidsNaissance: new FormControl('',[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
       neCesarienne: new FormControl(''),
       enCharge: new FormControl(''),
       champId: new FormControl(''),
-      dateAbattage: new FormControl(''),
+      dateAbattage: new FormControl('', inThePast()),
       raisonAbattage: new FormControl(''),
 
-      dateDerniereInsemination: new FormControl(''),
+      dateDerniereInsemination: new FormControl('', inThePast()),
       perteGrossesse: new FormControl('',Validators.pattern(/[0-9]+$/)),
 
-      dateEngraissement: new FormControl(''),
+      dateEngraissement: new FormControl('', inThePast()),
       melangeId: new FormControl(''),
       poidsSurPattes: new FormControl('',Validators.pattern(/[0-9]+$/)),
       poidsCarcasse: new FormControl('',Validators.pattern(/[0-9]+$/)),
@@ -169,15 +170,15 @@ export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
         sexe: new FormControl(this.bovin.sexe,[Validators.required]),
         pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
         mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required, inThePast()]),
         poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
         neCesarienne: new FormControl(this.bovin.neCesarienne),
         champId: new FormControl(this.bovin.champ?this.bovin.champ.id:undefined),
         enCharge: new FormControl(this.bovin.enCharge),
-        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        dateAbattage: new FormControl(this.bovin.dateAbattage, inThePast()),
         raisonAbattage: new FormControl(this.bovin.raisonAbattage),
 
-        dateDerniereInsemination: new FormControl(this.femelleReproduction.derniereInsemination),
+        dateDerniereInsemination: new FormControl(this.femelleReproduction.derniereInsemination, inThePast()),
         perteGrossesse: new FormControl(this.femelleReproduction.perteGrossesse),
       });
     } else if(this.bovinEngraissement){
@@ -188,15 +189,15 @@ export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
         sexe: new FormControl(this.bovin.sexe,[Validators.required]),
         pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
         mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required, inThePast()]),
         poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
         neCesarienne: new FormControl(this.bovin.neCesarienne),
         champId: new FormControl(this.bovin.champ?this.bovin.champ.id:undefined),
         enCharge: new FormControl(this.bovin.enCharge),
-        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        dateAbattage: new FormControl(this.bovin.dateAbattage, inThePast()),
         raisonAbattage: new FormControl(this.bovin.raisonAbattage),
 
-        dateEngraissement: new FormControl(this.bovinEngraissement.dateEngraissement),
+        dateEngraissement: new FormControl(this.bovinEngraissement.dateEngraissement, inThePast()),
         melangeId: new FormControl(this.bovinEngraissement.melange.id),
         poidsSurPattes: new FormControl(this.bovinEngraissement.poidsSurPattes,Validators.pattern(/[0-9]+$/)),
         poidsCarcasse: new FormControl(this.bovinEngraissement.poidsCarcasse,Validators.pattern(/[0-9]+$/)),
@@ -213,12 +214,12 @@ export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
         sexe: new FormControl(this.bovin.sexe,[Validators.required]),
         pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
         mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required, inThePast()]),
         poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
         neCesarienne: new FormControl(this.bovin.neCesarienne),
         champId: new FormControl(this.bovin.champ?this.bovin.champ.id:null),
         enCharge: new FormControl(this.bovin.enCharge),
-        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        dateAbattage: new FormControl(this.bovin.dateAbattage, inThePast()),
         raisonAbattage: new FormControl(this.bovin.raisonAbattage),
       })
       this.formFinalite = new FormGroup({
