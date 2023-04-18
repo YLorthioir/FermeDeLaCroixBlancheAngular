@@ -1,36 +1,47 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ChampService} from "../../service/champ.service";
 import {ChampForm} from "../../models/champ/champ";
+import {Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-champ-add',
   templateUrl: './champ-add.component.html',
   styleUrls: ['./champ-add.component.scss']
 })
-export class ChampAddComponent{
+export class ChampAddComponent implements OnDestroy{
 
-  private _form: FormGroup;
+  public form: FormGroup;
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _champService: ChampService,
               buider: FormBuilder) {
-    this._form = buider.group(ChampForm)
+    this.form = buider.group(ChampForm)
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   onSubmit(){
-    if(this._form.valid){
-      this._champService.insert(this._form.value).subscribe(
-        (response)=>{
-          this._form.reset();
+    if(this.form.valid){
+      this._champService.insert(this.form.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Champ ajouté")
+          this.form.reset();
+        })
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Champ déjà existant")
+          else if(err.error.error === 'Bad Request')
+            alert("Formulaire invalide")
         }
-      )
+      })
     }
-  }
-
-  //Encapsulation
-
-  get form(): FormGroup {
-    return this._form;
   }
 
 }

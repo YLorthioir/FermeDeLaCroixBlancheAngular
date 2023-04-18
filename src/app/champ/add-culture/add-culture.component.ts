@@ -1,28 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChampService} from "../../service/champ.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Champ} from "../../models/champ/champ";
 import {GrainService} from "../../service/grain.service";
 import {Grain} from "../../models/champ/grain";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
+import {Race} from "../../models/bovin/race";
 
 @Component({
   selector: 'app-nouvelle-culture',
   templateUrl: './add-culture.component.html',
   styleUrls: ['./add-culture.component.scss']
 })
-export class AddCultureComponent implements OnInit{
+export class AddCultureComponent implements OnInit, OnDestroy{
 
-  private _formCulture: FormGroup;
+   public formCulture: FormGroup;
 
-  private _loading: boolean = false;
+   public loading: boolean = false;
 
-  private _champs!: Champ[];
-  private _grains!: Grain[];
+   public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+   public grains$: Observable<Grain[]> = new Observable<Grain[]>;
 
-  constructor(private readonly _champService: ChampService,
-              private readonly _grainService: GrainService,
+  private destroyed$ = new Subject();
+
+  constructor(private readonly  champService: ChampService,
+              private readonly  grainService: GrainService,
               ) {
-    this._formCulture = new FormGroup({
+    this. formCulture = new FormGroup({
       idChamp: new FormControl('',Validators.required),
       temporaire: new FormControl(false,Validators.required),
       dateMiseEnCulture: new FormControl('', Validators.required),
@@ -35,40 +39,22 @@ export class AddCultureComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._loading=true;
-    this._champService.getAll().subscribe(
-      champs =>{
-        this._champs = champs;
-        this._grainService.getAll().subscribe(
-          grains=>{
-            this._grains = grains
-            this._loading = false;
-          }
-        )
-      }
-    )
+    this.champs$=this.champService.getAll();
+    this.grains$=this.grainService.getAll()
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   onSubmit(){
-    if(this._formCulture.valid)
-      this._champService.insertNewCulture(this._formCulture.value).subscribe();
-  }
-
-  //Encapsulation
-
-  get formCulture(): FormGroup {
-    return this._formCulture;
-  }
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get grains(): Grain[] {
-    return this._grains;
+    if(this. formCulture.valid)
+      this. champService.insertNewCulture(this. formCulture.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Culture ajouté")
+          this.formCulture.reset();
+        })
+      ).subscribe();
   }
 }

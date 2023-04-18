@@ -12,12 +12,12 @@ import {Router} from "@angular/router";
 })
 export class VenteAllComponent implements OnInit{
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  private _selectedValue = new FormControl('');
+  public selectedValue = new FormControl('');
 
-  private _venteBovin!: VenteBovin[];
-  private _venteFauche!: VenteFauche[];
+  public venteBovin!: VenteBovin[];
+  public venteFauche!: VenteFauche[];
 
   displayedColumnsBovin: string[] = ['annee', 'date', 'numeroIdentification', 'quantite', 'prixRevente', 'prixCoutant', 'modifier', 'supprimer'];
   displayedColumnsFauche: string[] = ['annee', 'date', 'culture', 'quantite', 'prixRevente', 'prixCoutant', 'modifier', 'supprimer'];
@@ -25,14 +25,18 @@ export class VenteAllComponent implements OnInit{
   constructor(private readonly _venteService: VenteService, private readonly _router: Router) {}
 
   ngOnInit(): void {
-    this._loading=true;
+    this.load()
+  }
+
+  load(){
+    this.loading=true;
     this._venteService.getAllVenteBovin().subscribe(
       value => {
-        this._venteBovin=value;
+        this.venteBovin=value;
         this._venteService.getAllVenteFauche().subscribe(
           valueFauche => {
-            this._venteFauche=valueFauche;
-            this._loading=false
+            this.venteFauche=valueFauche;
+            this.loading=false
           }
         )
       }
@@ -41,11 +45,17 @@ export class VenteAllComponent implements OnInit{
 
   onUpdateFauche(id:number){
     this._router.navigateByUrl("vente/update/fauche/"+id)
-}
+  }
+
+
 
   onDeleteFauche(id:number){
-    console.warn("suppresion")
-    this._venteService.deleteVenteFauche(id).subscribe()
+    var val = confirm("Voulez-vous vraiment supprimer cet élément?");
+    if( val == true ) {
+      this._venteService.deleteVenteFauche(id).subscribe(
+        ()=>this.load()
+      )
+    }
   }
 
   onUpdateBovin(id:number){
@@ -53,26 +63,12 @@ export class VenteAllComponent implements OnInit{
   }
 
   onDeleteBovin(id:number){
-    console.warn("suppresion")
-    this._venteService.deleteVenteBovin(id).subscribe()
-  }
-
-  // Encapsulation
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get selectedValue(): FormControl<string | null> {
-    return this._selectedValue;
-  }
-
-  get venteBovin(): VenteBovin[] {
-    return this._venteBovin;
-  }
-
-  get venteFauche(): VenteFauche[] {
-    return this._venteFauche;
+    var val = confirm("Voulez-vous vraiment supprimer cet élément?");
+    if( val == true ) {
+      this._venteService.deleteVenteBovin(id).subscribe(
+        ()=>this.load()
+      )
+    }
   }
 }
 

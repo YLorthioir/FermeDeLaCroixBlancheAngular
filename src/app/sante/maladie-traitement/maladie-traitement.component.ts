@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {debounceTime, map, Observable, startWith} from "rxjs";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {debounceTime, map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {BovinService} from "../../service/bovin.service";
 import {SanteService} from "../../service/sante.service";
@@ -8,15 +8,17 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-maladie-traitement',
   templateUrl: './maladie-traitement.component.html',
-  styleUrls: ['./maladie-traitement.component.css']
+  styleUrls: ['./maladie-traitement.component.scss']
 })
-export class MaladieTraitementComponent implements OnInit{
+export class MaladieTraitementComponent implements OnInit, OnDestroy{
 
-  private _loading: boolean = false
-  private _bovins!: string[];
-  private _filteredOptions!: Observable<string[]>;
+  public loading: boolean = false
+  public bovins!: string[];
+  public filteredOptions!: Observable<string[]>;
 
-  private _myControl = new FormControl('BE');
+  public myControl = new FormControl('BE');
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _santeService: SanteService,
@@ -27,8 +29,9 @@ export class MaladieTraitementComponent implements OnInit{
 
     this._bovinService.getAllNI().subscribe(
       (bovin) => {
-        this._bovins = bovin;
-        this._filteredOptions = this._myControl.valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        this.bovins = bovin;
+        this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
@@ -37,31 +40,19 @@ export class MaladieTraitementComponent implements OnInit{
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
   private _filter(value: string): string[] {
     const filterValue= value.toLowerCase();
 
-    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
+    return this.bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   OnBovinSelected(option: string){
 
     this._router.navigateByUrl('sante/maladie/'+option);
 
-  }
-
-  //Encaspulation
-
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get filteredOptions(): Observable<string[]> {
-    return this._filteredOptions;
-  }
-
-
-  get myControl(): FormControl<string | null> {
-    return this._myControl;
   }
 }

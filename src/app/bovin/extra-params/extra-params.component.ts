@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Race} from "../../models/bovin/race";
 import {RaceService} from "../../service/race.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -7,297 +7,232 @@ import {Maladie} from "../../models/sante/maladie";
 import {Traitement} from "../../models/sante/traitement";
 import {MelangeService} from "../../service/melange.service";
 import {Melange} from "../../models/bovin/melange";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-extra-params',
   templateUrl: './extra-params.component.html',
   styleUrls: ['./extra-params.component.scss']
 })
-export class ExtraParamsComponent implements OnInit{
+export class ExtraParamsComponent implements OnInit, OnDestroy{
 
-  private _races!: Race[];
-  private _race!: Race;
-  private _nomRace: string ="";
+  public races$: Observable<Race[]> = new Observable<Race[]>;
+  public race!: Race;
+  public nomRace: string ="";
 
-  private _formRaceId: FormGroup;
-  private _formRace: FormGroup;
+  public formRaceId: FormGroup;
+  public formRace: FormGroup;
 
-  private _maladies!: Maladie[];
-  private _maladie!: Maladie;
-  private _nomMaladie: string ="";
+  public maladies$: Observable<Maladie[]> = new Observable<Maladie[]>;
+  public maladie!: Maladie;
+  public nomMaladie: string ="";
 
-  private _formMaladieId: FormGroup;
-  private _formMaladie: FormGroup;
+  public formMaladieId: FormGroup;
+  public formMaladie: FormGroup;
 
-  private _traitements!: Traitement[];
-  private _traitement!: Traitement;
+  public traitements$: Observable<Traitement[]> = new Observable<Traitement[]>;
+  public traitement!: Traitement;
 
-  private _formTraitementId: FormGroup;
-  private _formTraitementUpdate: FormGroup;
-  private readonly _formTraitement: FormGroup;
+  public formTraitementId: FormGroup;
+  public formTraitementUpdate: FormGroup;
+  public formTraitement: FormGroup;
 
-  private _melanges!: Melange[];
-  private _melange!: Melange;
+  public melanges$: Observable<Melange[]> = new Observable<Melange[]>;
+  public melange!: Melange;
 
-  private _formMelangeId: FormGroup;
-  private _formMelangeUpdate: FormGroup;
-  private readonly _formMelange: FormGroup;
+  public formMelangeId: FormGroup;
+  public formMelangeUpdate: FormGroup;
+  public formMelange: FormGroup;
 
-  constructor(private readonly _raceService: RaceService,
-              private readonly _santeService: SanteService,
-              private readonly _melangeService: MelangeService) {
-    this._formRaceId= new FormGroup({
+  private destroyed$ = new Subject();
+
+  constructor(private readonly raceService: RaceService,
+              private readonly santeService: SanteService,
+              private readonly melangeService: MelangeService) {
+    this.formRaceId= new FormGroup({
       raceId: new FormControl('')
     })
-    this._formRaceId.get('raceId')?.valueChanges.subscribe((v) => {
-      this._raceService.getOne(v).subscribe({
+    this.formRaceId.get('raceId')?.valueChanges.subscribe((v) => {
+      this.raceService.getOne(v).subscribe({
         next: (race) => {
-          this._race = race;
-          this._formRace = new FormGroup({
-            nom: new FormControl(this._race.nom, Validators.required)
+          this.race = race;
+          this.formRace = new FormGroup({
+            nom: new FormControl(this.race.nom, Validators.required)
           })
         }})
     })
-    this._formRace = new FormGroup({
+    this.formRace = new FormGroup({
       nom: new FormControl('',Validators.required)
     })
 
-    this._formMaladieId= new FormGroup({
+    this.formMaladieId= new FormGroup({
       maladieId: new FormControl('')
     })
-    this._formMaladieId.get('maladieId')?.valueChanges.subscribe((v) => {
-      this._santeService.getMaladie(v).subscribe({
+    this.formMaladieId.get('maladieId')?.valueChanges.subscribe((v) => {
+      this.santeService.getMaladie(v).subscribe({
         next: (maladie) => {
-          this._maladie = maladie;
-          this._formMaladie = new FormGroup({
-            nom: new FormControl(this._maladie.nom,Validators.required)
+          this.maladie = maladie;
+          this.formMaladie = new FormGroup({
+            nom: new FormControl(this.maladie.nom,Validators.required)
           })
         }})
     })
-    this._formMaladie = new FormGroup({
+    this.formMaladie = new FormGroup({
       nom: new FormControl('',Validators.required)
     })
 
 
-    this._formTraitementId= new FormGroup({
+    this.formTraitementId= new FormGroup({
       traitementId: new FormControl('')
     })
-    this._formTraitementId.get('traitementId')?.valueChanges.subscribe((v) => {
-      this._santeService.getTraitement(v).subscribe({
+    this.formTraitementId.get('traitementId')?.valueChanges.subscribe((v) => {
+      this.santeService.getTraitement(v).subscribe({
         next: (traitement) => {
-          this._traitement = traitement;
-          this._formTraitementUpdate = new FormGroup({
-            nomTraitement: new FormControl(this._traitement.nomTraitement),
-            actif: new FormControl(this._traitement.actif),
+          this.traitement = traitement;
+          this.formTraitementUpdate = new FormGroup({
+            nomTraitement: new FormControl(this.traitement.nomTraitement),
+            actif: new FormControl(this.traitement.actif),
           });
         }})
     })
-    this._formTraitementUpdate = new FormGroup({
+    this.formTraitementUpdate = new FormGroup({
       nomTraitement: new FormControl('',Validators.required),
       actif: new FormControl('',Validators.required),
     })
-    this._formTraitement = new FormGroup({
+    this.formTraitement = new FormGroup({
       nomTraitement: new FormControl('',Validators.required),
       actif: new FormControl('',Validators.required),
     })
 
-    this._formMelangeId= new FormGroup({
+    this.formMelangeId= new FormGroup({
       melangeId: new FormControl('')
     })
-    this._formMelangeId.get('melangeId')?.valueChanges.subscribe((v) => {
-      this._melangeService.getMelange(v).subscribe({
+    this.formMelangeId.get('melangeId')?.valueChanges.subscribe((v) => {
+      this.melangeService.getMelange(v).subscribe({
         next: (melange) => {
-          this._melange = melange
-          this._formMelangeUpdate = new FormGroup({
-            nomMelange: new FormControl(this._melange.nomMelange,Validators.required),
-            description: new FormControl(this._melange.description,Validators.required),
+          this.melange = melange
+          this.formMelangeUpdate = new FormGroup({
+            nomMelange: new FormControl(this.melange.nomMelange,Validators.required),
+            description: new FormControl(this.melange.description,Validators.required),
           });
         }})
     })
-    this._formMelangeUpdate = new FormGroup({
+    this.formMelangeUpdate = new FormGroup({
       nomMelange: new FormControl('',Validators.required),
       description: new FormControl('',Validators.required),
     })
-    this._formMelange = new FormGroup({
+    this.formMelange = new FormGroup({
       nomMelange: new FormControl('',Validators.required),
       description: new FormControl('',Validators.required),
     })
   }
+
   ngOnInit(): void {
 
-    this._raceService.getAllRace().subscribe(value => {
-      this._races = value;
-    })
-    this._santeService.getAllMaladie().subscribe(value => {
-      this._maladies = value;
-    })
-    this._santeService.getAllTraitement().subscribe(value => {
-      this._traitements = value;
-    })
-    this._melangeService.getAllMelange().subscribe(value => {
-      this._melanges = value;
-    })
+    this.loadRace();
+    this.loadMaladie();
+    this.loadTraitement();
+    this.loadMelange()
   }
 
-  //Getters et setters
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
 
 //Race
 
-  refreshRace(){
-    this._raceService.getAllRace().subscribe(value => {
-      this._races = value;
-    })
+  loadRace(){
+    this.races$=this.raceService.getAllRace();
   }
 
   enregistrerModifRace(){
-    this._raceService.update(this._race.id, this._formRace.value).subscribe((response: any) => {
-      this.refreshRace();
-    });
+    this.raceService.update(this.race.id, this.formRace.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(()=>{
+        this.loadRace()
+      })
+    ).subscribe()
   }
 
   enregistrerRace(){
-    this._raceService.add(this._nomRace).subscribe((response: any) => {
-      this.refreshRace();
-    });
+    this.raceService.add(this.nomRace).pipe(
+      takeUntil(this.destroyed$),
+      tap(()=>{
+        this.loadRace()
+      })
+    ).subscribe()
   }
 
   //Maladie
 
-  refreshMaladie(){
-    this._santeService.getAllMaladie().subscribe(value => {
-      this._maladies = value;
-    })
+  loadMaladie(){
+    this.maladies$=this.santeService.getAllMaladie();
   }
 
-  enregistrerModifMaladie(){
-    this._santeService.updateMaladie(this._maladie.id, this._formMaladie.value).subscribe((response: any) => {
-      this.refreshMaladie();
-    });
+  enregistrerModifMaladie() {
+    this.santeService.updateMaladie(this.maladie.id, this.formMaladie.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadMaladie()
+      })
+    ).subscribe()
   }
 
   enregistrerMaladie(){
-    this._santeService.insertMaladie(this._nomMaladie).subscribe((response: any) => {
-      this.refreshMaladie();
-    });
+    this.santeService.insertMaladie(this.nomMaladie).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadMaladie()
+      })
+    ).subscribe()
   }
 
   //Traitement
 
-  refreshTraitement(){
-    this._santeService.getAllTraitement().subscribe(value => {
-      this._traitements = value;
-    })
+  loadTraitement(){
+    this.traitements$ = this.santeService.getAllTraitement()
   }
 
   enregistrerModifTraitement(){
-    this._santeService.updateTraitement(this._traitement.id, this._formTraitementUpdate.value).subscribe((response: any) => {
-      this.refreshTraitement();
-    });
+    this.santeService.updateTraitement(this.traitement.id, this.formTraitementUpdate.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadTraitement()
+      })
+    ).subscribe()
   }
 
   enregistrerTraitement(){
-    this._santeService.insertTraitement(this._formTraitement.value).subscribe((response: any) => {
-      this.refreshTraitement();
-    });
+    this.santeService.insertTraitement(this.formTraitement.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadTraitement()
+      })
+    ).subscribe()
   }
 
   //Mélanges
 
-  refreshMelange(){
-    this._melangeService.getAllMelange().subscribe(value => {
-      this._melanges = value;
-    })
+  loadMelange(){
+    this.melanges$ = this.melangeService.getAllMelange();
   }
 
   enregistrerModifMelange(){
-    this._melangeService.updateMelange(this._melange.id, this._formMelangeUpdate.value).subscribe((response: any) => {
-      this.refreshMelange();
-    });
+    this.melangeService.updateMelange(this.melange.id, this.formMelangeUpdate.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadMelange()
+      })
+    ).subscribe()
   }
 
   enregistrerMelange(){
-    this._melangeService.insertMelange(this._formMelange.value).subscribe((response: any) => {
-      this.refreshMelange();
-    });
-  }
-
-
-  //Getters et setters
-
-  get nomRace(): string {
-    return this._nomRace;
-  }
-
-  set nomRace(value: string) {
-    if(value!="")
-      this._nomRace = value;
-  }
-
-  get races(): Race[] {
-    return this._races;
-  }
-
-  get race(): Race {
-    return this._race;
-  }
-
-  get formRace(): FormGroup {
-    return this._formRace;
-  }
-
-  get formRaceId(): FormGroup {
-    return this._formRaceId;
-  }
-
-  get maladies(): Maladie[] {
-    return this._maladies;
-  }
-
-  get nomMaladie(): string {
-    return this._nomMaladie;
-  }
-
-  set nomMaladie(value: string) {
-    this._nomMaladie = value;
-  }
-
-  get formMaladieId(): FormGroup {
-    return this._formMaladieId;
-  }
-
-  get formMaladie(): FormGroup {
-    return this._formMaladie;
-  }
-
-  get traitements(): Traitement[] {
-    return this._traitements;
-  }
-
-  get formTraitementId(): FormGroup {
-    return this._formTraitementId;
-  }
-
-  get formTraitementUpdate(): FormGroup {
-    return this._formTraitementUpdate;
-  }
-
-  get formTraitement(): FormGroup {
-    return this._formTraitement;
-  }
-
-  get formMelange(): FormGroup {
-    return this._formMelange;
-  }
-
-  get melanges(): Melange[] {
-    return this._melanges;
-  }
-
-  get formMelangeId(): FormGroup {
-    return this._formMelangeId;
-  }
-
-  get formMelangeUpdate(): FormGroup {
-    return this._formMelangeUpdate;
+    this.melangeService.insertMelange(this.formMelange.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(() => {
+        this.loadMelange()
+      })
+    ).subscribe()
   }
 }

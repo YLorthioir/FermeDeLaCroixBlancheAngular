@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Bovin} from "../../../models/bovin/bovin";
-import {debounceTime, map, Observable, startWith} from "rxjs";
+import {debounceTime, map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {BovinService} from "../../../service/bovin.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -10,37 +10,40 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './bovin-genealogy-selected.component.html',
   styleUrls: ['./bovin-genealogy-selected.component.scss']
 })
-export class BovinGenealogySelectedComponent implements OnInit{
+export class BovinGenealogySelectedComponent implements OnInit, OnDestroy{
 
-  private _loading: boolean = false
-  private _bovin!: Bovin;
-  private _bovins!: string[];
-  private _filteredOptions!: Observable<string[]>;
-  private _selectedValue = new FormControl('');
+  public loading: boolean = false
+  public bovin!: Bovin;
+  public bovins!: string[];
+  public filteredOptions!: Observable<string[]>;
+  public selectedValue = new FormControl('');
 
-  private _myControl = new FormControl(this._route.snapshot.params['param']);
+  public myControl = new FormControl(this.route.snapshot.params['param']);
 
-  private _pere?: Bovin;
-  private _mere?: Bovin;
-  private _gpp?: Bovin;
-  private _gpm?: Bovin;
-  private _gmp?: Bovin;
-  private _gmm?: Bovin;
-  private _enfants: Bovin[] = [];
-  private _petitsEnfants: Bovin[] =[];
+  public pere?: Bovin;
+  public mere?: Bovin;
+  public gpp?: Bovin;
+  public gpm?: Bovin;
+  public gmp?: Bovin;
+  public gmm?: Bovin;
+  public enfants: Bovin[] = [];
+  public petitsEnfants: Bovin[] =[];
 
-  constructor(private readonly _bovinService: BovinService,
-              private readonly _route: ActivatedRoute,
-              private readonly _router: Router) {
-    this.getBovin(this._route.snapshot.params['param']);
+  private destroyed$ = new Subject();
+
+  constructor(private readonly bovinService: BovinService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) {
+    this.getBovin(this.route.snapshot.params['param']);
   }
 
   ngOnInit(): void {
 
-    this._bovinService.getAllNI().subscribe(
+    this.bovinService.getAllNI().subscribe(
       (bovin) => {
-        this._bovins = bovin;
-        this._filteredOptions = this._myControl.valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        this.bovins = bovin;
+        this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
@@ -49,55 +52,60 @@ export class BovinGenealogySelectedComponent implements OnInit{
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
   private _filter(value: string): string[] {
     const filterValue= value.toLowerCase();
 
-    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
+    return this.bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   getBovin(numeroIdentification: string){
 
-    this._loading=true;
+    this.loading=true;
 
-    this._enfants=[];
-    this._petitsEnfants=[];
+    this.enfants=[];
+    this.petitsEnfants=[];
 
-    this._pere=undefined;
-    this._mere=undefined;
-    this._gpp=undefined;
-    this._gpm=undefined
-    this._gmp=undefined;
-    this._gmm=undefined;
+    this.pere=undefined;
+    this.mere=undefined;
+    this.gpp=undefined;
+    this.gpm=undefined
+    this.gmp=undefined;
+    this.gmm=undefined;
 
-    this._bovinService.getOne(numeroIdentification).subscribe((bovin) => {
-      this._bovin = bovin
+    this.bovinService.getOne(numeroIdentification).subscribe((bovin) => {
+      takeUntil(this.destroyed$),
+      this.bovin = bovin
 
-      if(this._bovin.pereNI!= null && this._bovins.includes(this._bovin.pereNI)){
-        this._bovinService.getOne(this._bovin.pereNI).subscribe((bovin)=>{
-          this._pere=bovin
-          if(this._pere.pereNI!= null){
-            this._bovinService.getOne(this._pere.pereNI).subscribe((bovin)=>this._gpp=bovin);
+      if(this.bovin.pereNI!= null && this.bovins.includes(this.bovin.pereNI)){
+        this.bovinService.getOne(this.bovin.pereNI).subscribe((bovin)=>{
+          this.pere=bovin
+          if(this.pere.pereNI!= null){
+            this.bovinService.getOne(this.pere.pereNI).subscribe((bovin)=>this.gpp=bovin);
           }
-          if(this._bovin.mereNI!= null){
-            this._bovinService.getOne(this._pere.mereNI).subscribe((bovin)=>this._gmp=bovin);
+          if(this.bovin.mereNI!= null){
+            this.bovinService.getOne(this.pere.mereNI).subscribe((bovin)=>this.gmp=bovin);
           }
         });
       }
-      if(this._bovin.mereNI!= null && this._bovins.includes(this._bovin.mereNI)){
-        this._bovinService.getOne(this._bovin.mereNI).subscribe((bovin)=>{
-            this._mere=bovin
-          if(this._mere.pereNI!= null){
-            this._bovinService.getOne(this._mere.pereNI).subscribe((bovin)=>this._gpm=bovin);
+      if(this.bovin.mereNI!= null && this.bovins.includes(this.bovin.mereNI)){
+        this.bovinService.getOne(this.bovin.mereNI).subscribe((bovin)=>{
+            this.mere=bovin
+          if(this.mere.pereNI!= null){
+            this.bovinService.getOne(this.mere.pereNI).subscribe((bovin)=>this.gpm=bovin);
           }
-          if(this._mere.mereNI!= null){
-            this._bovinService.getOne(this._mere.mereNI).subscribe((bovin)=>this._gmm=bovin);
+          if(this.mere.mereNI!= null){
+            this.bovinService.getOne(this.mere.mereNI).subscribe((bovin)=>this.gmm=bovin);
           }
         })
       }
 
-      this._bovinService.getEnfants(this._bovin.numeroInscription).subscribe((listeEnfant)=>{
-        this._enfants=listeEnfant;
-        this._enfants.sort((a, b) => {
+      this.bovinService.getEnfants(this.bovin.numeroInscription).subscribe((listeEnfant)=>{
+        this.enfants=listeEnfant;
+        this.enfants.sort((a, b) => {
             const aNI = a.numeroInscription.toUpperCase(); // ignore upper and lowercase
             const bNI = b.numeroInscription.toUpperCase(); // ignore upper and lowercase
             if (aNI < bNI) {
@@ -110,11 +118,11 @@ export class BovinGenealogySelectedComponent implements OnInit{
             // names must be equal
             return 0;
           });
-        this._enfants.forEach(enfants =>{
-          this._bovinService.getEnfants(enfants.numeroInscription).subscribe((listePetitsEnfants)=>{
+        this.enfants.forEach(enfants =>{
+          this.bovinService.getEnfants(enfants.numeroInscription).subscribe((listePetitsEnfants)=>{
               listePetitsEnfants.forEach(b=> {
-                this._petitsEnfants.push(b);
-                this._petitsEnfants.sort((a, b) => {
+                this.petitsEnfants.push(b);
+                this.petitsEnfants.sort((a, b) => {
                   const aNI = a.numeroInscription.toUpperCase(); // ignore upper and lowercase
                   const bNI = b.numeroInscription.toUpperCase(); // ignore upper and lowercase
                   if (aNI < bNI) {
@@ -134,71 +142,17 @@ export class BovinGenealogySelectedComponent implements OnInit{
       })
     })
 
-    this._loading = false;
+    this.loading = false;
   }
 
   OnBovinSelected(option: string){
-    this._enfants=[];
-    this._petitsEnfants=[];
-    this._router.navigateByUrl('bovin/genealogy/'+option);
+    this.enfants=[];
+    this.petitsEnfants=[];
+    this.router.navigateByUrl('bovin/genealogy/'+option);
     this.getBovin(option);
   }
 
   refresh(){
-    this.getBovin(this._bovin.numeroInscription)
-  }
-
-  //Encapsulation
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get bovin(): Bovin {
-    return this._bovin;
-  }
-
-  get filteredOptions(): Observable<string[]> {
-    return this._filteredOptions;
-  }
-
-  get selectedValue(): FormControl<string | null> {
-    return this._selectedValue;
-  }
-
-  get myControl(): FormControl<string | null> {
-    return this._myControl;
-  }
-
-  get pere(): Bovin|undefined {
-    return this._pere;
-  }
-
-  get mere(): Bovin|undefined{
-    return this._mere;
-  }
-
-  get gpp(): Bovin|undefined {
-    return this._gpp;
-  }
-
-  get gpm(): Bovin|undefined {
-    return this._gpm;
-  }
-
-  get gmp(): Bovin|undefined {
-    return this._gmp;
-  }
-
-  get gmm(): Bovin|undefined {
-    return this._gmm;
-  }
-
-  get enfants(): Bovin[] {
-    return this._enfants;
-  }
-
-  get petitsEnfants(): Bovin[] {
-    return this._petitsEnfants;
+    this.getBovin(this.bovin.numeroInscription)
   }
 }

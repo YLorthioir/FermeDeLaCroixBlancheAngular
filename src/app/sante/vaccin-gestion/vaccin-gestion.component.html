@@ -41,7 +41,7 @@
       <mat-form-field appearance="outline" style="padding-right: 10px">
         <mat-label>Nom du vaccin</mat-label>
         <mat-select formControlName="nom">
-          <mat-option  *ngFor="let vaccin of vaccins"
+          <mat-option  *ngFor="let vaccin of vaccins$ | async"
                        [value]="vaccin.nom">{{vaccin.nom}}</mat-option>
         </mat-select>
       </mat-form-field>

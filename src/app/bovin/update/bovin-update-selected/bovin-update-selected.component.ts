@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Bovin} from "../../../models/bovin/bovin";
 import {Champ} from "../../../models/champ/champ";
 import {Melange} from "../../../models/bovin/melange";
-import {debounceTime, map, Observable, startWith} from "rxjs";
+import {debounceTime, map, Observable, startWith, Subject} from "rxjs";
 import {A} from "../../../models/sante/a";
 import {Race} from "../../../models/bovin/race";
 import {FemelleReproduction} from "../../../models/bovin/femelleReproduction";
@@ -20,24 +20,26 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './bovin-update-selected.component.html',
   styleUrls: ['./bovin-update-selected.component.scss']
 })
-export class BovinUpdateSelectedComponent implements OnInit{
+export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
 
-  private _loading: boolean = false
-  private _bovin!: Bovin;
-  private _bovins!: string[];
-  private _champs!: Champ[];
-  private _melanges!: Melange[];
-  private _filteredOptions!: Observable<string[]>;
-  private _aCommeMaladie!: A[];
-  private _races!: Race[];
-  private _femelleReproduction?: FemelleReproduction;
-  private _bovinEngraissement?: BovinEngraissement;
-  private _taureaux!: Bovin[];
+  public loading: boolean = false
+  public bovin!: Bovin;
+  public bovins!: string[];
+  public champs!: Champ[];
+  public melanges!: Melange[];
+  public filteredOptions!: Observable<string[]>;
+  public aCommeMaladie!: A[];
+  public races!: Race[];
+  public femelleReproduction?: FemelleReproduction;
+  public bovinEngraissement?: BovinEngraissement;
+  public taureaux!: Bovin[];
 
-  private _myControl = new FormControl('BE');
+  public myControl = new FormControl('BE');
 
-  private _formInformations!: FormGroup;
-  private _formFinalite!: FormGroup;
+  public formInformations!: FormGroup;
+  public formFinalite!: FormGroup;
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _raceService: RaceService,
@@ -47,7 +49,7 @@ export class BovinUpdateSelectedComponent implements OnInit{
               private readonly _router: Router,
               private readonly _route: ActivatedRoute
               ) {
-    this._formInformations = new FormGroup({
+    this.formInformations = new FormGroup({
       numeroInscription: new FormControl('',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
       nom: new FormControl(''),
       raceId: new FormControl('',[Validators.required]),
@@ -70,7 +72,7 @@ export class BovinUpdateSelectedComponent implements OnInit{
       poidsSurPattes: new FormControl('',Validators.pattern(/[0-9]+$/)),
       poidsCarcasse: new FormControl('',Validators.pattern(/[0-9]+$/)),
     })
-    this._formFinalite = new FormGroup({
+    this.formFinalite = new FormGroup({
       finalite: new FormControl(''),
     })
 
@@ -80,20 +82,21 @@ export class BovinUpdateSelectedComponent implements OnInit{
   ngOnInit(): void {
     this._raceService.getAllRace().subscribe(
       (races)=> {
-        this._races = races;
+        this.races = races;
       }
     )
 
     this._bovinService.getAllTaureaux().subscribe(
       (t)=>{
-        this._taureaux=t;
+        this.taureaux=t;
       }
     )
 
+
     this._bovinService.getAllNI().subscribe(
       (bovins) => {
-        this._bovins = bovins;
-        this._filteredOptions = this._myControl.valueChanges.pipe(
+        this.bovins = bovins;
+        this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
@@ -103,45 +106,49 @@ export class BovinUpdateSelectedComponent implements OnInit{
 
     this._raceService.getAllRace().subscribe(
       (race)=>
-        this._races=race
+        this.races=race
     )
 
     this._melangeService.getAllMelange().subscribe(
       (melange)=>
-        this._melanges=melange
+        this.melanges=melange
     )
 
     this._champService.getAll().subscribe(
       (champ)=>
-        this._champs=champ
+        this.champs=champ
     )
   }
 
-  private _filter(value: string): string[] {
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
+  public _filter(value: string): string[] {
     const filterValue= value.toLowerCase();
 
-    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
+    return this.bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   getBovin(numeroIdentification: string){
-    this._loading=true;
+    this.loading=true;
 
     this._bovinService.getOne(numeroIdentification).subscribe((bovin) => {
-      this._bovin = bovin
+      this.bovin = bovin
 
-      this._santeService.getA(this._bovin.id).subscribe(
+      this._santeService.getA(this.bovin.id).subscribe(
         (a) => {
-          this._aCommeMaladie = a
+          this.aCommeMaladie = a
 
-          this._bovinService.getInfosReproduction(this._bovin.id).subscribe(
+          this._bovinService.getInfosReproduction(this.bovin.id).subscribe(
             (f) =>{
-              this._femelleReproduction = f;
+              this.femelleReproduction = f;
 
-              this._bovinService.getInfosEngraissement(this._bovin.id).subscribe(
+              this._bovinService.getInfosEngraissement(this.bovin.id).subscribe(
                 (b) =>{
-                  this._bovinEngraissement = b;
+                  this.bovinEngraissement = b;
 
-                  this._loading=false;
+                  this.loading=false;
 
                   this.setFormInformation();
                   this.setFormInformationComp();
@@ -154,83 +161,83 @@ export class BovinUpdateSelectedComponent implements OnInit{
   }
 
   setFormInformation(){
-    if(this._femelleReproduction){
-      this._formInformations = new FormGroup({
-        numeroInscription: new FormControl(this._bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        nom: new FormControl(this._bovin.nom),
-        raceId: new FormControl(this._bovin.race.id,[Validators.required]),
-        sexe: new FormControl(this._bovin.sexe,[Validators.required, Validators.pattern('M'||'F')]),
-        pereNI: new FormControl(this._bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        mereNI: new FormControl(this._bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this._bovin.dateDeNaissance,[Validators.required]),
-        poidsNaissance: new FormControl(this._bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-        neCesarienne: new FormControl(this._bovin.neCesarienne),
-        champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
-        enCharge: new FormControl(this._bovin.enCharge),
-        dateAbattage: new FormControl(this._bovin.dateAbattage),
-        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
+    if(this.femelleReproduction){
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id,[Validators.required]),
+        sexe: new FormControl(this.bovin.sexe,[Validators.required]),
+        pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ?this.bovin.champ.id:undefined),
+        enCharge: new FormControl(this.bovin.enCharge),
+        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        raisonAbattage: new FormControl(this.bovin.raisonAbattage),
 
-        dateDerniereInsemination: new FormControl(this._femelleReproduction.derniereInsemination),
-        perteGrossesse: new FormControl(this._femelleReproduction.perteGrossesse),
+        dateDerniereInsemination: new FormControl(this.femelleReproduction.derniereInsemination),
+        perteGrossesse: new FormControl(this.femelleReproduction.perteGrossesse),
       });
-    } else if(this._bovinEngraissement){
-      this._formInformations = new FormGroup({
-        numeroInscription: new FormControl(this._bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        nom: new FormControl(this._bovin.nom),
-        raceId: new FormControl(this._bovin.race.id,[Validators.required]),
-        sexe: new FormControl(this._bovin.sexe,[Validators.required, Validators.pattern('M'||'F')]),
-        pereNI: new FormControl(this._bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        mereNI: new FormControl(this._bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this._bovin.dateDeNaissance,[Validators.required]),
-        poidsNaissance: new FormControl(this._bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-        neCesarienne: new FormControl(this._bovin.neCesarienne),
-        champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
-        enCharge: new FormControl(this._bovin.enCharge),
-        dateAbattage: new FormControl(this._bovin.dateAbattage),
-        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
+    } else if(this.bovinEngraissement){
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id,[Validators.required]),
+        sexe: new FormControl(this.bovin.sexe,[Validators.required]),
+        pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ?this.bovin.champ.id:undefined),
+        enCharge: new FormControl(this.bovin.enCharge),
+        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        raisonAbattage: new FormControl(this.bovin.raisonAbattage),
 
-        dateEngraissement: new FormControl(this._bovinEngraissement.dateEngraissement),
-        melangeId: new FormControl(this._bovinEngraissement.melange.id),
-        poidsSurPattes: new FormControl(this._bovinEngraissement.poidsSurPattes,Validators.pattern(/[0-9]+$/)),
-        poidsCarcasse: new FormControl(this._bovinEngraissement.poidsCarcasse,Validators.pattern(/[0-9]+$/)),
+        dateEngraissement: new FormControl(this.bovinEngraissement.dateEngraissement),
+        melangeId: new FormControl(this.bovinEngraissement.melange.id),
+        poidsSurPattes: new FormControl(this.bovinEngraissement.poidsSurPattes,Validators.pattern(/[0-9]+$/)),
+        poidsCarcasse: new FormControl(this.bovinEngraissement.poidsCarcasse,Validators.pattern(/[0-9]+$/)),
       })
-      this._formFinalite = new FormGroup({
+      this.formFinalite = new FormGroup({
         finalite: new FormControl('BovinEngraissement'),
       })
     } else {
 
-      this._formInformations = new FormGroup({
-        numeroInscription: new FormControl(this._bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        nom: new FormControl(this._bovin.nom),
-        raceId: new FormControl(this._bovin.race.id,[Validators.required]),
-        sexe: new FormControl(this._bovin.sexe,[Validators.required, Validators.pattern('M'||'F')]),
-        pereNI: new FormControl(this._bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        mereNI: new FormControl(this._bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
-        dateDeNaissance: new FormControl(this._bovin.dateDeNaissance,[Validators.required]),
-        poidsNaissance: new FormControl(this._bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
-        neCesarienne: new FormControl(this._bovin.neCesarienne),
-        champId: new FormControl(this._bovin.champ?this._bovin.champ.id:undefined),
-        enCharge: new FormControl(this._bovin.enCharge),
-        dateAbattage: new FormControl(this._bovin.dateAbattage),
-        raisonAbattage: new FormControl(this._bovin.raisonAbattage),
+      this.formInformations = new FormGroup({
+        numeroInscription: new FormControl(this.bovin.numeroInscription,[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        nom: new FormControl(this.bovin.nom),
+        raceId: new FormControl(this.bovin.race.id,[Validators.required]),
+        sexe: new FormControl(this.bovin.sexe,[Validators.required]),
+        pereNI: new FormControl(this.bovin.pereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        mereNI: new FormControl(this.bovin.mereNI,[Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]),
+        dateDeNaissance: new FormControl(this.bovin.dateDeNaissance,[Validators.required]),
+        poidsNaissance: new FormControl(this.bovin.poidsNaissance,[Validators.min(0),Validators.pattern(/[0-9]+$/)]),
+        neCesarienne: new FormControl(this.bovin.neCesarienne),
+        champId: new FormControl(this.bovin.champ?this.bovin.champ.id:null),
+        enCharge: new FormControl(this.bovin.enCharge),
+        dateAbattage: new FormControl(this.bovin.dateAbattage),
+        raisonAbattage: new FormControl(this.bovin.raisonAbattage),
       })
-      this._formFinalite = new FormGroup({
+      this.formFinalite = new FormGroup({
         finalite: new FormControl('Bovin'),
       })
     }
   }
 
   setFormInformationComp(){
-    if(this._femelleReproduction) {
-      this._formFinalite = new FormGroup({
+    if(this.femelleReproduction) {
+      this.formFinalite = new FormGroup({
         finalite: new FormControl('FemelleReproduction'),
       })
-    } else if(this._bovinEngraissement) {
-      this._formFinalite = new FormGroup({
+    } else if(this.bovinEngraissement) {
+      this.formFinalite = new FormGroup({
         finalite: new FormControl('BovinEngraissement'),
       })
     } else {
-      this._formFinalite = new FormGroup({
+      this.formFinalite = new FormGroup({
         finalite: new FormControl('Bovin'),
       })
     }
@@ -244,67 +251,22 @@ export class BovinUpdateSelectedComponent implements OnInit{
   }
 
   UpdateBovin(){
-    this._bovinService.update(this._bovin.id, this._formInformations.value).subscribe()
+    this._bovinService.update(this.bovin.id, this.formInformations.value).subscribe({
+      next: ()=>this._router.navigateByUrl('bovin/one/'+this.bovin.numeroInscription),
+      error: (err)=> {
+        if(err.error.status === 'BAD_REQUEST')
+          alert("Numéro d'identification déjà existant")
+        else if(err.error.error === 'Bad Request')
+          alert("Formulaire invalide")
+      }
+      }
+    )
   }
 
   UpdateType(){
-    this._bovinService.updateType(this._bovin.id, this._formFinalite.value).subscribe()
-  }
-
-  //Encapsulation
-
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get bovin(): Bovin {
-    return this._bovin;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get melanges(): Melange[] {
-    return this._melanges;
-  }
-
-  get filteredOptions(): Observable<string[]> {
-    return this._filteredOptions;
-  }
-
-  get aCommeMaladie(): A[] {
-    return this._aCommeMaladie;
-  }
-
-  get races(): Race[] {
-    return this._races;
-  }
-
-  get femelleReproduction(): FemelleReproduction | undefined {
-    return this._femelleReproduction;
-  }
-
-  get bovinEngraissement(): BovinEngraissement | undefined {
-    return this._bovinEngraissement;
-  }
-
-  get myControl(): FormControl<string | null> {
-    return this._myControl;
-  }
-
-  get formInformations(): FormGroup {
-    return this._formInformations;
-  }
-
-  get formFinalite(): FormGroup {
-    return this._formFinalite;
-  }
-
-  get taureaux(): Bovin[] {
-    return this._taureaux;
+    this._bovinService.updateType(this.bovin.id, this.formFinalite.value).subscribe()
   }
 }
+
 
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Champ} from "../../models/champ/champ";
 import {Grain} from "../../models/champ/grain";
@@ -6,27 +6,30 @@ import {ChampService} from "../../service/champ.service";
 import {GrainService} from "../../service/grain.service";
 import {ActivatedRoute} from "@angular/router";
 import {Culture} from "../../models/champ/culture";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-update-culture',
   templateUrl: './update-culture.component.html',
   styleUrls: ['./update-culture.component.scss']
 })
-export class UpdateCultureComponent implements OnInit{
+export class UpdateCultureComponent implements OnInit, OnDestroy{
 
-  private _formCulture: FormGroup;
+  public formCulture: FormGroup;
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  private _champs!: Champ[];
-  private _grains!: Grain[];
-  private _culture!: Culture;
+  public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+  public grains$: Observable<Grain[]> = new Observable<Grain[]>;
+  public culture!: Culture;
 
-  constructor(private readonly _champService: ChampService,
-              private readonly _grainService: GrainService,
-              private readonly _route: ActivatedRoute,
+  private destroyed$ = new Subject();
+
+  constructor(private readonly champService: ChampService,
+              private readonly grainService: GrainService,
+              private readonly route: ActivatedRoute,
   ) {
-    this._formCulture = new FormGroup({
+    this.formCulture = new FormGroup({
       idChamp: new FormControl('',Validators.required),
       temporaire: new FormControl(false,Validators.required),
       dateMiseEnCulture: new FormControl('', Validators.required),
@@ -38,65 +41,45 @@ export class UpdateCultureComponent implements OnInit{
     })
   }
 
-  ngOnInit(): void {
-    this._loading=true;
-    this._champService.getAll().subscribe(
-      champs =>{
-        this._champs = champs;
-        this._grainService.getAll().subscribe(
-          grains=>{
-            this._grains = grains;
-            this.getCulture(this._route.snapshot.params['param']);
-            this._loading = false;
+  ngOnInit(): void  {
+    this.champs$=this.champService.getAll();
+    this.grains$=this.grainService.getAll();
+  }
 
-          }
-        )
-      }
-    )
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   onSubmit(){
-    if(this._formCulture.valid)
-      this._champService.updateCulture(this._culture.id, this._formCulture.value).subscribe();
+    if(this.formCulture.valid)
+      this.champService.updateCulture(this.culture.id, this.formCulture.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Culture modifiée")
+          this.formCulture.reset();
+        })
+      ).subscribe()
   }
 
   getCulture(id: number){
-    this._champService.getOneCulture(id).subscribe(
-      culture => {
-        this._culture=culture;
-        this.refresh();
-      }
-    )
+    this.champService.getOneCulture(id).pipe(
+      takeUntil(this.destroyed$),
+      tap((culture)=>{
+        this.culture=culture;
+      })
+    ).subscribe()
   }
 
   refresh(){
-    this._formCulture = new FormGroup({
-      idChamp: new FormControl(this._culture.champ.id,Validators.required),
-      temporaire: new FormControl(this._culture.estTemporaire,Validators.required),
-      dateMiseEnCulture: new FormControl(this._culture.dateMiseEnCulture, Validators.required),
-      dateDeFin: new FormControl(this._culture.dateDeFin),
-      dateDernierEpandage: new FormControl(this._culture.dateEpandage),
-      qttFumier: new FormControl(this._culture.qttFumier,Validators.pattern(/[0-9]+$/)),
-      referenceAnalyse: new FormControl(this._culture.analysePDF),
-      grainId: new FormControl(this._culture.typeDeGrainDTO.id, Validators.required),
+    this.formCulture = new FormGroup({
+      idChamp: new FormControl(this.culture.champ.id,Validators.required),
+      temporaire: new FormControl(this.culture.estTemporaire,Validators.required),
+      dateMiseEnCulture: new FormControl(this.culture.dateMiseEnCulture, Validators.required),
+      dateDeFin: new FormControl(this.culture.dateDeFin),
+      dateDernierEpandage: new FormControl(this.culture.dateEpandage),
+      qttFumier: new FormControl(this.culture.qttFumier,Validators.pattern(/[0-9]+$/)),
+      referenceAnalyse: new FormControl(this.culture.analysePDF),
+      grainId: new FormControl(this.culture.typeDeGrainDTO.id, Validators.required),
     })
-  }
-
-  //Encapsulation
-
-  get formCulture(): FormGroup {
-    return this._formCulture;
-  }
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get grains(): Grain[] {
-    return this._grains;
   }
 }

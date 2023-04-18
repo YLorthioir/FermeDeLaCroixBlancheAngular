@@ -3,6 +3,7 @@ import {ChampService} from "../../service/champ.service";
 import {Champ} from "../../models/champ/champ";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FaucheService} from "../../service/fauche.service";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-add-fauche',
@@ -11,14 +12,16 @@ import {FaucheService} from "../../service/fauche.service";
 })
 export class AddFaucheComponent implements OnInit{
 
-  private _champs!: Champ[];
-  private _formInsert!: FormGroup;
+  public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+  public formInsert!: FormGroup;
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  constructor(private readonly _champService: ChampService,
-              private readonly _faucheService: FaucheService) {
-    this._formInsert = new FormGroup({
+  private destroyed$ = new Subject();
+
+  constructor(private readonly champService: ChampService,
+              private readonly faucheService: FaucheService) {
+    this.formInsert = new FormGroup({
       annee: new FormControl('',[Validators.required,Validators.pattern(/[0-9]+$/)]),
       fauche: new FormControl('',Validators.required),
       faucheRendement: new FormControl('', [Validators.required,Validators.pattern(/[0-9]+$/)]),
@@ -27,31 +30,29 @@ export class AddFaucheComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._champService.getAll().subscribe(
-      champs => {
-        this._loading=true;
-        this._champs=champs;
-        this._loading=false;
-      }
-    )
+      this.champs$=this.champService.getAll();
   }
 
-  onSubmit(){
-    if(this._formInsert.valid)
-      this._faucheService.insertFauche(this._formInsert.value).subscribe()
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
-  // Encapsulation
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get formInsert(): FormGroup {
-    return this._formInsert;
-  }
-
-  get loading(): boolean {
-    return this._loading;
+  onSubmit() {
+    if (this.formInsert.valid)
+      this.faucheService.insertFauche(this.formInsert.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(()=>{
+        alert("Fauche ajouté")
+        this.formInsert.reset();
+      })
+    ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Nombre de fauches maximum déjà atteintes")
+          else if(err.error.error === 'Bad Request')
+            alert("Formulaire invalide")
+        }
+      })
   }
 }

@@ -38,7 +38,7 @@ export class BovinService {
   }
 
   update(id:number, bovin:Bovin){
-    return this._httpClient.put(`${this._BASE_URL}`+id, bovin)
+    return this._httpClient.put(`${this._BASE_URL}/`+id, bovin)
   }
 
   updateType(id: number, form: FormGroup){

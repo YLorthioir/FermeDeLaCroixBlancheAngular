@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Culture} from "../../models/champ/culture";
 import {Router} from "@angular/router";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
@@ -7,47 +7,48 @@ import {MatSort, Sort} from "@angular/material/sort";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Champ} from "../../models/champ/champ";
 import {MatTableDataSource} from "@angular/material/table";
+import {Observable, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-all-culture',
   templateUrl: './all-culture.component.html',
   styleUrls: ['./all-culture.component.scss']
 })
-export class AllCultureComponent implements OnInit{
+export class AllCultureComponent implements OnInit, OnDestroy{
 
   displayedColumns: string[] = ['dateMiseEnCulture', 'dateDeFin', 'estTemporaire', 'dateDernierEpandage', 'qttFumier', 'analysePDF','modifier'];
-  private _cultures!: Culture[];
-  private _loading: boolean = false
-  private _culture?: Culture;
-  private _formNom: FormGroup;
-  private _champs!: Champ[];
-  dataSource = new MatTableDataSource(this._cultures);
+  public cultures!: Culture[];
+  public loading: boolean = false
+  public culture?: Culture;
+  public formNom: FormGroup;
+  public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+  dataSource = new MatTableDataSource(this.cultures);
 
-  constructor(private readonly _champService: ChampService,
-              private _router: Router,
-              private _liveAnnouncer: LiveAnnouncer) {
-    this._formNom = new FormGroup({
+  private destroyed$ = new Subject();
+
+  constructor(private readonly champService: ChampService,
+              public router: Router,
+              public liveAnnouncer: LiveAnnouncer) {
+    this.formNom = new FormGroup({
       id: new FormControl,
     })
-    this._formNom.get('id')?.valueChanges.subscribe((id) => {
+    this.formNom.get('id')?.valueChanges.subscribe((id) => {
       this.load(id);
       })
   }
-  ngOnInit(): void {
-    this._loading=true;
-    this._champService.getAll().subscribe(
-      champs =>{
-        this._champs = champs;
-        this._loading = false;
-      }
-    )
+  ngOnInit(): void  {
+    this.champs$=this.champService.getAll();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce('Sorting cleared');
     }
   }
 
@@ -56,38 +57,19 @@ export class AllCultureComponent implements OnInit{
   }
 
   load(id: number){
-    this._loading = true;
+    this.loading = true;
 
-    this._champService.getAllCulture(id).subscribe({
+    this.champService.getAllCulture(id).subscribe({
       next: (cultures) => {
-        this._cultures = cultures;
-        this.dataSource = new MatTableDataSource(this._cultures);
-        this._loading = false;
+        takeUntil(this.destroyed$),
+        this.cultures = cultures;
+        this.dataSource = new MatTableDataSource(this.cultures);
+        this.loading = false;
       }
     })
   }
 
   onUpdate(id: number){
-    this._router.navigateByUrl('champ/culture/update/'+id);
+    this.router.navigateByUrl('champ/culture/update/'+id);
   }
-
-  // Encapsulation
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get culture(): Culture | undefined {
-    return this._culture;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get formNom(): FormGroup {
-    return this._formNom;
-  }
-
-
 }

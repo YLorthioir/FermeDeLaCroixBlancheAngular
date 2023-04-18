@@ -4,7 +4,7 @@
     <mat-form-field appearance="outline" style="padding-right: 10px">
       <mat-label>Champ</mat-label>
       <mat-select formControlName="id">
-        <mat-option  *ngFor="let champ of champs"
+        <mat-option  *ngFor="let champ of champs$ | async"
                      [value]="champ.id">{{champ.lieu}}</mat-option>
       </mat-select>
     </mat-form-field>

@@ -1,36 +1,39 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Grain} from "../../models/champ/grain";
 import {GrainService} from "../../service/grain.service";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-extra-params-champ',
   templateUrl: './extra-params-champ.component.html',
   styleUrls: ['./extra-params-champ.component.scss']
 })
-export class ExtraParamsChampComponent implements OnInit{
+export class ExtraParamsChampComponent implements OnInit, OnDestroy{
 
-  private _grains!: Grain[];
-  private _grain!: Grain;
-  private _nomGrain: string ="";
+  public grains$: Observable<Grain[]> = new Observable<Grain[]>;
+  public grain!: Grain;
+  public nomGrain: string ="";
 
-  private _formGrainId: FormGroup;
-  private _formGrain: FormGroup;
+  public formGrainId: FormGroup;
+  public formGrain: FormGroup;
 
-  constructor(private readonly _grainService: GrainService,) {
-    this._formGrainId= new FormGroup({
+  private destroyed$ = new Subject();
+
+  constructor(private readonly grainService: GrainService,) {
+    this.formGrainId= new FormGroup({
       grainId: new FormControl('')
     })
-    this._formGrainId.get('grainId')?.valueChanges.subscribe((v) => {
-      this._grainService.getOne(v).subscribe({
+    this.formGrainId.get('grainId')?.valueChanges.subscribe((v) => {
+      this.grainService.getOne(v).subscribe({
         next: (grain) => {
-          this._grain = grain;
-          this._formGrain = new FormGroup({
-            nomGrain: new FormControl(this._grain.nomGrain, Validators.required)
+          this.grain = grain;
+          this.formGrain = new FormGroup({
+            nomGrain: new FormControl(this.grain.nomGrain, Validators.required)
           })
         }})
     })
-    this._formGrain = new FormGroup({
+    this.formGrain = new FormGroup({
       nomGrain: new FormControl('',Validators.required)
     })
   }
@@ -39,47 +42,29 @@ export class ExtraParamsChampComponent implements OnInit{
     this.refreshGrain()
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
   refreshGrain(){
-    this._grainService.getAll().subscribe(value => {
-      this._grains=value;
-    })
+    this.grains$ = this.grainService.getAll()
   }
 
   enregistrerModifGrain(){
-    this._grainService.update(this._grain.id, this._formGrain.value).subscribe((response: any) => {
-      this.refreshGrain();
-    });
+    this.grainService.update(this.grain.id, this.formGrain.value).pipe(
+      takeUntil(this.destroyed$),
+      tap(()=>{
+        this.refreshGrain()
+      })
+    ).subscribe();
   }
 
   enregistrerGrain(){
-    this._grainService.add(this._nomGrain).subscribe((response: any) => {
-      this.refreshGrain();
-    });
-  }
-
-  // Encapsulation
-
-  get grains(): Grain[] {
-    return this._grains;
-  }
-
-  get grain(): Grain {
-    return this._grain;
-  }
-
-  get nomGrain(): string {
-    return this._nomGrain;
-  }
-
-  set nomGrain(value: string) {
-    this._nomGrain = value;
-  }
-
-  get formGrainId(): FormGroup {
-    return this._formGrainId;
-  }
-
-  get formGrain(): FormGroup {
-    return this._formGrain;
+    this.grainService.add(this.nomGrain).pipe(
+      takeUntil(this.destroyed$),
+      tap(()=>{
+        this.refreshGrain()
+      })
+    ).subscribe();
   }
 }

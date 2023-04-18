@@ -37,7 +37,7 @@ export interface BovinForm{
 
 export const BovinForm={
   numeroInscription: ['BE',[Validators.required, Validators.minLength(10),Validators.pattern(/^(BE)[0-9]+$/)]],
-  sexe: ['',[Validators.required, Validators.pattern('M'||'F')]],
+  sexe: ['',[Validators.required]],
   dateDeNaissance: ['',[Validators.required]],
   poidsNaissance: ['',[Validators.min(0),Validators.pattern(/[0-9]+$/)]],
   neCesarienne: [false],

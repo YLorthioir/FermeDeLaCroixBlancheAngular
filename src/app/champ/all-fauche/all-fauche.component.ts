@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Fauche} from "../../models/champ/fauche";
 import {Champ} from "../../models/champ/champ";
@@ -8,55 +8,59 @@ import {FaucheService} from "../../service/fauche.service";
 import {MatSort, Sort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {Observable, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-all-fauche',
   templateUrl: './all-fauche.component.html',
   styleUrls: ['./all-fauche.component.scss']
 })
-export class AllFaucheComponent implements OnInit{
+export class AllFaucheComponent implements OnInit, OnDestroy{
 
   displayedColumnsChamps: string[] = ['annee', 'type', 'fauche1', 'fauche1rendement', 'fauche2', 'fauche2rendement', 'fauche3', 'fauche3rendement', 'fauche4', 'fauche4rendement', 'modifier'];
   displayedColumnsAnnees: string[] = ['champ', 'type', 'fauche1', 'fauche1rendement', 'fauche2', 'fauche2rendement', 'fauche3', 'fauche3rendement', 'fauche4', 'fauche4rendement', 'modifier'];
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  private _champs!: Champ[];
-  private _annees!: number[];
+  public champs$: Observable<Champ[]> = new Observable<Champ[]>;
+  public annees!: number[];
 
-  private _fauchesChamp!: Fauche[];
-  private _fauchesAnnee!: Fauche[];
+  public fauchesChamp!: Fauche[];
+  public fauchesAnnee!: Fauche[];
 
-  private _selectedValue = new FormControl('');
-  private _champ = new FormControl('');
-  private _annee = new FormControl(0);
+  public selectedValue = new FormControl('');
+  public champ = new FormControl('');
+  public annee = new FormControl(0);
 
-  dataSourceChamp = new MatTableDataSource(this._fauchesChamp);
-  dataSourceAnnee = new MatTableDataSource(this._fauchesAnnee);
+  dataSourceChamp = new MatTableDataSource(this.fauchesChamp);
+  dataSourceAnnee = new MatTableDataSource(this.fauchesAnnee);
 
-  constructor(private readonly _champService: ChampService,
-              private readonly _faucheService: FaucheService,
-              private readonly _router: Router,
-              private _liveAnnouncer: LiveAnnouncer) {
-    this._champ?.valueChanges.subscribe((champ) => {
-      this._faucheService.getAllFaucheChamp(champ!).subscribe( (fauche)=>{
-        this._fauchesChamp=fauche;
-        this.dataSourceChamp = new MatTableDataSource(this._fauchesChamp);
+  private destroyed$ = new Subject();
+
+  constructor(private readonly champService: ChampService,
+              private readonly faucheService: FaucheService,
+              private readonly router: Router,
+              public liveAnnouncer: LiveAnnouncer) {
+    this.champ?.valueChanges.subscribe((champ) => {
+      this.faucheService.getAllFaucheChamp(champ!).subscribe( (fauche)=>{
+        this.fauchesChamp=fauche;
+        this.dataSourceChamp = new MatTableDataSource(this.fauchesChamp);
       })
     })
-    this._annee?.valueChanges.subscribe((annee) => {
-      this._faucheService.getAllFaucheAnnee(annee!).subscribe( (fauche)=>{
-        this._fauchesAnnee=fauche;
-        this.dataSourceAnnee = new MatTableDataSource(this._fauchesAnnee);
+    this.annee?.valueChanges.subscribe((annee) => {
+      this.faucheService.getAllFaucheAnnee(annee!).subscribe( (fauche)=>{
+        takeUntil(this.destroyed$),
+        this.fauchesAnnee=fauche;
+        this.dataSourceAnnee = new MatTableDataSource(this.fauchesAnnee);
       })
     })
   }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.liveAnnouncer.announce('Sorting cleared');
     }
   }
 
@@ -65,48 +69,15 @@ export class AllFaucheComponent implements OnInit{
     this.dataSourceChamp.sort = sort;
   }
 
-  ngOnInit(): void {
-    this._champService.getAll().subscribe(
-      champs => {
-        this._loading=true;
-        this._champs=champs;
-        this._faucheService.getAllAnnee().subscribe(
-          annees =>{
-            this._annees=annees;
-            this._loading=false;
-        })
-      }
-    )
+  ngOnInit(): void  {
+    this.champs$=this.champService.getAll();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   onUpdate(id: number){
-    this._router.navigateByUrl('champ/fauche/update/'+id);
-  }
-
-
-  //Encapsulation
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get selectedValue(): FormControl<string | null> {
-    return this._selectedValue;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get champ(): FormControl<string | null> {
-    return this._champ;
-  }
-
-  get annee(): FormControl<number | null> {
-    return this._annee;
-  }
-
-  get annees(): number[] {
-    return this._annees;
+    this.router.navigateByUrl('champ/fauche/update/'+id);
   }
 }

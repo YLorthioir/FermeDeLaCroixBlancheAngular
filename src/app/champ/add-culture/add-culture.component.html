@@ -6,14 +6,14 @@
         <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Champ</mat-label>
           <mat-select formControlName="idChamp">
-            <mat-option  *ngFor="let champ of champs"
+            <mat-option  *ngFor="let champ of champs$ | async"
                          [value]="champ.id">{{champ.lieu}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Grain</mat-label>
           <mat-select formControlName="grainId">
-            <mat-option  *ngFor="let grain of grains"
+            <mat-option  *ngFor="let grain of grains$ | async"
                          [value]="grain.id">{{grain.nomGrain}}</mat-option>
           </mat-select>
         </mat-form-field>

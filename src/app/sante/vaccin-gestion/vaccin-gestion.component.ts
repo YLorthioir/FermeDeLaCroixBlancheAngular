@@ -1,87 +1,87 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SanteService} from "../../service/sante.service";
 import {Vaccin} from "../../models/sante/vaccin";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-vaccin-gestion',
   templateUrl: './vaccin-gestion.component.html',
   styleUrls: ['./vaccin-gestion.component.scss']
 })
-export class VaccinGestionComponent implements OnInit{
+export class VaccinGestionComponent implements OnInit, OnDestroy{
 
-  private _formInsert: FormGroup;
-  private _formUpdate: FormGroup;
-  private _formNom: FormGroup;
-  private _vaccins!: Vaccin[];
-  private _vaccin!: Vaccin;
+  public formInsert: FormGroup;
+  public formUpdate: FormGroup;
+  public formNom: FormGroup;
+  public vaccins$: Observable<Vaccin[]> = new Observable<Vaccin[]>;
+  public vaccin!: Vaccin;
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _santeService: SanteService) {
-    this._formInsert = new FormGroup({
+    this.formInsert = new FormGroup({
       nom: new FormControl('',Validators.required),
       nbDose: new FormControl('',[Validators.required, Validators.min(1)]),
       delai: new FormControl('',[Validators.required, Validators.min(1)]),
       dosage: new FormControl('',Validators.required),
     })
-    this._formNom = new FormGroup({
+    this.formNom = new FormGroup({
       nom: new FormControl,
     })
-    this._formUpdate = new FormGroup({
+    this.formUpdate = new FormGroup({
       nom: new FormControl('',Validators.required),
       nbDose: new FormControl('',[Validators.required, Validators.min(1)]),
       delai: new FormControl('',[Validators.required, Validators.min(1)]),
       dosage: new FormControl('',Validators.required),
       actif: new FormControl('',Validators.required),
     })
-    this._formNom.get('nom')?.valueChanges.subscribe((nom) => {
+    this.formNom.get('nom')?.valueChanges.subscribe((nom) => {
       _santeService.getVaccin(nom).subscribe( (vaccin)=>{
-        this._vaccin=vaccin;
+        this.vaccin=vaccin;
         this.refresh();
       })
     })
   }
 
   insertVaccin(){
-    if(this._formInsert.valid)
-      this._santeService.insertVaccin(this._formInsert.value).subscribe();
+    if(this.formInsert.valid)
+      this._santeService.insertVaccin(this.formInsert.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Vaccin ajouté")
+          this.formInsert.reset();
+        })
+      ).subscribe()
   }
 
   updateVaccin(){
-    if(this._formUpdate.valid)
-      this._santeService.updateVaccin(this._vaccin.id, this._formUpdate.value).subscribe();
+    if(this.formUpdate.valid)
+      this._santeService.updateVaccin(this.vaccin.id, this.formUpdate.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Vaccin modifié");
+          this.formNom.reset();
+          this.formUpdate.reset();
+        })
+      ).subscribe()
   }
 
   ngOnInit(): void {
-    this._santeService.getAllVaccin().subscribe(value => {
-      this._vaccins=value;
-    })
+    this.vaccins$ = this._santeService.getAllVaccin()
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   refresh(){
-    this._formUpdate = new FormGroup({
-      nom: new FormControl(this._vaccin.nom, Validators.required),
-      nbDose: new FormControl(this._vaccin.nbDose, [Validators.required, Validators.min(1)]),
-      delai: new FormControl(this._vaccin.delai,[Validators.required, Validators.min(1)]),
-      dosage: new FormControl(this._vaccin.dosage, Validators.required),
-      actif: new FormControl(this._vaccin.actif, Validators.required),
+    this.formUpdate = new FormGroup({
+      nom: new FormControl(this.vaccin.nom, Validators.required),
+      nbDose: new FormControl(this.vaccin.nbDose, [Validators.required, Validators.min(1)]),
+      delai: new FormControl(this.vaccin.delai,[Validators.required, Validators.min(1)]),
+      dosage: new FormControl(this.vaccin.dosage, Validators.required),
+      actif: new FormControl(this.vaccin.actif, Validators.required),
     })
-  }
-
-  //Encapsulation
-
-  get vaccins(): Vaccin[] {
-    return this._vaccins;
-  }
-
-  get formInsert(): FormGroup {
-    return this._formInsert;
-  }
-
-  get formUpdate(): FormGroup {
-    return this._formUpdate;
-  }
-
-  get formNom(): FormGroup {
-    return this._formNom;
   }
 }

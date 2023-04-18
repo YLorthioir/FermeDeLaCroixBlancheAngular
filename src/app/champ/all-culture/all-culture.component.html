@@ -3,7 +3,7 @@
   <mat-form-field appearance="outline" style="padding-right: 10px">
     <mat-label>Champ</mat-label>
     <mat-select formControlName="id">
-      <mat-option  *ngFor="let champ of champs"
+      <mat-option  *ngFor="let champ of champs$ | async"
                    [value]="champ.id">{{champ.lieu}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -47,7 +47,7 @@
 
   <ng-container matColumnDef="modifier">
     <th mat-header-cell *matHeaderCellDef > Modifier </th>
-    <td mat-cell *matCellDef="let culture"> <button (click)="onUpdate(culture.id)">Modifier</button></td>
+    <td mat-cell *matCellDef="let culture"> <button mat-raised-button (click)="onUpdate(culture.id)">Modifier</button></td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

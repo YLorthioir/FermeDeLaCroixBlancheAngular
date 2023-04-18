@@ -8,7 +8,7 @@
       <th>Modifier une race</th>
       <form [formGroup]="formRaceId" class="selection">
         <select formControlName="raceId">
-          <option *ngFor="let race of races"
+          <option *ngFor="let race of races$ | async"
                   [value]="race.id">{{race.nom}}</option>
         </select>
       </form>
@@ -46,7 +46,7 @@
       <th>Modifier une maladie</th>
       <form [formGroup]="formMaladieId" class="selection">
         <select formControlName="maladieId">
-          <option *ngFor="let maladie of maladies"
+          <option *ngFor="let maladie of maladies$ | async"
                   [value]="maladie.id">{{maladie.nom}}</option>
         </select>
       </form>
@@ -84,7 +84,7 @@
       <th>Modifier un traitement</th>
       <form [formGroup]="formTraitementId" class="selection">
         <select formControlName="traitementId">
-          <option *ngFor="let traitement of traitements"
+          <option *ngFor="let traitement of traitements$ | async"
                   [value]="traitement.id">{{traitement.nomTraitement}}</option>
         </select>
       </form>
@@ -128,7 +128,7 @@
       <th>Modifier un mélange</th>
       <form [formGroup]="formMelangeId" class="selection">
         <select formControlName="melangeId">
-          <option *ngFor="let melange of melanges"
+          <option *ngFor="let melange of melanges$ | async"
                   [value]="melange.id">{{melange.nomMelange}}</option>
         </select>
       </form>
@@ -144,7 +144,7 @@
         <tr>
           <td>
             <label>Description:</label>
-            <textarea formControlName="description" rows="4" cols="30"></textarea>
+            <textarea formControlName="description" rows="4" cols="20"></textarea>
           </td>
           <td>
             <button type="submit" [disabled]="!formMelangeUpdate.valid || formMelangeUpdate.untouched">Ajouter</button>
@@ -165,7 +165,7 @@
         <tr>
           <td>
             <label>Description:</label>
-            <textarea formControlName="description" rows="4" cols="30"></textarea>
+            <textarea formControlName="description" rows="4" cols="20"></textarea>
           </td>
           <td>
             <button type="submit" [disabled]="!formMelange.valid || formMelange.untouched">Ajouter</button>

@@ -1,63 +1,57 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Bovin, BovinForm} from "../../models/bovin/bovin";
 import {Race} from "../../models/bovin/race";
 import {BovinService} from "../../service/bovin.service";
 import {RaceService} from "../../service/race.service";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-bovin-add',
   templateUrl: './bovin-add.component.html',
   styleUrls: ['./bovin-add.component.scss']
 })
-export class BovinAddComponent implements OnInit{
+export class BovinAddComponent implements OnInit, OnDestroy{
 
-  private _form: FormGroup;
-  private _races!: Race[];
-  private _taureaux!: Bovin[];
+  public form: FormGroup;
+  public races$: Observable<Race[]> = new Observable<Race[]>;
+  public taureaux$: Observable<Bovin[]> = new Observable<Bovin[]>;
 
-  constructor(private readonly _bovinService: BovinService,
-              private readonly _raceService: RaceService,
+  private destroyed$ = new Subject();
+
+  constructor(private readonly bovinService: BovinService,
+              private readonly raceService: RaceService,
               buider: FormBuilder) {
-    this._form = buider.group(BovinForm)
+    this.form = buider.group(BovinForm)
   }
 
   ngOnInit(): void {
-    this._raceService.getAllRace().subscribe(
-      (races)=>{
-        this._races = races
-        this._bovinService.getAllTaureaux().subscribe(
-          (taureaux)=>{
-            this._taureaux=taureaux;
-          }
-        )
-      }
-    )
+    this.races$ = this.raceService.getAllRace();
+    this.taureaux$ = this.bovinService.getAllTaureaux();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
   }
 
   onSubmit(){
-    if(this._form.valid){
-      this._bovinService.add(this._form.value).subscribe(
-        (response)=>{
-          this._form.reset();
+    if(this.form.valid){
+      this.bovinService.add(this.form.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Bovin ajouté")
+          this.form.reset();
+        })
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Numéro d'identification déjà existant")
+          else if(err.error.error === 'Bad Request')
+            alert("Formulaire invalide")
         }
-      )
+      })
     }
-  }
-
-  //Encapsulation
-
-
-  get form(): FormGroup {
-    return this._form;
-  }
-
-  get races(): Race[] {
-    return this._races;
-  }
-
-  get taureaux(): Bovin[] {
-    return this._taureaux;
   }
 }
 

@@ -1,82 +1,76 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ChampService} from "../../service/champ.service";
 import {Champ} from "../../models/champ/champ";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-champ-update',
   templateUrl: './champ-update.component.html',
   styleUrls: ['./champ-update.component.scss']
 })
-export class ChampUpdateComponent implements OnInit{
+export class ChampUpdateComponent implements OnInit, OnDestroy{
 
-  private _formNom: FormGroup;
-  private _formUpdate: FormGroup;
+  public formNom: FormGroup;
+  public formUpdate: FormGroup;
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  private _champ!: Champ;
-  private _champs!: Champ[];
+  public champ!: Champ;
+  public champs$: Observable<Champ[]> = new Observable<Champ[]>;
 
-  constructor(private readonly _champService: ChampService) {
-    this._formNom = new FormGroup({
+  private destroyed$ = new Subject();
+
+  constructor(private readonly champService: ChampService) {
+    this.formNom = new FormGroup({
       id: new FormControl,
     })
-    this._formUpdate = new FormGroup({
+    this.formUpdate = new FormGroup({
       lieu: new FormControl('',Validators.required),
       superficie: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       annee: new FormControl('',Validators.pattern(/[0-9]+$/)),
     })
-    this._formNom.get('id')?.valueChanges.subscribe((id) => {
-      _champService.getOne(id).subscribe( (champ)=>{
-        this._champ=champ;
+    this.formNom.get('id')?.valueChanges.subscribe((id) => {
+      champService.getOne(id).subscribe( (champ)=>{
+        this.champ=champ;
         this.refresh();
       })
     })
   }
 
-  ngOnInit(): void {
-    this._loading=true;
-    this._champService.getAll().subscribe(
-      champs =>{
-        this._champs = champs;
-        this._loading = false;
-      }
-    )
+  ngOnInit(): void  {
+    this.champs$=this.champService.getAll();
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
+
   refresh(){
-    this._formUpdate = new FormGroup({
-      lieu: new FormControl(this._champ.lieu,Validators.required),
-      superficie: new FormControl(this._champ.superficie,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      annee: new FormControl(this._champ.dateDerniereChaux),
+    this.formUpdate = new FormGroup({
+      lieu: new FormControl(this.champ.lieu,Validators.required),
+      superficie: new FormControl(this.champ.superficie,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+      annee: new FormControl(this.champ.dateDerniereChaux),
     })
   }
 
   update(){
-    if(this._formUpdate.valid)
-      this._champService.update(this._champ.id, this._formUpdate.value).subscribe()
-  }
-
-  //Encapsulation
-
-  get formNom(): FormGroup {
-    return this._formNom;
-  }
-
-  get formUpdate(): FormGroup {
-    return this._formUpdate;
-  }
-
-  get champ(): Champ {
-    return this._champ;
-  }
-
-  get champs(): Champ[] {
-    return this._champs;
-  }
-
-  get loading(): boolean {
-    return this._loading;
+    if(this.formUpdate.valid)
+      this.champService.update(this.champ.id, this.formUpdate.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Champ modifié")
+          this.formUpdate.reset();
+        })
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert("Champ déjà existant")
+          else if(err.error.error === 'Bad Request')
+            alert("Formulaire invalide")
+        }
+      })
   }
 }

@@ -12,7 +12,7 @@
         <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Race</mat-label>
           <mat-select formControlName="raceId">
-            <mat-option  *ngFor="let race of races"
+            <mat-option  *ngFor="let race of races$ | async"
                          [value]="race.id">{{race.nom}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -28,7 +28,7 @@
         <mat-form-field appearance="outline" style="padding-right: 10px">
           <mat-label>Père</mat-label>
           <mat-select formControlName="pereNI">
-            <mat-option  *ngFor="let taureau of taureaux"
+            <mat-option  *ngFor="let taureau of taureaux$ | async"
                          [value]="taureau.numeroInscription">{{taureau.nom}}</mat-option>
           </mat-select>
         </mat-form-field>

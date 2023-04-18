@@ -1,28 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {VenteService} from "../../service/vente.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FaucheService} from "../../service/fauche.service";
 import {VenteBovin} from "../../models/vente/venteBovin";
+import {Subject, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-vente-bovin-update',
   templateUrl: './vente-bovin-update.component.html',
   styleUrls: ['./vente-bovin-update.component.scss']
 })
-export class VenteBovinUpdateComponent implements OnInit {
+export class VenteBovinUpdateComponent implements OnInit, OnDestroy {
 
-  private _loading: boolean = false;
+  public loading: boolean = false;
 
-  private _venteBovin!: VenteBovin;
+  public venteBovin!: VenteBovin;
 
-  private _formBovin: FormGroup;
+  public formBovin: FormGroup;
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _venteService: VenteService,
               private readonly _route: ActivatedRoute,
-              private readonly _faucheService: FaucheService) {
+              private readonly _faucheService: FaucheService,
+              private readonly _router: Router) {
 
-    this._formBovin = new FormGroup({
+    this.formBovin = new FormGroup({
       numeroIdentification: new FormControl('',Validators.required),
       qtt: new FormControl('',[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
       date: new FormControl('',Validators.required),
@@ -32,42 +36,39 @@ export class VenteBovinUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._loading = true;
+    this.loading = true;
     this._venteService.getOneVenteBovin(this._route.snapshot.params['param']).subscribe(
       value => {
-        this._venteBovin = value;
+        takeUntil(this.destroyed$),
+        this.venteBovin = value;
         this.load();
-        this._loading = false
+        this.loading = false
       }
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
   onSubmit(type: string) {
     if (this.formBovin.valid)
-      this._venteService.updateVenteBovin(this._venteBovin.id, this._formBovin.value).subscribe()
+      this._venteService.updateVenteBovin(this.venteBovin.id, this.formBovin.value).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Vente modifiée")
+          this._router.navigateByUrl('vente/all')
+        })
+      ).subscribe()
   }
 
   load() {
-    this._formBovin = new FormGroup({
-      numeroIdentification: new FormControl(this._venteBovin.bovin,Validators.required),
-      qtt: new FormControl(this._venteBovin.quantite,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      date: new FormControl(this._venteBovin.dateDeVente,Validators.required),
-      prixCoutant: new FormControl(this._venteBovin.prixCoutant,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
-      prixRevente: new FormControl(this._venteBovin.prixRevente,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+    this.formBovin = new FormGroup({
+      numeroIdentification: new FormControl(this.venteBovin.bovin,Validators.required),
+      qtt: new FormControl(this.venteBovin.quantite,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+      date: new FormControl(this.venteBovin.dateDeVente,Validators.required),
+      prixCoutant: new FormControl(this.venteBovin.prixCoutant,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
+      prixRevente: new FormControl(this.venteBovin.prixRevente,[Validators.min(0),Validators.required,Validators.pattern(/[0-9]+$/)]),
     })
-  }
-
-  // Encapsulation
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get formBovin(): FormGroup {
-    return this._formBovin;
-  }
-
-  get venteBovin(): VenteBovin | undefined {
-    return this._venteBovin;
   }
 }

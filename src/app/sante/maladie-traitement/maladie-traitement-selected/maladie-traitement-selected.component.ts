@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Bovin} from "../../../models/bovin/bovin";
-import {debounceTime, map, Observable, startWith} from "rxjs";
+import {debounceTime, map, Observable, startWith, Subject, takeUntil, tap} from "rxjs";
 import {A} from "../../../models/sante/a";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {BovinService} from "../../../service/bovin.service";
@@ -12,23 +12,25 @@ import {Traitement} from "../../../models/sante/traitement";
 @Component({
   selector: 'app-maladie-traitement-selected',
   templateUrl: './maladie-traitement-selected.component.html',
-  styleUrls: ['./maladie-traitement-selected.component.css']
+  styleUrls: ['./maladie-traitement-selected.component.scss']
 })
 export class MaladieTraitementSelectedComponent implements OnInit{
-  private _loading: boolean = false
-  private _bovin!: Bovin;
-  private _bovins!: string[];
-  private _filteredOptions!: Observable<string[]>;
-  private _aCommeMaladie!: A[];
-  private _maladies!: Maladie[];
-  private _traitements!: Traitement[];
-  private _a!:A;
+  public loading: boolean = false
+  public bovin!: Bovin;
+  public bovins!: string[];
+  public filteredOptions!: Observable<string[]>;
+  public aCommeMaladie!: A[];
+  public maladies!: Maladie[];
+  public traitements!: Traitement[];
+  public a!:A;
 
-  private _myControl = new FormControl('BE');
+  public myControl = new FormControl('BE');
 
-  private _formInsert: FormGroup;
-  private _formUpdate: FormGroup;
-  private _formNom: FormGroup;
+  public formInsert: FormGroup;
+  public formUpdate: FormGroup;
+  public formNom: FormGroup;
+
+  private destroyed$ = new Subject();
 
   constructor(private readonly _bovinService: BovinService,
               private readonly _route: ActivatedRoute,
@@ -37,22 +39,22 @@ export class MaladieTraitementSelectedComponent implements OnInit{
 
     this.getBovin(this._route.snapshot.params['param']);
 
-    this._formInsert = new FormGroup({
+    this.formInsert = new FormGroup({
       maladie: new FormControl('',Validators.required),
       traitement: new FormControl(''),
       annee: new FormControl('',[Validators.required]),
     })
-    this._formNom = new FormGroup({
+    this.formNom = new FormGroup({
       id: new FormControl,
     })
-    this._formUpdate = new FormGroup({
+    this.formUpdate = new FormGroup({
       maladie: new FormControl('',Validators.required),
       traitement: new FormControl(''),
       annee: new FormControl('',[Validators.required]),
     })
-    this._formNom.get('id')?.valueChanges.subscribe((id) => {
+    this.formNom.get('id')?.valueChanges.subscribe((id) => {
       _santeService.getOneA(id).subscribe( (a)=>{
-        this._a=a;
+        this.a=a;
         this.refresh();
       })
     })
@@ -63,8 +65,8 @@ export class MaladieTraitementSelectedComponent implements OnInit{
 
     this._bovinService.getAllNI().subscribe(
       (bovin) => {
-        this._bovins = bovin;
-        this._filteredOptions = this._myControl.valueChanges.pipe(
+        this.bovins = bovin;
+        this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
           startWith(''),
           map(value => this._filter(value || '')),
@@ -73,37 +75,43 @@ export class MaladieTraitementSelectedComponent implements OnInit{
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.complete();
+  }
+
   private _filter(value: string): string[] {
     const filterValue= value.toLowerCase();
 
-    return this._bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
+    return this.bovins.filter((bov) => bov.toLowerCase().includes(filterValue));
   }
 
   OnBovinSelected(option: string){
 
+    this.formNom.reset();
+    this.formUpdate.reset();
     this._router.navigateByUrl('sante/maladie/'+option);
     this.getBovin(option);
 
   }
 
   getBovin(numeroInscription: string){
-    this._loading = true;
+    this.loading = true;
 
     this._bovinService.getOne(numeroInscription).subscribe((bovin) => {
-      this._bovin = bovin;
+      this.bovin = bovin;
 
       this._santeService.getAllMaladie().subscribe(
         (maladies) => {
-          this._maladies = maladies;
+          this.maladies = maladies;
 
-          this._santeService.getA(this._bovin.id).subscribe(
+          this._santeService.getA(this.bovin.id).subscribe(
             (a) =>{
-              this._aCommeMaladie = a;
+              this.aCommeMaladie = a;
 
               this._santeService.getAllTraitement().subscribe(
                 (t) =>{
-                  this._traitements = t;
-                  this._loading=false;
+                  this.traitements = t;
+                  this.loading=false;
                 }
               );
             }
@@ -114,72 +122,45 @@ export class MaladieTraitementSelectedComponent implements OnInit{
   }
 
   insertMaladie(){
-    if(this._formInsert.valid)
-      this._santeService.insertA(this._formInsert.value, this.bovin.id).subscribe();
+    if(this.formInsert.valid)
+      this._santeService.insertA(this.formInsert.value, this.bovin.id).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Maladie ajoutée")
+          this.refresh();
+        })
+      ).subscribe()
   }
 
   updateMaladie(){
-    if(this._formUpdate.valid)
-      this._santeService.updateA(this._formUpdate, this._a.id).subscribe();
+    if(this.formUpdate.valid)
+      this._santeService.updateA(this.formUpdate.value, this.a.id).pipe(
+        takeUntil(this.destroyed$),
+        tap(()=>{
+          alert("Maladie modifiée")
+          this.refresh();
+        })
+      ).subscribe()
   }
 
-  deleteA(id: number){
-    this._santeService.deleteA(id).subscribe();
-    this.refresh();
+  deleteA(id: number) {
+    var val = confirm("Voulez-vous vraiment supprimer cet élément?");
+    if (val == true) {
+      this._santeService.deleteA(id).pipe(
+        takeUntil(this.destroyed$),
+        tap(() => {
+          alert("Maladie supprimée")
+          this.refresh();
+        })
+      ).subscribe()
+    }
   }
 
   refresh(){
-    this._formUpdate = new FormGroup({
-      maladie: new FormControl(this._a.maladieDTO.id,Validators.required),
-      traitement: new FormControl(this._a.traitementDTO.id),
-      annee: new FormControl(this._a.anneeMaladie,[Validators.required]),
+    this.formUpdate = new FormGroup({
+      maladie: new FormControl(this.a.maladieDTO.id,[Validators.required]),
+      traitement: new FormControl(this.a.traitementDTO===null?null:this.a.traitementDTO.id),
+      annee: new FormControl(this.a.anneeMaladie,[Validators.required]),
     })
-  }
-
-  //Encaspulation
-
-
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  get bovin(): Bovin {
-    return this._bovin;
-  }
-
-  get filteredOptions(): Observable<string[]> {
-    return this._filteredOptions;
-  }
-
-  get aCommeMaladie(): A[] {
-    return this._aCommeMaladie;
-  }
-
-  get myControl(): FormControl<string | null> {
-    return this._myControl;
-  }
-
-  get maladies(): Maladie[] {
-    return this._maladies;
-  }
-
-  get traitements(): Traitement[] {
-    return this._traitements;
-  }
-
-  get formInsert(): FormGroup {
-    return this._formInsert;
-  }
-
-  get formUpdate(): FormGroup {
-    return this._formUpdate;
-  }
-
-  get formNom(): FormGroup {
-    return this._formNom;
-  }
-
-  get a(): A {
-    return this._a;
   }
 }

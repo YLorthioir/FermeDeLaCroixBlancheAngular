@@ -98,13 +98,19 @@
           <td>
             Date abattage
           </td>
-          <td>{{bovin.dateAbattage|date : 'd/M/yyyy'}}</td>
+          <td>
+            <div *ngIf="bovin.dateAbattage">{{bovin.dateAbattage|date : 'd/M/yyyy'}}</div>
+            <div *ngIf="!bovin.dateAbattage">Non communiqué</div>
+          </td>
         </tr>
         <tr class="lastRow">
           <td>
             Raison abattage
           </td>
-          <td>{{bovin.raisonAbattage}}</td>
+          <td>
+            <div *ngIf="bovin.raisonAbattage">{{bovin.raisonAbattage}}</div>
+            <div *ngIf="!bovin.raisonAbattage">Non communiqué</div>
+          </td>
         </tr>
         </tbody>
       </table>

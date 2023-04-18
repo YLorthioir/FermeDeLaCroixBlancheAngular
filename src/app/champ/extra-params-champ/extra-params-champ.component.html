@@ -8,7 +8,7 @@
       <th>Modifier une race</th>
       <form [formGroup]="formGrainId" class="selection">
         <select formControlName="grainId">
-          <option *ngFor="let grain of grains"
+          <option *ngFor="let grain of grains$ | async"
                   [value]="grain.id">{{grain.nomGrain}}</option>
         </select>
       </form>
