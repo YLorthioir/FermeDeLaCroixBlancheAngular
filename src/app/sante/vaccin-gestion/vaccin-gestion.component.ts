@@ -56,7 +56,9 @@ export class VaccinGestionComponent implements OnInit, OnDestroy{
         next: ()=>{},
         error: (err)=> {
           if(err.error.status === 'BAD_REQUEST')
-            alert("Vaccin déjà existant")
+            alert(err.error.message)
+          else
+            alert(err.error.error)
         }
       })
   }
@@ -70,7 +72,15 @@ export class VaccinGestionComponent implements OnInit, OnDestroy{
           this.formNom.reset();
           this.formUpdate.reset();
         })
-      ).subscribe()
+      ).subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'BAD_REQUEST')
+            alert(err.error.message)
+          else
+            alert(err.error.error)
+        }
+      })
   }
 
   ngOnInit(): void {

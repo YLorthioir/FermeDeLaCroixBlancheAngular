@@ -4,13 +4,13 @@
 <div class="form">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <div class="example-container" style="padding-right: 10px">
+    <div class="example-container" style="margin-right: 10px">
       <mat-form-field appearance="outline">
         <mat-label>Login:</mat-label>
         <input type="text" matInput formControlName="login">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" style="padding-left: 10px">
         <mat-label>Role:</mat-label>
         <mat-select formControlName="role" >
           <mat-option value="ADMIN"> Admin</mat-option>

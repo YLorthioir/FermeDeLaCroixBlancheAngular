@@ -36,9 +36,9 @@ export class ChampAddComponent implements OnDestroy{
         next: ()=>{},
         error: (err)=> {
           if(err.error.status === 'BAD_REQUEST')
-            alert("Champ déjà existant")
-          else if(err.error.error === 'Bad Request')
-            alert("Formulaire invalide")
+            alert(err.error.message)
+          else
+            alert(err.error.error)
         }
       })
     }

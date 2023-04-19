@@ -42,6 +42,10 @@ export class SanteService {
     return this._httpClient.patch(`${this._BASE_URL}/vaccin/`+id, form)
   }
 
+  toVaccinate(idVaccin: number){
+    return this._httpClient.get<string[]>(`${this._BASE_URL}/vaccination/liste/`+idVaccin)
+  }
+
   //Maladies
 
 

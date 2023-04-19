@@ -60,7 +60,9 @@ export class ExtraParamsChampComponent implements OnInit, OnDestroy{
       next: ()=>{},
       error: (err)=> {
         if(err.error.status === 'BAD_REQUEST')
-          alert("Grain déjà existant")
+          alert(err.error.message)
+        else
+          alert(err.error.error)
       }
     });
   }
@@ -75,7 +77,9 @@ export class ExtraParamsChampComponent implements OnInit, OnDestroy{
       next: ()=>{},
       error: (err)=> {
         if(err.error.status === 'BAD_REQUEST')
-          alert("Grain déjà existant")
+          alert(err.error.message)
+        else
+          alert(err.error.error)
       }
     });
   }

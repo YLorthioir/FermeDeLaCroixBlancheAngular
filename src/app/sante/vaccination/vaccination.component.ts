@@ -25,6 +25,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
   public filteredOptions!: Observable<string[]>;
   public myControl = new FormControl('BE');
   public today: Date;
+  public toVaccinate!: string[];
 
   private destroyed$ = new Subject();
 
@@ -98,5 +99,11 @@ export class VaccinationComponent implements OnInit, OnDestroy{
           this._router.navigateByUrl('sante/vaccination')
         })
       ).subscribe()
+  }
+
+  getToVaccinate(idVaccin: number){
+    this._santeService.toVaccinate(idVaccin).subscribe((value)=>{
+      this.toVaccinate=value;
+    })
   }
 }

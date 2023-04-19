@@ -256,9 +256,9 @@ export class BovinUpdateSelectedComponent implements OnInit, OnDestroy{
       next: ()=>this._router.navigateByUrl('bovin/one/'+this.bovin.numeroInscription),
       error: (err)=> {
         if(err.error.status === 'BAD_REQUEST')
-          alert("Numéro d'identification déjà existant")
-        else if(err.error.error === 'Bad Request')
-          alert("Formulaire invalide")
+          alert(err.error.message)
+        else
+          alert(err.error.error)
       }
       }
     )

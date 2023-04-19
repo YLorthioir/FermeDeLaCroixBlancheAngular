@@ -134,7 +134,9 @@ export class MaladieTraitementSelectedComponent implements OnInit{
         next: ()=>{},
         error: (err)=> {
           if(err.error.status === 'BAD_REQUEST')
-            alert("Maladie déjà existante")
+            alert(err.error.message)
+          else
+            alert(err.error.error)
         }
       })
   }
