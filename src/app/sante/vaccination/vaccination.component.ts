@@ -98,9 +98,9 @@ export class VaccinationComponent implements OnInit, OnDestroy{
         tap(()=>{
           alert("Vaccination ajoutée")
           this._router.navigateByUrl('sante/vaccination')
+          this.OnBovinSelected(this.bovin.numeroInscription);
         })
       ).subscribe()
-      this.OnBovinSelected(this.bovin.numeroInscription);
   }
 
   getToVaccinate(idVaccin: number){
