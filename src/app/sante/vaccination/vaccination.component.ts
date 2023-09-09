@@ -83,7 +83,8 @@ export class VaccinationComponent implements OnInit, OnDestroy{
         (carnet) => {
           this.carnet = carnet.filter(vaccination => {
             return (vaccination.doseAdministrees !== vaccination.doseMax) &&
-              ((vaccination.dateRappel === null) || (this.today<=vaccination.dateRappel))
+              ((vaccination.dateRappel === null) || (this.today<=vaccination.dateRappel)) &&
+              vaccination.actif
           })
 
           this.loading=false;
@@ -99,6 +100,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
           this._router.navigateByUrl('sante/vaccination')
         })
       ).subscribe()
+      this.OnBovinSelected(this.bovin.numeroInscription);
   }
 
   getToVaccinate(idVaccin: number){

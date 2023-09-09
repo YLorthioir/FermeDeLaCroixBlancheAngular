@@ -3,4 +3,5 @@ export interface Vaccination{
   doseAdministrees: number;
   doseMax: number;
   dateRappel: Date;
+  actif: boolean;
 }
