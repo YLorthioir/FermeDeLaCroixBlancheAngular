@@ -1,0 +1,291 @@
+<div>
+  <form class="example-form">
+    <div>Modification du bovin
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>n°</mat-label>
+        <input type="text"
+               placeholder="n°"
+               aria-label="Information pour le bovin n°"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async"
+                      [value]="option" (click)="OnBovinSelected(option)">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div *ngIf="!loading">
+    <div *ngIf="bovin" class="identification">
+      <form [formGroup]="formInformations" (ngSubmit)="UpdateBovin()">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Identification</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              Numéro d'identification
+            </td>
+            <td>
+                <input type="text" formControlName="numeroInscription">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Race
+            </td>
+            <td>
+              <select formControlName="raceId">
+                <option *ngFor="let race of races"
+                        [value]="race.id">{{race.nom}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Sexe
+            </td>
+            <td>
+              <div>
+                <input type="radio" formControlName="sexe" value="M"><label style="width: 100px" >Male</label>
+                <input type="radio" formControlName="sexe" value="F"><label>Femelle</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Père
+            </td>
+            <td>
+              <select formControlName="pereNI">
+                <option *ngFor="let taureau of taureaux"
+                        [value]="taureau.numeroInscription">{{taureau.nom}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Mère
+            </td>
+            <td>
+              <input type="text" formControlName="mereNI">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Date de naissance
+            </td>
+            <td>
+              <input type="date" formControlName="dateDeNaissance">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Poids à la naissance
+            </td>
+            <td>
+              <input type="number" formControlName="poidsNaissance">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Lieu Actuel:
+            </td>
+            <td>
+              <select formControlName="champId">
+                <option *ngFor="let champ of champs"
+                        [value]="champ.id">{{champ.lieu}}</option>
+              </select>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Nom du bovin
+            </td>
+            <td>
+              <input type="text" formControlName="nom">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="checkbox" formControlName="neCesarienne">
+              <label style="margin-left: 10px">Né césarienne</label>
+            </td>
+            <td>
+              <input type="checkbox" formControlName="enCharge">
+              <label style="margin-left: 10px">Sur site</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Date abattage
+            </td>
+            <td>
+              <input type="date" formControlName="dateAbattage">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Raison abattage
+            </td>
+            <td>
+              <input type="text" formControlName="raisonAbattage">
+            </td>
+          </tr>
+          <tr *ngIf="femelleReproduction">
+            <td>
+              Dernière insémination
+            </td>
+            <td>
+              <input type="date" formControlName="dateDerniereInsemination">
+            </td>
+          </tr>
+          <tr *ngIf="femelleReproduction">
+            <td>
+              Grossesse(s) perdue(s)
+            </td>
+            <td>
+              <input type="number" formControlName="perteGrossesse">
+            </td>
+          </tr>
+          <tr *ngIf="femelleReproduction">
+            <td>
+              Nombre de césariennes:
+            </td>
+            <td>
+              <div *ngIf="!femelleReproduction.nbCesarienne">Non communiqué</div>
+              <div *ngIf="femelleReproduction.nbCesarienne">{{femelleReproduction.nbCesarienne}}</div>
+            </td>
+          </tr>
+          <tr  *ngIf="bovinEngraissement" >
+            <td>
+              Date d'engraissement:
+            </td>
+            <td>
+              <input type="date" formControlName="dateEngraissement">
+            </td>
+          </tr>
+          <tr  *ngIf="bovinEngraissement" >
+            <td>
+              Mélange:
+            </td>
+            <td>
+              <select formControlName="melangeId">
+                <option *ngFor="let melange of melanges"
+                        [value]="melange.id">{{melange.nomMelange}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr  *ngIf="bovinEngraissement" >
+            <td>
+              Poids sur pattes:
+            </td>
+            <td>
+              <input type="number" formControlName="poidsSurPattes"> kg
+            </td>
+          </tr>
+          <tr  *ngIf="bovinEngraissement" >
+            <td>
+              Poids carcasse:
+            </td>
+            <td>
+              <input type="number" formControlName="poidsCarcasse"> kg
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><button type="submit" style="margin-left: 10%" [disabled]="!formInformations.valid">Modifier</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+
+    <div *ngIf="bovin" class="infosType">
+      <form [formGroup]="formFinalite" (ngSubmit)="UpdateType()">
+        <table *ngIf="bovin" class="table">
+          <thead>
+          <tr>
+            <th>Infos complémentaires</th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              Finalité:
+            </td>
+            <td>
+              <input type="radio" formControlName="finalite" value="FemelleReproduction"><label>Reproduction</label>
+              <br>
+              <input type="radio" formControlName="finalite" value="BovinEngraissement"><label>Engraissement</label>
+              <br>
+              <input type="radio" formControlName="finalite" value="Bovin"><label>Autre</label>
+            </td>
+            <td>
+              <button type="submit" [disabled]="!formFinalite.dirty">Modifier</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <div *ngIf="bovin" class="aCommeMaladie">
+
+      <table *ngIf="aCommeMaladie" class="table">
+        <thead>
+        <tr>
+          <th>Santé</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <th scope="col">Maladies</th>
+          <th scope="col">Date</th>
+          <th scope="col">Traitement</th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let a of aCommeMaladie">
+          <td>
+            {{a.maladie.nom}}
+          </td>
+          <td>
+            {{a.anneeMaladie}}
+          </td>
+          <td>
+            {{a.traitement.nomTraitement}}
+          </td>
+          <td>
+            <button>Modifier</button>
+          </td>
+          <td>
+            <button>Supprimer</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="loading">
+  loading
+</div>

@@ -1,0 +1,26 @@
+<section>
+  <div class="form">
+
+    <form [formGroup]="form">
+      <h2>Login</h2>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Login:</mat-label>
+          <input type="text" matInput formControlName="login">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field  appearance="outline">
+          <mat-label>Password:</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-stroked-button color="primary" [disabled]="!form.valid" (click)="connect()">Connexion</button>
+      </div>
+    </form>
+  </div>
+</section>

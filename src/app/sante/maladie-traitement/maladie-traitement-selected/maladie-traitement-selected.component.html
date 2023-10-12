@@ -1,0 +1,94 @@
+<div *ngIf="!loading">
+  <div>
+    <form class="example-form" style="padding-left: 20px">
+      Selection du bovin
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>n°</mat-label>
+        <input type="text"
+               placeholder="n°"
+               aria-label="Bovin n°"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async"
+                      [value]="option" (click)="OnBovinSelected(option)">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <form [formGroup]="formInsert" (ngSubmit)="insertMaladie()">
+      <h3>Ajout d'une maladie à un bovin</h3>
+
+      <div class="form">
+        <div>
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+            <mat-label>Nom de la maladie</mat-label>
+            <mat-select formControlName="maladie">
+              <mat-option  *ngFor="let maladie of maladies"
+                           [value]="maladie.id">{{maladie.nom}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+            <mat-label>Nom du traitement</mat-label>
+            <mat-select formControlName="traitement">
+              <mat-option [value]="null"></mat-option>
+              <mat-option  *ngFor="let traitement of traitements"
+                           [value]="traitement.id">{{traitement.nomTraitement}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" style="padding-right: 10px">
+
+            <mat-label>Année</mat-label>
+            <input type="date" matInput formControlName="annee">
+
+          </mat-form-field>
+        </div>
+        <button mat-raised-button type="submit" [disabled]="!formInsert.valid">Ajouter</button>
+      </div>
+    </form>
+  </div>
+
+  <h3>Modifier une maladie d'un bovin</h3>
+  <div class="form">
+
+    <form [formGroup]="formNom" >
+      <mat-form-field appearance="outline" style="padding-right: 10px">
+        <mat-label>Nom de la maladie</mat-label>
+        <mat-select formControlName="id">
+          <mat-option  *ngFor="let a of aCommeMaladie"
+                       [value]="a.id">{{a.maladie.nom}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <form [formGroup]="formUpdate" (ngSubmit)="updateMaladie()">
+      <div>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+          <mat-label>Nom du traitement</mat-label>
+          <mat-select formControlName="traitement">
+            <mat-option [value]="null"></mat-option>
+            <mat-option  *ngFor="let traitement of traitements"
+                         [value]="traitement.id">{{traitement.nomTraitement}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+
+          <mat-label>Année</mat-label>
+          <input type="date" matInput formControlName="annee">
+
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button type="submit" [disabled]="!formUpdate.valid">Modifier</button>
+      <button mat-raised-button [disabled]="formNom.value.id === null" (click)="deleteA(a.id)" color="warn">Supprimer</button>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  loading
+</div>
+

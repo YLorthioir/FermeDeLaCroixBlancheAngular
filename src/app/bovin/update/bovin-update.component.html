@@ -1,0 +1,26 @@
+<div>
+  <form class="example-form">
+    <div>Modification du bovin
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>n°</mat-label>
+        <input type="text"
+               placeholder="n°"
+               aria-label="Information pour le bovin n°"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async"
+                      [value]="option" (click)="OnBovinSelected(option)">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="loading">
+  loading
+</div>

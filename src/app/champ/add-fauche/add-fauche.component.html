@@ -1,0 +1,36 @@
+<div *ngIf="!loading">
+  <form [formGroup]="formInsert" (ngSubmit)="onSubmit()">
+    <h3>Nouvelle fauche</h3>
+    <div class="form">
+      <div>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+          <mat-label>Champ</mat-label>
+          <mat-select formControlName="champId">
+            <mat-option  *ngFor="let champ of champs$ | async"
+                         [value]="champ.id">{{champ.lieu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+          <mat-label>Année</mat-label>
+          <input type="number" matInput formControlName="annee">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+          <mat-label>Date de fauche</mat-label>
+          <input type="date" matInput formControlName="fauche">
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="padding-right: 10px">
+          <mat-label>Rendement</mat-label>
+          <input type="number" matInput formControlName="faucheRendement">
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button type="submit" [disabled]="!formInsert.valid">Ajouter</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="loading">... Loading</div>

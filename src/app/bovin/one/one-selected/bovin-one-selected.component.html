@@ -1,0 +1,277 @@
+<div>
+  <form class="example-form" style="padding-left: 20px">
+    Information du bovin
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>n°</mat-label>
+      <input type="text"
+             placeholder="n°"
+             aria-label="Information pour le bovin n°"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async"
+                    [value]="option" (click)="OnBovinSelected(option)">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <button mat-raised-button routerLink="/bovin/genealogy/{{bovin.numeroInscription}}" style="margin-left: 10px">Généalogie</button>
+  </form>
+
+  <div *ngIf="!loading">
+    <div *ngIf="bovin" class="identification">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Identifications</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            Numéro d'identification
+          </td>
+          <td>{{bovin.numeroInscription}}</td>
+        </tr>
+        <tr>
+          <td>
+            Race
+          </td>
+          <td>{{bovin.race.nom}}</td>
+        </tr>
+        <tr>
+          <td>
+            Sexe
+          </td>
+          <td>{{bovin.sexe}}</td>
+        </tr>
+        <tr>
+          <td>
+            Père
+          </td>
+          <td>{{bovin.pereNI}}</td>
+        </tr>
+        <tr>
+          <td>
+            Mère
+          </td>
+          <td>{{bovin.mereNI}}</td>
+        </tr>
+        <tr>
+          <td>
+            Date de naissance
+          </td>
+          <td>{{bovin.dateDeNaissance|date : 'd/M/yyyy'}}</td>
+        </tr>
+        <tr>
+          <td>
+            Poids à la naissance
+          </td>
+          <td>
+            <div *ngIf="bovin.poidsNaissance==0">Non communiqué</div>
+            <div *ngIf="bovin.poidsNaissance!=0">{{bovin.poidsNaissance}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Lieu actuel
+          </td>
+          <td>
+            <div *ngIf="!bovin.champ">Non communiqué</div>
+            <div *ngIf="bovin.champ">{{bovin.champ.lieu}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Nom du bovin
+          </td>
+          <td>
+            <div *ngIf="!bovin.nom">Non communiqué</div>
+            <div *ngIf="bovin.nom">{{bovin.nom}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Date abattage
+          </td>
+          <td>
+            <div *ngIf="bovin.dateAbattage">{{bovin.dateAbattage|date : 'd/M/yyyy'}}</div>
+            <div *ngIf="!bovin.dateAbattage">Non communiqué</div>
+          </td>
+        </tr>
+        <tr class="lastRow">
+          <td>
+            Raison abattage
+          </td>
+          <td>
+            <div *ngIf="bovin.raisonAbattage">{{bovin.raisonAbattage}}</div>
+            <div *ngIf="!bovin.raisonAbattage">Non communiqué</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="carnet!=null" class="vaccination">
+
+      <table *ngIf="carnet" >
+        <h3>Vaccination</h3>
+        <tr>
+          <th scope="col">Nom:</th>
+          <th scope="col">1ère dose</th>
+          <th scope="col">2e dose</th>
+          <th scope="col">Prochain rappel</th>
+        </tr>
+        <tbody>
+        <tr *ngFor="let vaccination of carnet">
+          <td>
+            {{vaccination.nom}}
+          </td>
+          <td>
+            <mat-checkbox disabled *ngIf="vaccination.doseAdministrees>=1" checked></mat-checkbox>
+            <mat-checkbox disabled *ngIf="vaccination.doseAdministrees < 1"></mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox disabled *ngIf="vaccination.doseAdministrees>=2 && vaccination.doseMax>=2" checked></mat-checkbox>
+            <mat-checkbox disabled *ngIf="vaccination.doseAdministrees < 2 && vaccination.doseMax>=2"></mat-checkbox>
+          </td>
+          <td>
+            <div *ngIf="!vaccination.dateRappel"> --/--/----</div>
+            <div *ngIf="vaccination.dateRappel && (vaccination.doseAdministrees == vaccination.doseMax)"> Pas de rappel</div>
+            <div *ngIf="vaccination.dateRappel && (vaccination.doseAdministrees != vaccination.doseMax)">{{vaccination.dateRappel|date : 'd/M/yyyy'}}</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="aCommeMaladie!==[]" class="aCommeMaladie">
+
+      <table *ngIf="aCommeMaladie" class="table">
+        <thead>
+        <tr>
+          <th>Santé</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <th scope="col">Maladies</th>
+          <th scope="col">Date</th>
+          <th scope="col">Traitement</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let a of aCommeMaladie">
+          <td>
+            {{a.maladie.nom}}
+          </td>
+          <td>
+            {{a.anneeMaladie|date : 'd/M/yyyy'}}
+          </td>
+          <td>
+            {{a.traitement.nomTraitement}}
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="femelleReproduction!=null" class="infosReproduction">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Reproduction</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            Dernière insémination
+          </td>
+          <td>
+            <div *ngIf="femelleReproduction.derniereInsemination===null">Non inséminée</div>
+            <div *ngIf="femelleReproduction.derniereInsemination!=null">{{femelleReproduction.derniereInsemination|date : 'd/M/yyyy'}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Grossesse(s) perdue(s)
+          </td>
+          <td>
+            <div *ngIf="femelleReproduction.perteGrossesse">{{femelleReproduction.perteGrossesse}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Nombre de césariennes:
+          </td>
+          <td>
+            <div *ngIf="!femelleReproduction.nbCesarienne">Non communiqué</div>
+            <div *ngIf="femelleReproduction.nbCesarienne">{{femelleReproduction.nbCesarienne}}</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="bovinEngraissement!=null" class="infosEngraissement">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Engraissement</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            Date d'engraissement:
+          </td>
+          <td>
+            <div *ngIf="!bovinEngraissement.dateEngraissement">Non engraissé</div>
+            <div *ngIf="bovinEngraissement.dateEngraissement">{{bovinEngraissement.dateEngraissement|date : 'd/M/yyyy'}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Mélange:
+          </td>
+          <td>
+            <div *ngIf="!bovinEngraissement.melange">Non communiqué</div>
+            <div *ngIf="bovinEngraissement.melange">{{bovinEngraissement.melange.nomMelange}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Poids sur pattes:
+          </td>
+          <td>
+            <div *ngIf="!bovinEngraissement.poidsSurPattes">Non communiqué</div>
+            <div *ngIf="bovinEngraissement.poidsSurPattes">{{bovinEngraissement.poidsSurPattes}} kg</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Poids carcasse:
+          </td>
+          <td>
+            <div *ngIf="!bovinEngraissement.poidsCarcasse">Non communiqué</div>
+            <div *ngIf="bovinEngraissement.poidsCarcasse">{{bovinEngraissement.poidsCarcasse}} kg</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="loading">
+  loading
+</div>
