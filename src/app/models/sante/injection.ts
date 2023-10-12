@@ -4,6 +4,6 @@ import {Vaccin} from "./vaccin";
 export interface Injection{
   id: number;
   dateInjection: Date;
-  bovinDTO: Bovin;
-  vaccinDTO: Vaccin;
+  bovin: Bovin;
+  vaccin: Vaccin;
 }

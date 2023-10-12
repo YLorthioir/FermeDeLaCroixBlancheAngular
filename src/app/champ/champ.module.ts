@@ -1,20 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChampOneComponent } from './one/champ-one.component';
 import { ChampAddComponent } from './add/champ-add.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {MatOptionModule} from "@angular/material/core";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatSelectModule} from "@angular/material/select";
 import {ChampRoutingModule} from "./champ-routing.module";
 import {ChampComponent} from "./champ/champ.component";
 import { ChampUpdateComponent } from './update/champ-update.component';
 import { AddCultureComponent } from './add-culture/add-culture.component';
-import {BovinRoutingModule} from "../bovin/bovin-routing.module";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
@@ -34,7 +31,6 @@ import { ExtraParamsChampComponent } from './extra-params-champ/extra-params-cha
 @NgModule({
   declarations: [
     ChampComponent,
-    ChampOneComponent,
     ChampAddComponent,
     ChampUpdateComponent,
     AddCultureComponent,

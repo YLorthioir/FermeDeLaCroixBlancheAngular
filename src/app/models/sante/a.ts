@@ -3,9 +3,9 @@ import {Traitement} from "./traitement";
 import {Maladie} from "./maladie";
 
 export interface A {
-  anneeMaladie: Date;
-  bovinsDTO: Bovin;
   id: number;
-  maladieDTO: Maladie;
-  traitementDTO: Traitement;
+  anneeMaladie: Date;
+  bovin: Bovin;
+  maladie: Maladie;
+  traitement: Traitement;
 }

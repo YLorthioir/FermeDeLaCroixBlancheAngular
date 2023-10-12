@@ -52,7 +52,7 @@ export class UpdateFaucheComponent implements OnInit, OnDestroy{
         this.faucheService.getFauche(this.route.snapshot.params['param']).subscribe(
           fauche => {
             this.fauche = fauche;
-            this.champService.getAllCulture(this.fauche.cultureDTO.champ.id).subscribe(
+            this.champService.getAllCulture(this.fauche.culture.champ.id).subscribe(
               culture=>{
                 this.cultures = culture;
                 this.refresh();
@@ -91,7 +91,7 @@ export class UpdateFaucheComponent implements OnInit, OnDestroy{
   refresh(){
     this.formUpdate = new FormGroup({
       annee: new FormControl(this.fauche.annee,[Validators.required, Validators.min(1950)]),
-      cultureId: new FormControl(this.fauche.cultureDTO.champ.id),
+      cultureId: new FormControl(this.fauche.culture.champ.id),
       fauche1: new FormControl(this.fauche.fauche1,[Validators.required, inThePast()]),
       fauche1Rendement: new FormControl(this.fauche.fauche1rendement, [Validators.required, Validators.min(0),Validators.pattern(/[0-9]+$/)]),
       fauche2: new FormControl(this.fauche.fauche2, inThePast()),

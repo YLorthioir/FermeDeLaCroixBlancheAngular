@@ -167,8 +167,8 @@ export class MaladieTraitementSelectedComponent implements OnInit{
 
   refresh(){
     this.formUpdate = new FormGroup({
-      maladie: new FormControl(this.a.maladieDTO.id,[Validators.required]),
-      traitement: new FormControl(this.a.traitementDTO===null?null:this.a.traitementDTO.id),
+      maladie: new FormControl(this.a.maladie.id,[Validators.required]),
+      traitement: new FormControl(this.a.traitement===null?null:this.a.traitement.id),
       annee: new FormControl(this.a.anneeMaladie,[Validators.required, inThePast()]),
     })
   }

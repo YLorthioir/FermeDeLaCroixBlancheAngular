@@ -23,7 +23,7 @@ export class AllFaucheComponent implements OnInit, OnDestroy{
   public loading: boolean = false;
 
   public champs$: Observable<Champ[]> = new Observable<Champ[]>;
-  public annees!: number[];
+  public annees$: Observable<number[]> = new Observable<number[]>();
 
   public fauchesChamp!: Fauche[];
   public fauchesAnnee!: Fauche[];
@@ -44,6 +44,7 @@ export class AllFaucheComponent implements OnInit, OnDestroy{
     this.champ?.valueChanges.subscribe((champ) => {
       this.faucheService.getAllFaucheChamp(champ!).subscribe( (fauche)=>{
         this.fauchesChamp=fauche;
+        console.log(this.fauchesChamp)
         this.dataSourceChamp = new MatTableDataSource(this.fauchesChamp);
       })
     })
@@ -51,6 +52,7 @@ export class AllFaucheComponent implements OnInit, OnDestroy{
       this.faucheService.getAllFaucheAnnee(annee!).subscribe( (fauche)=>{
         takeUntil(this.destroyed$),
         this.fauchesAnnee=fauche;
+        console.log(this.fauchesAnnee)
         this.dataSourceAnnee = new MatTableDataSource(this.fauchesAnnee);
       })
     })
@@ -71,6 +73,7 @@ export class AllFaucheComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void  {
     this.champs$=this.champService.getAll();
+    this.annees$ = this.faucheService.getAllAnnee();
   }
 
   ngOnDestroy(): void {

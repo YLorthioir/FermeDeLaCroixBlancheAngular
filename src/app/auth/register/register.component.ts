@@ -12,7 +12,6 @@ import {Subject, takeUntil, tap} from "rxjs";
 })
 export class RegisterComponent implements OnDestroy {
   public form: FormGroup;
-  public roleConnected: string|null = localStorage.getItem('role');
   public hide = true;
 
   private destroyed$ = new Subject();

@@ -87,6 +87,8 @@ export class VaccinationComponent implements OnInit, OnDestroy{
               vaccination.actif
           })
 
+          console.log(carnet);
+
           this.loading=false;
         })
     })

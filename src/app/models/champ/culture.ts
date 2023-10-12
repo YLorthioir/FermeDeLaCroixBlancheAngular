@@ -11,5 +11,5 @@ export interface Culture{
   qttFumier: number;
   champ: Champ;
   faucheId: number;
-  typeDeGrainDTO: Grain;
+  typeDeGrain: Grain;
 }

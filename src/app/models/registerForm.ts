@@ -4,7 +4,7 @@ export interface RegisterForm {
   login: string;
   password: string;
   confirmPassword: string;
-  roles: string;
+  role: string;
 }
 
 export const RegisterForm ={

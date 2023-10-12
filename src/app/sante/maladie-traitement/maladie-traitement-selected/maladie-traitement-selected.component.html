@@ -59,7 +59,7 @@
         <mat-label>Nom de la maladie</mat-label>
         <mat-select formControlName="id">
           <mat-option  *ngFor="let a of aCommeMaladie"
-                       [value]="a.id">{{a.maladieDTO.nom}}</mat-option>
+                       [value]="a.id">{{a.maladie.nom}}</mat-option>
         </mat-select>
       </mat-form-field>
     </form>

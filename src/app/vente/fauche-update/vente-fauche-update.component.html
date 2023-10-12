@@ -7,7 +7,7 @@
       <mat-form-field appearance="outline" style="padding-right: 10px">
         <mat-label>Champ</mat-label>
         <mat-select formControlName="faucheId" readonly>
-          <mat-option [value]="venteFauche.faucheDTO.id">{{venteFauche.faucheDTO.cultureDTO.typeDeGrainDTO.nomGrain}} - {{venteFauche.faucheDTO.cultureDTO.champ.lieu}}</mat-option>
+          <mat-option [value]="venteFauche.fauche.id">{{venteFauche.fauche.culture.typeDeGrain.nomGrain}} - {{venteFauche.fauche.culture.champ.lieu}}</mat-option>
         </mat-select>
       </mat-form-field>
 

@@ -67,7 +67,7 @@ export class VenteFaucheUpdateComponent implements OnInit, OnDestroy {
 
   load(){
     this.formFauche = new FormGroup({
-      faucheId: new FormControl(this.venteFauche.faucheDTO.id, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
+      faucheId: new FormControl(this.venteFauche.fauche.id, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       qtt: new FormControl(this.venteFauche.quantite, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),
       date: new FormControl(this.venteFauche.dateDeVente, [Validators.required, inThePast()]),
       prixCoutant: new FormControl(this.venteFauche.prixCoutant, [Validators.min(0), Validators.required, Validators.pattern(/[0-9]+$/)]),

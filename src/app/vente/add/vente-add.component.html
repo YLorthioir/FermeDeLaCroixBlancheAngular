@@ -70,7 +70,7 @@
           <mat-label>Champ</mat-label>
           <mat-select formControlName="faucheId">
             <mat-option  *ngFor="let fauche of fauchesAnnee"
-                         [value]="fauche.id">{{fauche.cultureDTO.typeDeGrainDTO.nomGrain}} - {{fauche.cultureDTO.champ.lieu}}</mat-option>
+                         [value]="fauche.id">{{fauche.culture.typeDeGrain.nomGrain}} - {{fauche.culture.champ.lieu}}</mat-option>
           </mat-select>
         </mat-form-field>
 

@@ -11,5 +11,5 @@ export interface Fauche{
   fauche3rendement: number;
   fauche4: Date;
   fauche4rendement: number;
-  cultureDTO: Culture;
+  culture: Culture;
 }

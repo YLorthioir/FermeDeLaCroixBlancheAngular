@@ -79,7 +79,7 @@ export class UpdateCultureComponent implements OnInit, OnDestroy{
       dateDernierEpandage: new FormControl(this.culture.dateEpandage, inThePast()),
       qttFumier: new FormControl(this.culture.qttFumier,Validators.pattern(/[0-9]+$/)),
       referenceAnalyse: new FormControl(this.culture.analysePDF),
-      grainId: new FormControl(this.culture.typeDeGrainDTO.id, Validators.required),
+      grainId: new FormControl(this.culture.typeDeGrain.id, Validators.required),
     })
   }
 }

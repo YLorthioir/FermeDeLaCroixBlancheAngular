@@ -6,5 +6,5 @@ export interface VenteFauche{
   dateDeVente: Date;
   prixCoutant: number;
   prixRevente: number;
-  faucheDTO: Fauche;
+  fauche: Fauche;
 }
