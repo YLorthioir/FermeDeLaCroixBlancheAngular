@@ -35,6 +35,12 @@ export class LoginComponent implements OnDestroy {
         takeUntil(this.destroyed$),
         tap(() => this._router.navigateByUrl('home'))
       )
-      .subscribe();
+      .subscribe({
+        next: ()=>{},
+        error: (err)=> {
+          if(err.error.status === 'UNAUTHORIZED')
+            alert(err.error.message)
+        }
+      });
   }
 }
