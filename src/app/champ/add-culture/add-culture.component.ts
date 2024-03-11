@@ -5,7 +5,6 @@ import {Champ} from "../../models/champ/champ";
 import {GrainService} from "../../service/grain.service";
 import {Grain} from "../../models/champ/grain";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
-import {Race} from "../../models/bovin/race";
 import {inThePast} from "../../validators/TimeValidators";
 
 @Component({

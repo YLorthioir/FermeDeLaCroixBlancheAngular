@@ -44,7 +44,7 @@ export class BovinOneSelectedComponent implements OnInit, OnDestroy{
 
     this.bovinService.getAllNI().subscribe(
       (bovin) => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.bovins = bovin;
         this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
@@ -76,7 +76,7 @@ export class BovinOneSelectedComponent implements OnInit, OnDestroy{
     this.loading = true;
 
     this.bovinService.getOne(numeroInscription).subscribe((bovin) => {
-      takeUntil(this.destroyed$),
+      takeUntil(this.destroyed$)
       this.bovin = bovin;
 
       this.santeService.getCarnetVaccination(this.bovin.id).subscribe(

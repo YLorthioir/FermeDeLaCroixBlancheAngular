@@ -41,7 +41,7 @@ export class BovinGenealogySelectedComponent implements OnInit, OnDestroy{
 
     this.bovinService.getAllNI().subscribe(
       (bovin) => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.bovins = bovin;
         this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
@@ -77,7 +77,7 @@ export class BovinGenealogySelectedComponent implements OnInit, OnDestroy{
     this.gmm=undefined;
 
     this.bovinService.getOne(numeroIdentification).subscribe((bovin) => {
-      takeUntil(this.destroyed$),
+      takeUntil(this.destroyed$)
       this.bovin = bovin
 
       if(this.bovin.pereNI!= null && this.bovins.includes(this.bovin.pereNI)){

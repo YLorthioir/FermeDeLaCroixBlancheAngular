@@ -51,7 +51,7 @@ export class VenteAllComponent implements OnInit{
 
   onDeleteFauche(id:number){
     var val = confirm("Voulez-vous vraiment supprimer cet élément?");
-    if( val == true ) {
+    if( val ) {
       this._venteService.deleteVenteFauche(id).subscribe(
         ()=>this.load()
       )
@@ -64,7 +64,7 @@ export class VenteAllComponent implements OnInit{
 
   onDeleteBovin(id:number){
     var val = confirm("Voulez-vous vraiment supprimer cet élément?");
-    if( val == true ) {
+    if( val ) {
       this._venteService.deleteVenteBovin(id).subscribe(
         ()=>this.load()
       )

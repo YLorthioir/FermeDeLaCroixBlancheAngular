@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Race} from "../models/bovin/race";
 
@@ -7,9 +7,9 @@ import {Race} from "../models/bovin/race";
 })
 export class RaceService {
 
-  private readonly  _BASE_URL = "http://localhost:8080/bovin/race";
+  private readonly  _BASE_URL = this._api_url + "/bovin/race";
 
-  constructor(private readonly _httpClient: HttpClient) { }
+  constructor(private readonly _httpClient: HttpClient, @Inject("API_URL") private _api_url:string) { }
 
   getAllRace(){
     return this._httpClient.get<Race[]>(`${this._BASE_URL}/all`)

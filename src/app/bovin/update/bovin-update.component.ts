@@ -31,7 +31,7 @@ export class BovinUpdateComponent implements OnInit, OnDestroy{
 
     this._bovinService.getAllNI().subscribe(
       (bovins) => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.bovins = bovins;
         this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),

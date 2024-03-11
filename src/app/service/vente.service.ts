@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {VenteBovin} from "../models/vente/venteBovin";
 import {FormGroup} from "@angular/forms";
@@ -8,9 +8,9 @@ import {VenteFauche} from "../models/vente/venteFauche";
   providedIn: 'root'
 })
 export class VenteService {
-  private readonly  _BASE_URL = "http://localhost:8080/vente";
+  private readonly  _BASE_URL = this._api_url + "/vente";
 
-  constructor(private readonly _httpClient: HttpClient) { }
+  constructor(private readonly _httpClient: HttpClient, @Inject("API_URL") private _api_url:string) { }
 
   // Bovin
 

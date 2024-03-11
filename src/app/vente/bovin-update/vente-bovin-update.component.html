@@ -1,6 +1,6 @@
 <div *ngIf="!loading">
   <div *ngIf="venteBovin != undefined">
-    <form [formGroup]="formBovin" (ngSubmit)="onSubmit('bovin')">
+    <form [formGroup]="formBovin" (ngSubmit)="onSubmit()">
       <h3>Modification d'une vente</h3>
 
       <div class="form">

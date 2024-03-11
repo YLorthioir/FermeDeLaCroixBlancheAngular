@@ -154,7 +154,7 @@ export class MaladieTraitementSelectedComponent implements OnInit{
 
   deleteA(id: number) {
     var val = confirm("Voulez-vous vraiment supprimer cet élément?");
-    if (val == true) {
+    if (val) {
       this._santeService.deleteA(id).pipe(
         takeUntil(this.destroyed$),
         tap(() => {

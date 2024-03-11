@@ -4,7 +4,6 @@ import {VenteService} from "../../service/vente.service";
 import {FaucheService} from "../../service/fauche.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {VenteFauche} from "../../models/vente/venteFauche";
-import {Fauche} from "../../models/champ/fauche";
 import {Subject, takeUntil, tap} from "rxjs";
 import {inThePast} from "../../validators/TimeValidators";
 
@@ -41,7 +40,7 @@ export class VenteFaucheUpdateComponent implements OnInit, OnDestroy {
     this.loading = true;
     this._venteService.getOneVenteFauche(this._route.snapshot.params['param']).subscribe(
       value => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.venteFauche = value;
         this.load()
         this.loading = false
@@ -54,7 +53,7 @@ export class VenteFaucheUpdateComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  onSubmit(type: string) {
+  onSubmit() {
   if(this.formFauche.valid)
       this._venteService.updateVenteFauche(this.venteFauche.id, this.formFauche.value).pipe(
         takeUntil(this.destroyed$),

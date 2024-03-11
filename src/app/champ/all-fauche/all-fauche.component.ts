@@ -50,7 +50,7 @@ export class AllFaucheComponent implements OnInit, OnDestroy{
     })
     this.annee?.valueChanges.subscribe((annee) => {
       this.faucheService.getAllFaucheAnnee(annee!).subscribe( (fauche)=>{
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.fauchesAnnee=fauche;
         console.log(this.fauchesAnnee)
         this.dataSourceAnnee = new MatTableDataSource(this.fauchesAnnee);

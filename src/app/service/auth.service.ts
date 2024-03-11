@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormGroup} from "@angular/forms";
 import {Observable, tap} from "rxjs";
@@ -17,9 +17,9 @@ export interface Auth {
 export class AuthService {
 
 
-  private readonly  _BASE_URL: string = "http://localhost:8080/auth";
+  private readonly  _BASE_URL: string = this._api_url+"/auth";
 
-  constructor(private readonly _httpClient: HttpClient, private _router: Router) {}
+  constructor(private readonly _httpClient: HttpClient, private _router: Router, @Inject("API_URL") private _api_url:string) {}
 
   logout(){
     localStorage.removeItem("token");

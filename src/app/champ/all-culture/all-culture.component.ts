@@ -62,7 +62,7 @@ export class AllCultureComponent implements OnInit, OnDestroy{
 
     this.champService.getAllCulture(id).subscribe({
       next: (cultures) => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.cultures = cultures;
         this.dataSource = new MatTableDataSource(this.cultures);
         this.champService.getOne(id).subscribe()

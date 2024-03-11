@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Vaccination} from "../models/sante/vaccination";
 import {A} from "../models/sante/a";
@@ -12,9 +12,9 @@ import {Traitement} from "../models/sante/traitement";
 })
 export class SanteService {
 
-  private readonly  _BASE_URL = "http://localhost:8080/sante";
+  private readonly  _BASE_URL = this._api_url + "/sante";
 
-  constructor(private readonly _httpClient: HttpClient) { }
+  constructor(private readonly _httpClient: HttpClient, @Inject("API_URL") private _api_url:string) { }
 
   //Vaccination
 

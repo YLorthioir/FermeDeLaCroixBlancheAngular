@@ -4,7 +4,6 @@ import {Champ} from "../../models/champ/champ";
 import {Grain} from "../../models/champ/grain";
 import {ChampService} from "../../service/champ.service";
 import {GrainService} from "../../service/grain.service";
-import {ActivatedRoute} from "@angular/router";
 import {Culture} from "../../models/champ/culture";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
 import {inThePast} from "../../validators/TimeValidators";

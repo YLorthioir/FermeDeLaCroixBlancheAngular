@@ -38,7 +38,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
       vaccination: new FormControl(),
       })
     this.form.get('vaccination')?.valueChanges.subscribe((nom) => {
-      takeUntil(this.destroyed$),
+      takeUntil(this.destroyed$)
       _santeService.getVaccin(nom.split(' (', 1)).subscribe((vaccin)=>{
         this.vaccin=vaccin;
         this.vaccination = this.carnet.find((vaccination) =>
@@ -51,7 +51,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this._bovinService.getAllNI().subscribe(
       (bovins) => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.bovins = bovins;
         this.filteredOptions = this.myControl.valueChanges.pipe(
           debounceTime(500),
@@ -76,7 +76,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
     this.loading=true;
 
     this._bovinService.getOne(option).subscribe((bovin) => {
-      takeUntil(this.destroyed$),
+      takeUntil(this.destroyed$)
       this.bovin = bovin;
 
       this._santeService.getCarnetVaccination(this.bovin.id).subscribe(

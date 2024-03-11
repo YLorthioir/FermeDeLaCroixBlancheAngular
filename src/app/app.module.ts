@@ -64,7 +64,9 @@ import {MatSortModule} from "@angular/material/sort";
     MatSortModule
   ],
   providers: [NgbNavConfig,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: "API_URL", useValue: "http://195.35.2.150:8081"}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

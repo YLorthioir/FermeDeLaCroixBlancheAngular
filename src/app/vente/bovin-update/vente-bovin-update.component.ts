@@ -40,7 +40,7 @@ export class VenteBovinUpdateComponent implements OnInit, OnDestroy {
     this.loading = true;
     this._venteService.getOneVenteBovin(this._route.snapshot.params['param']).subscribe(
       value => {
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
         this.venteBovin = value;
         this.load();
         this.loading = false
@@ -52,7 +52,7 @@ export class VenteBovinUpdateComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  onSubmit(type: string) {
+  onSubmit() {
     if (this.formBovin.valid)
       this._venteService.updateVenteBovin(this.venteBovin.id, this.formBovin.value).pipe(
         takeUntil(this.destroyed$),
